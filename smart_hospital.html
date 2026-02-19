@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Hospital | Hicardi Android</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #080f0d;
+      --surface: #0d1a16;
+      --surface2: #132119;
+      --accent: #10b981;
+      --accent2: #34d399;
+      --accent3: #6ee7b7;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --border: rgba(16,185,129,0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans KR', sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 2rem 7rem;
+      overflow: hidden;
+    }
+
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .orb1 {
+      width: 560px; height: 560px;
+      top: -120px; right: -80px;
+      background: radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%);
+    }
+    .orb2 {
+      width: 320px; height: 320px;
+      bottom: 0; left: 8%;
+      background: radial-gradient(circle, rgba(52,211,153,0.07) 0%, transparent 70%);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(16,185,129,0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16,185,129,0.055) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(ellipse 75% 65% at 55% 35%, black 0%, transparent 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: 840px;
+      margin: 0 auto;
+      z-index: 1;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16,185,129,0.12);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 0.73rem;
+      color: var(--accent2);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); animation: blink 1.6s ease infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      letter-spacing: 0.05em;
+      line-height: 0.92;
+      background: linear-gradient(135deg, #e2e8f0 20%, var(--accent2) 60%, var(--accent3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--accent); color: #000; font-weight: 600; }
+    .btn-primary:hover { background: #059669; transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--accent2); color: var(--accent2); }
+
+    .tech-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+    .chip {
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.28);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 0.76rem;
+      color: var(--accent3);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.03em;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .chip:hover { background: rgba(16,185,129,0.2); border-color: rgba(16,185,129,0.5); }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 880px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+    section { padding: 5rem 0; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent2);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 2.5rem; letter-spacing: -0.02em; }
+
+    /* ── TEAM INFO ── */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    .team-card {
+      background: var(--surface);
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .team-label { font-size: 0.7rem; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+    .team-val { font-size: 1.1rem; font-weight: 700; color: var(--accent2); }
+
+    /* ── FEATURE GRID ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { border-color: rgba(16,185,129,0.45); transform: translateY(-2px); }
+    .feature-icon { font-size: 1.6rem; margin-bottom: 0.75rem; }
+    .feature-title { font-weight: 600; font-size: 0.93rem; margin-bottom: 0.4rem; }
+    .feature-desc { font-size: 0.83rem; color: var(--muted); }
+
+    /* ── ARCH HIGHLIGHT ── */
+    .arch-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .arch-before, .arch-after {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .arch-before { border-left: 3px solid #ef4444; }
+    .arch-after  { border-left: 3px solid var(--accent); }
+    .arch-head {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.6rem;
+    }
+    .arch-before .arch-head { color: #ef4444; }
+    .arch-after  .arch-head { color: var(--accent); }
+    .arch-body { font-size: 0.85rem; color: var(--muted); }
+
+    .arch-result {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent2);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      font-size: 0.86rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text);
+    }
+
+    /* ── IMPL CARDS ── */
+    .impl-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .impl-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+    }
+    .impl-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+    }
+    .impl-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.75rem; }
+    .impl-items { display: flex; flex-direction: column; gap: 0.4rem; }
+    .impl-item {
+      font-size: 0.85rem;
+      color: var(--muted);
+      padding-left: 1rem;
+      position: relative;
+    }
+    .impl-item::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--accent2);
+      font-size: 0.7rem;
+      top: 3px;
+    }
+
+    /* ── TECH ── */
+    .tech-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .tech-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      transition: border-color 0.2s;
+    }
+    .tech-item:hover { border-color: rgba(16,185,129,0.35); }
+    .tech-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+    .tech-text { font-size: 0.87rem; }
+    .tech-text strong {
+      color: var(--accent2);
+      display: block;
+      margin-bottom: 2px;
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── ANIM ── */
+    .fade-in { opacity: 0; transform: translateY(18px); animation: fi 0.6s ease forwards; }
+    @keyframes fi { to { opacity: 1; transform: none; } }
+    .d1{animation-delay:0.1s} .d2{animation-delay:0.22s}
+    .d3{animation-delay:0.36s} .d4{animation-delay:0.5s}
+
+    /* ── MODULE TREE ── */
+    .module-tree {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      margin-bottom: 1.25rem;
+      overflow-x: auto;
+    }
+    .tree-root { color: var(--accent2); font-weight: 700; font-size: 0.9rem; margin-bottom: 0.9rem; }
+    .tree-line { line-height: 2; color: var(--muted); }
+    .tree-line .hl  { color: var(--accent3); }
+    .tree-line .dim { color: #2d3f35; }
+    .tree-line .cm  { color: #374151; }
+
+    /* ── DEP FLOW ── */
+    .dep-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem 1.5rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      row-gap: 1rem;
+    }
+    .dep-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 1.25rem;
+      text-align: center;
+      min-width: 110px;
+    }
+    .dep-box-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 3px;
+    }
+    .dep-box-name { font-size: 0.88rem; font-weight: 700; color: var(--accent2); }
+    .dep-arrow { font-size: 1.2rem; color: var(--accent); padding: 0 0.5rem; flex-shrink: 0; }
+    .dep-note {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 10px;
+      padding: 0.9rem 1.25rem;
+      font-size: 0.84rem;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+
+    /* ── MVI FLOW ── */
+    .mvi-flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 1.25rem;
+    }
+    .mvi-step { background: var(--surface); padding: 1.25rem 1rem; text-align: center; }
+    .mvi-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.3rem;
+    }
+    .mvi-name { font-size: 0.82rem; font-weight: 700; color: var(--accent2); margin-bottom: 0.25rem; }
+    .mvi-desc { font-size: 0.75rem; color: var(--muted); }
+
+    /* ── SCAN ARCH ── */
+    .scan-arch { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
+    .scan-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .scan-box-top { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+    .scan-box-name { font-size: 0.88rem; font-weight: 700; color: var(--accent2); margin-bottom: 0.4rem; }
+    .scan-box-desc { font-size: 0.76rem; color: var(--muted); }
+    .scan-center { border-color: rgba(16,185,129,0.5); background: rgba(16,185,129,0.07); }
+    .scan-center .scan-box-name { color: var(--accent3); }
+
+    @media (max-width: 640px) {
+      .arch-compare { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: repeat(3, 1fr); }
+      .mvi-flow { grid-template-columns: repeat(2, 1fr); }
+      .scan-arch { grid-template-columns: 1fr; }
+      .dep-flow { flex-direction: column; }
+      .dep-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-content">
+    <div class="badge fade-in"><span class="dot"></span> Android · Kotlin · Jetpack Compose</div>
+    <h1 class="fade-in d1">SMART<br/>HOSPITAL<br/><span style="font-size:0.55em;letter-spacing:0.12em;">HICARDI</span></h1>
+    <p class="hero-sub fade-in d2">병원 현장에서 환자-기기 매핑, 바코드 스캔, 활력징후 모니터링을 안정적으로 제공하는 Android 앱. 단일 코드베이스로 다수 병원을 지원하는 공통 아키텍처 설계 주도</p>
+    <div class="hero-actions fade-in d3">
+      <a class="btn btn-outline" href="#features">핵심 기능 보기</a>
+      <a class="btn btn-outline" href="#arch">아키텍처 보기</a>
+    </div>
+    <div class="tech-chips fade-in d4">
+      <span class="chip">Jetpack Compose</span>
+      <span class="chip">MVI</span>
+      <span class="chip">Multi Module</span>
+      <span class="chip">Clean Architecture</span>
+      <span class="chip">Hilt</span>
+      <span class="chip">CameraX · ML Kit</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- TEAM -->
+<section>
+  <div class="container">
+    <p class="section-label">Project Overview</p>
+    <h2>프로젝트 개요</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-label">PM</div>
+        <div class="team-val">1</div>
+      </div>
+      <div class="team-card">
+        <div class="team-label">Server</div>
+        <div class="team-val">3</div>
+      </div>
+      <div class="team-card">
+        <div class="team-label">Design</div>
+        <div class="team-val">1</div>
+      </div>
+      <div class="team-card">
+        <div class="team-label">Android</div>
+        <div class="team-val">2</div>
+      </div>
+      <div class="team-card">
+        <div class="team-label">내 역할</div>
+        <div class="team-val" style="font-size:0.75rem;color:var(--accent3);line-height:1.3">아키텍처 전환<br/>스캔 공통화</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+    <p class="section-label">Features</p>
+    <h2>핵심 기능</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📷</div>
+        <div class="feature-title">멀티 스캔 지원</div>
+        <div class="feature-desc">M3·PM·BlueBird PDA 바코드 스캔 및 CameraX + ML Kit 카메라 스캔 통합 지원</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <div class="feature-title">환자-기기 매핑</div>
+        <div class="feature-desc">환자와 의료기기 매핑 및 매핑 해제 플로우 구현</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💓</div>
+        <div class="feature-title">활력징후 모니터링</div>
+        <div class="feature-desc">활력징후 리스트 조회 및 일자별 모니터링 화면 제공</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚙️</div>
+        <div class="feature-title">병원 설정</div>
+        <div class="feature-desc">서버 URL·OAuth·Client 정보·스캔 타입을 QR 스캔 또는 수기 입력으로 설정</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔔</div>
+        <div class="feature-title">공통 이벤트 처리</div>
+        <div class="feature-desc">로딩·스낵바·재시작·종료 등 앱 전역 공통 이벤트 처리 체계화</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📋</div>
+        <div class="feature-title">API 로그 & 메일 전송</div>
+        <div class="feature-desc">내부망 장애 분석용 API 로그 파일 생성 및 앱 내 메일 전송 기능 제공</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ARCH -->
+<section id="arch">
+  <div class="container">
+    <p class="section-label">Architecture Improvement</p>
+    <h2>아키텍처 개선</h2>
+
+    <div class="arch-compare">
+      <div class="arch-before">
+        <div class="arch-head">BEFORE · SI 방식</div>
+        <div class="arch-body">프로젝트별 "개발 후 폐기" 반복. 병원마다 코드 복제, 중복 개발 누적, 유지보수 비용 증가</div>
+      </div>
+      <div class="arch-after">
+        <div class="arch-head">AFTER · 공통 모듈 구조</div>
+        <div class="arch-body">feature 모듈 기반 단일 코드베이스. 병원별 요구사항은 분기·위젯화로 흡수, 신규 병원 온보딩 공수 절감</div>
+      </div>
+    </div>
+
+    <div class="arch-result">
+      <span>✅</span>
+      <span>단일 코드베이스 재사용 체계 구축 — 중복 개발 제거, 신규 병원 개발 공수 약 <strong style="color:var(--accent2)">50% 절감</strong></span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- IMPL -->
+<section>
+  <div class="container">
+    <p class="section-label">Implementation</p>
+    <h2>상세 구현</h2>
+    <div class="impl-list">
+
+      <div class="impl-card">
+        <div class="impl-num">01 · Architecture</div>
+        <div class="impl-title">멀티모듈 + MVI 전환</div>
+        <div class="impl-items">
+          <div class="impl-item">app / core / feature 구조로 모듈 분리 (15개 include 모듈)</div>
+          <div class="impl-item">BaseViewModel + UiState + UiEvent + reduce 기반 상태관리 표준화</div>
+          <div class="impl-item">build-logic 컨벤션 플러그인으로 모듈 설정 일관성 확보</div>
+        </div>
+      </div>
+
+      <div class="impl-card">
+        <div class="impl-num">02 · Scan</div>
+        <div class="impl-title">스캔 로직 공통화</div>
+        <div class="impl-items">
+          <div class="impl-item">BarcodeManagerProvider 인터페이스로 PDA 스캔 SDK 의존성 추상화</div>
+          <div class="impl-item">병원 설정의 ScanType 값으로 스캔 경로 런타임 분기</div>
+          <div class="impl-item">Compose DisposableEffect 기반 리스너 등록·해제 일원화</div>
+        </div>
+      </div>
+
+      <div class="impl-card">
+        <div class="impl-num">03 · Stability</div>
+        <div class="impl-title">내부망 대응 · 운영 안정화</div>
+        <div class="impl-items">
+          <div class="impl-item">URL·클라이언트 설정 검증 로직 및 입력 가드 추가</div>
+          <div class="impl-item">FileLoggingInterceptor로 요청·응답 로그 파일(api_log.txt) 생성</div>
+          <div class="impl-item">앱에서 로그 첨부 메일 전송 가능하도록 운영 대응 플로우 구축</div>
+          <div class="impl-item">API·HTTP 에러 코드 분류 처리 체계 정리</div>
+        </div>
+      </div>
+
+      <div class="impl-card">
+        <div class="impl-num">04 · Extensibility</div>
+        <div class="impl-title">확장 가능한 병원별 분기 구조</div>
+        <div class="impl-items">
+          <div class="impl-item">병원 코드·스캔 방식·설정값을 로컬 저장소로 관리</div>
+          <div class="impl-item">기능 복제 없이 조건 분기로 공통 모듈 내 처리</div>
+          <div class="impl-item">신규 요구사항을 "모듈 추가"가 아닌 "기능 확장" 방식으로 수용</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ARCH DETAIL -->
+<section>
+  <div class="container">
+    <p class="section-label">Architecture Detail</p>
+    <h2>아키텍처 상세</h2>
+
+    <!-- 1. 모듈 구조 -->
+    <p class="section-label" style="margin-bottom:0.75rem;margin-top:0">1 · 전체 모듈 구조</p>
+    <div class="module-tree">
+      <div class="tree-root">📦 Smart Hospital (15 modules)</div>
+      <div class="tree-line"><span class="dim">├── </span><span class="hl">:app</span>                  <span class="cm">// 진입점, 전역 DI, 내비게이션 조립</span></div>
+      <div class="tree-line"><span class="dim">├── </span><span class="hl">:feature/*</span>            <span class="cm">// 화면 단위 비즈니스 기능</span></div>
+      <div class="tree-line"><span class="dim">│   ├── </span>:feature/auth</div>
+      <div class="tree-line"><span class="dim">│   ├── </span>:feature/hicardi</div>
+      <div class="tree-line"><span class="dim">│   ├── </span>:feature/camera</div>
+      <div class="tree-line"><span class="dim">│   ├── </span>:feature/vital</div>
+      <div class="tree-line"><span class="dim">│   └── </span>:feature/setting</div>
+      <div class="tree-line"><span class="dim">└── </span><span class="hl">:core/*</span>               <span class="cm">// 공통 재사용 기반</span></div>
+      <div class="tree-line"><span class="dim">    ├── </span>:core/domain           <span class="cm">// 인터페이스만, 구현체 미포함</span></div>
+      <div class="tree-line"><span class="dim">    ├── </span>:core/data             <span class="cm">// 인터페이스 구현 + mapper</span></div>
+      <div class="tree-line"><span class="dim">    ├── </span>:core/network          <span class="cm">// API, RemoteDataSource, 에러 처리</span></div>
+      <div class="tree-line"><span class="dim">    ├── </span>:core/local            <span class="cm">// 로컬 모델·저장소</span></div>
+      <div class="tree-line"><span class="dim">    ├── </span>:core/model</div>
+      <div class="tree-line"><span class="dim">    ├── </span>:core/scan             <span class="cm">// BarcodeManagerProvider 추상화</span></div>
+      <div class="tree-line"><span class="dim">    ├── </span>:core/common</div>
+      <div class="tree-line"><span class="dim">    └── </span>:core/common-ui</div>
+    </div>
+
+    <!-- 2. 의존성 방향 -->
+    <p class="section-label" style="margin-bottom:0.75rem;margin-top:2.5rem">2 · 의존성 방향 (Dependency Rule)</p>
+    <div class="dep-flow">
+      <div class="dep-box">
+        <div class="dep-box-label">UI Layer</div>
+        <div class="dep-box-name">feature/*</div>
+      </div>
+      <div class="dep-arrow">→</div>
+      <div class="dep-box" style="border-color:rgba(16,185,129,0.5);background:rgba(16,185,129,0.07)">
+        <div class="dep-box-label">Domain Layer</div>
+        <div class="dep-box-name" style="color:var(--accent3)">core:domain</div>
+      </div>
+      <div class="dep-arrow">←</div>
+      <div class="dep-box">
+        <div class="dep-box-label">Data Layer</div>
+        <div class="dep-box-name">core:data</div>
+      </div>
+      <div class="dep-arrow">←</div>
+      <div class="dep-box">
+        <div class="dep-box-label">Network / Local</div>
+        <div class="dep-box-name">core:network</div>
+      </div>
+    </div>
+    <div class="dep-note">
+      <span>⚖️</span>
+      <span>UI(feature)는 domain 인터페이스만 바라보고, 구현체(data/network/local)는 하위 계층으로 숨김. feature 모듈 간 직접 참조 없이 core:common / core:navigation을 통해 소통</span>
+    </div>
+
+    <!-- 3. MVI 상태관리 -->
+    <p class="section-label" style="margin-bottom:0.75rem;margin-top:2.5rem">3 · MVI (UDF) 상태관리 흐름</p>
+    <div class="mvi-flow">
+      <div class="mvi-step">
+        <div class="mvi-num">STEP 01</div>
+        <div class="mvi-name">UI Action</div>
+        <div class="mvi-desc">사용자 인터랙션 → UiEvent 발행</div>
+      </div>
+      <div class="mvi-step">
+        <div class="mvi-num">STEP 02</div>
+        <div class="mvi-name">handleEvent()</div>
+        <div class="mvi-desc">ViewModel이 이벤트 처리·유즈케이스 호출</div>
+      </div>
+      <div class="mvi-step">
+        <div class="mvi-num">STEP 03</div>
+        <div class="mvi-name">reduce { copy }</div>
+        <div class="mvi-desc">불변 UiState 생성 및 StateFlow 갱신</div>
+      </div>
+      <div class="mvi-step">
+        <div class="mvi-num">STEP 04</div>
+        <div class="mvi-name">UI Render</div>
+        <div class="mvi-desc">Compose가 StateFlow 구독 후 리컴포지션</div>
+      </div>
+    </div>
+    <div class="dep-note">
+      <span>📡</span>
+      <span>전역 이벤트(로딩·스낵바·앱 종료)는 <code style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent3)">EventHelper</code> 채널로 처리해 feature 간 결합 없이 공통 이벤트 전파</span>
+    </div>
+
+    <!-- 4. 스캔 아키텍처 -->
+    <p class="section-label" style="margin-bottom:0.75rem;margin-top:2.5rem">4 · 스캔 추상화 아키텍처</p>
+    <div class="scan-arch">
+      <div class="scan-box">
+        <div class="scan-box-top">PDA Scan</div>
+        <div class="scan-box-name">M3 / PM<br/>BlueBird SDK</div>
+        <div class="scan-box-desc">기종별 Native SDK</div>
+      </div>
+      <div class="scan-box scan-center">
+        <div class="scan-box-top">core:scan</div>
+        <div class="scan-box-name">BarcodeManager<br/>Provider</div>
+        <div class="scan-box-desc">인터페이스로 추상화<br/>ScanType으로 런타임 분기<br/>DisposableEffect 생명주기 통합</div>
+      </div>
+      <div class="scan-box">
+        <div class="scan-box-top">Camera Scan</div>
+        <div class="scan-box-name">CameraX<br/>ML Kit</div>
+        <div class="scan-box-desc">카메라 기반 바코드</div>
+      </div>
+    </div>
+    <div class="dep-note">
+      <span>🔌</span>
+      <span>병원 설정의 <code style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent3)">ScanType</code> 값 하나로 PDA/Camera 경로가 런타임에 자동 분기 — feature 코드는 스캔 기종을 알 필요 없음</span>
+    </div>
+
+    <!-- 5. 런타임 병원 설정 -->
+    <p class="section-label" style="margin-bottom:0.75rem;margin-top:2.5rem">5 · 런타임 병원 설정 아키텍처</p>
+    <div class="dep-note">
+      <span>🏥</span>
+      <span>설정 입력(수기/QR) → <code style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent3)">HospitalRepository</code> 저장 → 저장값 기반으로 Retrofit 엔드포인트·스캔 방식 동적 교체 → 설정 변경 시 앱 재시작 유도 플로우 포함. 클라이언트 단에서 설정 누락·오입력 사전 차단</span>
+    </div>
+
+    <!-- 6. 운영 안정화 -->
+    <p class="section-label" style="margin-bottom:0.75rem;margin-top:2.5rem">6 · 내부망 운영 안정화 아키텍처</p>
+    <div class="dep-note">
+      <span>🔎</span>
+      <span><code style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent3)">FileLoggingInterceptor</code>가 모든 요청·응답을 <code style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent3)">api_log.txt</code>에 기록 → <code style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent3)">FileLogHelper</code>로 앱에서 직접 메일 첨부 전송 → 현장 장애 시 로그 회수 경로 표준화, 디버깅 리드타임 단축</span>
+    </div>
+
+    <!-- 7. Build-Logic -->
+    <p class="section-label" style="margin-bottom:0.75rem;margin-top:2.5rem">7 · Build-Logic Convention Plugin</p>
+    <div class="module-tree" style="margin-bottom:0">
+      <div class="tree-root">🔧 build-logic</div>
+      <div class="tree-line"><span class="dim">├── </span><span class="hl">sh.android.feature.gradle.kts</span>   <span class="cm">// feature 공통 의존성·설정</span></div>
+      <div class="tree-line"><span class="dim">├── </span><span class="hl">sh.android.library.gradle.kts</span>   <span class="cm">// library 기본 설정</span></div>
+      <div class="tree-line"><span class="dim">└── </span><span class="hl">HiltAndroid.kt</span>                  <span class="cm">// Hilt 설정 일괄 적용</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- TECH -->
+<section>
+  <div class="container">
+    <p class="section-label">Tech Stack</p>
+    <h2>기술 스택</h2>
+    <div class="tech-list">
+      <div class="tech-item">
+        <div class="tech-icon">📷</div>
+        <div class="tech-text">
+          <strong>CameraX · ML Kit Barcode Scanning</strong>
+          카메라 기반 바코드 스캔과 PDA 스캔(M3·PM·BlueBird)을 BarcodeManagerProvider 인터페이스로 추상화해 런타임에 통합 분기
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">🏗️</div>
+        <div class="tech-text">
+          <strong>Multi Module · Clean Architecture</strong>
+          app / core / feature 15개 모듈 구조. 레이어 간 의존성 방향 준수로 변경 영향 범위 최소화
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">🎨</div>
+        <div class="tech-text">
+          <strong>Jetpack Compose · MVI (UDF)</strong>
+          UiState + UiEvent + SideEffect 기반 단방향 데이터 흐름. BaseViewModel + reduce 패턴으로 상태관리 표준화
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">🌐</div>
+        <div class="tech-text">
+          <strong>Retrofit · OkHttp Interceptor</strong>
+          FileLoggingInterceptor로 모든 API 요청·응답 로컬 파일 기록. 내부망 장애 발생 시 로그 회수 및 메일 전송으로 디버깅 리드타임 단축
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">💾</div>
+        <div class="tech-text">
+          <strong>SharedPreference · 런타임 병원 설정</strong>
+          서버 URL·OAuth·스캔 타입 등 병원별 설정을 로컬 저장소로 관리. 설정 누락·오입력을 클라이언트 단에서 사전 차단
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Built with 🏥 · Smart Hospital Hicardi — Android Medical App
+</footer>
+
+</body>
+</html>
