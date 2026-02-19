@@ -152,6 +152,39 @@
     }
     .chip:hover { background: rgba(16,185,129,0.2); border-color: rgba(16,185,129,0.5); }
 
+    .hospital-deploy {
+      margin-bottom: 2rem;
+      padding: 1.25rem 1.5rem;
+      background: rgba(16,185,129,0.06);
+      border: 1px solid rgba(16,185,129,0.2);
+      border-radius: 12px;
+      display: inline-flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .deploy-label {
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent2);
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+    .deploy-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .htag {
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.25);
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-size: 0.78rem;
+      color: var(--text);
+    }
+    .htag-more {
+      background: rgba(16,185,129,0.18);
+      border-color: rgba(16,185,129,0.4);
+      color: var(--accent2);
+      font-weight: 600;
+    }
+
     /* ── LAYOUT ── */
     .container { max-width: 880px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
     section { padding: 5rem 0; }
@@ -432,8 +465,18 @@
   <div class="hero-orb orb2"></div>
   <div class="hero-content">
     <div class="badge fade-in"><span class="dot"></span> Android · Kotlin · Jetpack Compose</div>
-    <h1 class="fade-in d1">SMART<br/>HOSPITAL<br/><span style="font-size:0.55em;letter-spacing:0.12em;">HICARDI</span></h1>
+    <h1 class="fade-in d1">SMART<br/>HOSPITAL</h1>
     <p class="hero-sub fade-in d2">병원 현장에서 환자-기기 매핑, 바코드 스캔, 활력징후 모니터링을 안정적으로 제공하는 Android 앱. 단일 코드베이스로 다수 병원을 지원하는 공통 아키텍처 설계 주도</p>
+    <div class="hospital-deploy fade-in d2">
+      <div class="deploy-label">🏥 실 도입 병원 20곳+</div>
+      <div class="deploy-tags">
+        <span class="htag">용인세브란스병원</span>
+        <span class="htag">연세세브란스병원</span>
+        <span class="htag">아주대병원</span>
+        <span class="htag">일산병원</span>
+        <span class="htag htag-more">외 16곳+</span>
+      </div>
+    </div>
     <div class="hero-actions fade-in d3">
       <a class="btn btn-outline" href="#features">핵심 기능 보기</a>
       <a class="btn btn-outline" href="#arch">아키텍처 보기</a>
