@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>인천공항+ | ICN 실내지도</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0e1a;
+      --surface: #111827;
+      --surface2: #1a2235;
+      --accent: #3b82f6;
+      --accent2: #06b6d4;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --border: rgba(59,130,246,0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans KR', sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* BG noise texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 2rem 6rem;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%);
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -10%;
+      left: 30%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: 860px;
+      margin: 0 auto;
+      z-index: 1;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(59,130,246,0.12);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 0.75rem;
+      color: var(--accent2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); animation: blink 1.4s ease infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      letter-spacing: 0.04em;
+      line-height: 0.95;
+      background: linear-gradient(135deg, #e2e8f0 30%, var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── CONTAINER ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── SECTION ── */
+    section { padding: 5rem 0; }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent2);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 2.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ── PERF HIGHLIGHT ── */
+    .perf-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .perf-side { text-align: center; }
+    .perf-label { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem; font-family: 'JetBrains Mono', monospace; }
+    .perf-val { font-family: 'JetBrains Mono', monospace; font-size: 2.5rem; font-weight: 600; }
+    .perf-before { color: #ef4444; }
+    .perf-after { color: #22c55e; }
+    .perf-sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.3rem; }
+
+    .perf-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--accent2);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+    }
+
+    .perf-arrow svg { width: 28px; height: 28px; }
+
+    .improvement-tag {
+      display: inline-block;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.25);
+      color: #22c55e;
+      border-radius: 999px;
+      padding: 2px 12px;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 0.5rem;
+    }
+
+    /* ── FEATURE GRID ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { border-color: rgba(59,130,246,0.4); transform: translateY(-2px); }
+
+    .feature-icon {
+      font-size: 1.6rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .feature-desc { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── TECH LIST ── */
+    .tech-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .tech-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+    }
+
+    .tech-item-icon {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .tech-item-text { font-size: 0.88rem; color: var(--text); }
+    .tech-item-text strong { color: var(--accent2); display: block; margin-bottom: 2px; font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; }
+
+    /* ── OPTIMIZATION CARDS ── */
+    .opt-list { display: flex; flex-direction: column; gap: 1.25rem; }
+
+    .opt-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+      border-left: 3px solid var(--accent);
+    }
+
+    .opt-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+    }
+
+    .opt-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }
+    .opt-desc { font-size: 0.87rem; color: var(--muted); }
+
+    /* ── STORE LINK ── */
+    .store-section {
+      text-align: center;
+      padding: 5rem 0 6rem;
+    }
+
+    .store-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3rem 4rem;
+    }
+
+    .store-card h3 { font-size: 1.4rem; font-weight: 700; }
+    .store-card p { color: var(--muted); font-size: 0.9rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 0.6s ease forwards;
+    }
+    @keyframes fadeIn { to { opacity: 1; transform: none; } }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.35s; }
+    .delay-4 { animation-delay: 0.5s; }
+
+    @media (max-width: 600px) {
+      .perf-card { grid-template-columns: 1fr; }
+      .perf-arrow svg { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="badge fade-in"><span class="dot"></span> Android · Kotlin · Google Maps SDK</div>
+    <h1 class="fade-in delay-1">인천공항+<br/>ICN 실내지도</h1>
+    <p class="subtitle fade-in delay-2">
+      인천국제공항 T1·T2·탑승동 전 층의 실내 지도, 길찾기, 실시간 위치, 경로 시뮬레이션을 제공하는 Android 네이티브 앱
+    </p>
+    <div class="hero-actions fade-in delay-3">
+      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.incheonairport" target="_blank">
+        ▶ Google Play
+      </a>
+      <a class="btn btn-outline" href="#tech">기술 스택 보기</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- PERF -->
+<section>
+  <div class="container">
+    <p class="section-label">Performance Optimization</p>
+    <h2>핵심 성능 개선</h2>
+
+    <div class="perf-card">
+      <div class="perf-side">
+        <div class="perf-label">최적화 전 (List)</div>
+        <div class="perf-val perf-before">2825<span style="font-size:1.2rem">ms</span></div>
+        <div class="perf-sub">초기 지도 로딩 시간</div>
+      </div>
+      <div class="perf-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+        <span>HashMap</span>
+      </div>
+      <div class="perf-side">
+        <div class="perf-label">최적화 후 (HashMap)</div>
+        <div class="perf-val perf-after">10<span style="font-size:1.2rem">ms</span></div>
+        <div class="perf-sub">초기 지도 로딩 시간</div>
+        <div class="improvement-tag">▼ 99.6% 단축</div>
+      </div>
+    </div>
+
+    <div class="opt-list">
+      <div class="opt-card">
+        <div class="opt-num">01 · 초기 로딩</div>
+        <div class="opt-title">SDK 초기화 속도 개선</div>
+        <div class="opt-desc">POI 데이터 조회 구조를 List → HashMap으로 변경하여 O(n) 탐색을 O(1)로 단축. UI 블로킹 문제 해결 및 체감 로딩 속도 대폭 개선.</div>
+      </div>
+      <div class="opt-card">
+        <div class="opt-num">02 · 렌더링</div>
+        <div class="opt-title">GeoJSON 렌더링 방식 개선</div>
+        <div class="opt-desc">SVG 벡터 방식(GeoJsonLayer)에서 PNG 비트맵 타일 방식(TileProvider + LRU Cache)으로 전환하여 대용량 GeoJSON 렌더링 성능 최적화.</div>
+      </div>
+      <div class="opt-card">
+        <div class="opt-num">03 · 시뮬레이션</div>
+        <div class="opt-title">경로 시뮬레이션 애니메이션 개선</div>
+        <div class="opt-desc">AnimatorValue 사용 방식을 개선하여 경로 안내 시뮬레이션 화면의 부드러운 카메라 이동 및 마커 애니메이션 구현.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- FEATURES -->
+<section>
+  <div class="container">
+    <p class="section-label">Features</p>
+    <h2>주요 기능</h2>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🗺️</div>
+        <div class="feature-title">실내 지도</div>
+        <div class="feature-desc">T1, T2, 탑승동 및 빌딩별 층수로 나누어 인천공항 전 구역 실내 지도 구현</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧭</div>
+        <div class="feature-title">길찾기</div>
+        <div class="feature-desc">출발·도착·경유지 선택 가능한 최적 경로 탐색 및 안내</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📍</div>
+        <div class="feature-title">실시간 내 위치</div>
+        <div class="feature-desc">블루투스 기반 포그라운드 서비스로 실시간 사용자 위치 표시</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">▶️</div>
+        <div class="feature-title">경로 시뮬레이션</div>
+        <div class="feature-desc">출발 전 길안내 전체 경로를 미리 확인할 수 있는 시뮬레이션 화면</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <div class="feature-title">검색</div>
+        <div class="feature-desc">사용자가 원하는 장소를 빠르게 찾을 수 있는 POI 검색 페이지</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏷️</div>
+        <div class="feature-title">카테고리</div>
+        <div class="feature-desc">카테고리 선택 시 POI 강조 및 카메라 자동 이동, 반경 확장 탐색 지원</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔭</div>
+        <div class="feature-title">LOD 시스템</div>
+        <div class="feature-desc">줌 레벨에 따른 마커 우선순위 기반 LOD 적용, 낮은 우선순위 객체 fade-out</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📖</div>
+        <div class="feature-title">튜토리얼</div>
+        <div class="feature-desc">처음 사용자를 위한 온보딩 튜토리얼 화면 구현</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- TECH -->
+<section id="tech">
+  <div class="container">
+    <p class="section-label">Tech Stack</p>
+    <h2>기술 구현</h2>
+
+    <div class="tech-list">
+      <div class="tech-item">
+        <div class="tech-item-icon">🗾</div>
+        <div class="tech-item-text">
+          <strong>Indoor Map · GeoJSON</strong>
+          인천공항 전용 GeoJSON 기반 T1·T2·탑승동 각 층 실내 지도 적용. TileProvider + LRU Cache로 비트맵 타일 변환·캐싱하여 렌더링 성능 최적화
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-item-icon">📡</div>
+        <div class="tech-item-text">
+          <strong>Pathfinding · Dijkstra</strong>
+          노드·경로 데이터 기반 그래프 구축, 다익스트라 알고리즘으로 최적 경로 탐색. 경유지 및 Switch 구조 지원
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-item-icon">📶</div>
+        <div class="tech-item-text">
+          <strong>LOD System · POI</strong>
+          우선순위 기반 LOD 시스템으로 줌 레벨에 따른 마커 표시 제어. POI 근접 탐색 및 해상도별 마커·텍스트 크기 자동 조정
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-item-icon">📱</div>
+        <div class="tech-item-text">
+          <strong>Background Service · BLE</strong>
+          블루투스, 포그라운드 서비스, 배터리 최적화 권한으로 백그라운드 실시간 위치 동작 지원
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-item-icon">⚡</div>
+        <div class="tech-item-text">
+          <strong>Data Loading Strategy</strong>
+          초기 로딩 시 로컬 assets 우선 사용, 이후 백그라운드에서 최신 데이터 갱신하는 하이브리드 로딩 전략
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-item-icon">🚀</div>
+        <div class="tech-item-text">
+          <strong>CI/CD · Security</strong>
+          GitHub Actions 조건부 자동 배포 파이프라인 구성. ProGuard 코드 난독화 적용
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- STORE -->
+<section class="store-section">
+  <div class="container">
+    <div class="store-card">
+      <div style="font-size:3rem">✈️</div>
+      <h3>인천공항+ (ICN지도)</h3>
+      <p>Google Play에서 다운로드</p>
+      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.incheonairport" target="_blank">
+        Google Play에서 보기 →
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Built with ❤️ · Incheon Airport Indoor Navigation Android App
+</footer>
+
+</body>
+</html>
