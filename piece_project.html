@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Piece Android | 소개팅 앱</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #09080f;
+      --surface: #100f1a;
+      --surface2: #171624;
+      --accent: #e8476a;
+      --accent2: #f472b6;
+      --accent3: #fda4c4;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --border: rgba(232,71,106,0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans KR', sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 2rem 7rem;
+      overflow: hidden;
+    }
+
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .orb1 {
+      width: 600px; height: 600px;
+      top: -150px; right: -100px;
+      background: radial-gradient(circle, rgba(232,71,106,0.13) 0%, transparent 70%);
+    }
+    .orb2 {
+      width: 350px; height: 350px;
+      bottom: 0; left: 5%;
+      background: radial-gradient(circle, rgba(244,114,182,0.08) 0%, transparent 70%);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(232,71,106,0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,71,106,0.055) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(ellipse 75% 65% at 45% 38%, black 0%, transparent 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: 840px;
+      margin: 0 auto;
+      z-index: 1;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(232,71,106,0.12);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 0.73rem;
+      color: var(--accent2);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); animation: blink 1.6s ease infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 11vw, 7.5rem);
+      letter-spacing: 0.06em;
+      line-height: 0.92;
+      background: linear-gradient(135deg, #e2e8f0 20%, var(--accent2) 60%, var(--accent3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #d63660; transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--accent2); color: var(--accent2); }
+
+    .tech-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+    .chip {
+      background: rgba(232,71,106,0.1);
+      border: 1px solid rgba(232,71,106,0.28);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 0.76rem;
+      color: var(--accent3);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.03em;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .chip:hover { background: rgba(232,71,106,0.2); border-color: rgba(232,71,106,0.5); }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 880px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+    section { padding: 5rem 0; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent2);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 2.5rem; letter-spacing: -0.02em; }
+
+    /* ── FEATURE GRID ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { border-color: rgba(232,71,106,0.45); transform: translateY(-2px); }
+    .feature-icon { font-size: 1.6rem; margin-bottom: 0.75rem; }
+    .feature-title { font-weight: 600; font-size: 0.93rem; margin-bottom: 0.4rem; }
+    .feature-desc { font-size: 0.83rem; color: var(--muted); }
+
+    /* ── TECH ── */
+    .tech-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .tech-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      transition: border-color 0.2s;
+    }
+    .tech-item:hover { border-color: rgba(232,71,106,0.35); }
+    .tech-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+    .tech-text { font-size: 0.87rem; }
+    .tech-text strong {
+      color: var(--accent2);
+      display: block;
+      margin-bottom: 2px;
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── ARCHITECTURE ── */
+    .arch-tree {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      margin-bottom: 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.83rem;
+    }
+    .arch-root { color: var(--accent2); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.75rem; }
+    .arch-line { color: var(--muted); line-height: 1.9; }
+    .arch-line .hl { color: var(--accent3); }
+    .arch-line .dim { color: #374151; }
+
+    .dep-rule {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      font-size: 0.87rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .dep-rule code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--accent3);
+      background: rgba(232,71,106,0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* ── IMPROVEMENTS ── */
+    .imp-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .imp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+    }
+    .imp-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+    }
+    .imp-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }
+    .imp-desc { font-size: 0.86rem; color: var(--muted); }
+
+    /* ── CTA ── */
+    .cta-section { text-align: center; padding: 5rem 0 6rem; }
+    .cta-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3rem 4rem;
+    }
+    .cta-card h3 { font-size: 1.4rem; font-weight: 700; }
+    .cta-card p { color: var(--muted); font-size: 0.88rem; }
+    .btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── ANIM ── */
+    .fade-in { opacity: 0; transform: translateY(18px); animation: fi 0.6s ease forwards; }
+    @keyframes fi { to { opacity: 1; transform: none; } }
+    .d1{animation-delay:0.1s} .d2{animation-delay:0.22s}
+    .d3{animation-delay:0.36s} .d4{animation-delay:0.5s}
+
+    @media (max-width: 640px) {
+      .cta-card { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-content">
+    <div class="badge fade-in"><span class="dot"></span> Android · Kotlin · Jetpack Compose</div>
+    <h1 class="fade-in d1">PIECE<br/>ANDROID</h1>
+    <p class="hero-sub fade-in d2">온보딩부터 매칭·탐색·스토어까지, 소개팅 앱의 전체 Android 클라이언트를 설계하고 구현한 프로젝트</p>
+    <div class="hero-actions fade-in d3">
+      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.puzzle.piece" target="_blank">▶ Google Play</a>
+      <a class="btn btn-outline" href="https://github.com/kkh725/Piece_Android" target="_blank">⭐ GitHub</a>
+      <a class="btn btn-outline" href="#features">기능 보기</a>
+    </div>
+    <div class="tech-chips fade-in d4">
+      <span class="chip">Jetpack Compose</span>
+      <span class="chip">MVI</span>
+      <span class="chip">Multi Module</span>
+      <span class="chip">Clean Architecture</span>
+      <span class="chip">Hilt</span>
+      <span class="chip">Kotlin</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+    <p class="section-label">Features</p>
+    <h2>주요 기능</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">👋</div>
+        <div class="feature-title">온보딩 · 인증</div>
+        <div class="feature-desc">로그인/회원가입 플로우 및 사용자 온보딩 흐름 전체 구현</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👤</div>
+        <div class="feature-title">프로필 조회/수정</div>
+        <div class="feature-desc">사용자 프로필 확인 및 편집 기능 구현</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💘</div>
+        <div class="feature-title">매칭 · 탐색</div>
+        <div class="feature-desc">사용자 간 매칭 및 탐색 기능 구현</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔔</div>
+        <div class="feature-title">알림</div>
+        <div class="feature-desc">알림 확인 및 앱 내 상태 반영 기능 구현</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚙️</div>
+        <div class="feature-title">설정</div>
+        <div class="feature-desc">계정·앱 정책·사용자 환경 설정 화면 구현</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛍️</div>
+        <div class="feature-title">스토어</div>
+        <div class="feature-desc">상품 조회 및 구매 관련 기능 구현</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🗺️</div>
+        <div class="feature-title">전역 네비게이션</div>
+        <div class="feature-desc">앱 전역 화면 전환 구조 및 네비게이션 설계 구현</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧪</div>
+        <div class="feature-title">디버그 분리</div>
+        <div class="feature-desc">debug 전용 기능 분리로 QA/개발 생산성 개선</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ARCHITECTURE -->
+<section>
+  <div class="container">
+    <p class="section-label">Architecture</p>
+    <h2>멀티 모듈 구조</h2>
+
+    <div class="arch-tree">
+      <div class="arch-root">📦 Piece Android</div>
+      <div class="arch-line"><span class="dim">├── </span><span class="hl">:app</span>               <span style="color:#4b5563">// 앱 진입점, DI 루트</span></div>
+      <div class="arch-line"><span class="dim">├── </span><span class="hl">:presentation</span>      <span style="color:#4b5563">// 공통 UI, 테마</span></div>
+      <div class="arch-line"><span class="dim">├── </span><span class="hl">:feature/*</span>         <span style="color:#4b5563">// 기능 단위 독립 모듈</span></div>
+      <div class="arch-line"><span class="dim">│   ├── </span>:feature/onboarding</div>
+      <div class="arch-line"><span class="dim">│   ├── </span>:feature/matching</div>
+      <div class="arch-line"><span class="dim">│   ├── </span>:feature/store</div>
+      <div class="arch-line"><span class="dim">│   └── </span>:feature/...</div>
+      <div class="arch-line"><span class="dim">└── </span><span class="hl">:core/*</span>            <span style="color:#4b5563">// 공통 레이어</span></div>
+      <div class="arch-line"><span class="dim">    ├── </span>:core/domain</div>
+      <div class="arch-line"><span class="dim">    ├── </span>:core/data</div>
+      <div class="arch-line"><span class="dim">    ├── </span>:core/network</div>
+      <div class="arch-line"><span class="dim">    ├── </span>:core/datastore</div>
+      <div class="arch-line"><span class="dim">    ├── </span>:core/common</div>
+      <div class="arch-line"><span class="dim">    ├── </span>:core/common-ui</div>
+      <div class="arch-line"><span class="dim">    └── </span>:core/navigation</div>
+    </div>
+
+    <div class="dep-rule">
+      <span>⚖️</span>
+      <span>의존성 방향 준수 &nbsp;—&nbsp; <code>presentation → domain ← data</code> &nbsp;원칙 유지. feature 모듈 간 직접 참조 최소화</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- TECH -->
+<section>
+  <div class="container">
+    <p class="section-label">Tech Stack</p>
+    <h2>기술 구현</h2>
+    <div class="tech-list">
+      <div class="tech-item">
+        <div class="tech-icon">🎨</div>
+        <div class="tech-text">
+          <strong>Jetpack Compose · MVI</strong>
+          Screen / State / Intent / SideEffect 패턴으로 UI 상태 관리 일관성 확보. 단방향 데이터 흐름으로 예측 가능한 화면 구현
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">🏗️</div>
+        <div class="tech-text">
+          <strong>Clean Architecture · Multi Module</strong>
+          도메인 단위 모듈 분리로 변경 영향 범위 축소. 비즈니스 로직은 domain에 집중, UI/플랫폼 코드는 presentation/data로 분리
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">📊</div>
+        <div class="tech-text">
+          <strong>Analytics · GA + Amplitude</strong>
+          퍼널/행동 이벤트 기반 이벤트 스키마 설계. 온보딩·매칭·전환 등 핵심 사용자 흐름 분석 구조 구축
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">⚙️</div>
+        <div class="tech-text">
+          <strong>Build-Logic · 빌드 표준화</strong>
+          컨벤션 플러그인으로 빌드 규칙 통일. debug / qa / release 변형 분리 운영
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">✅</div>
+        <div class="tech-text">
+          <strong>Ktlint · 테스트 · 아키텍처 리뷰</strong>
+          Ktlint 정적 분석 및 unit/androidTest 체계 운영. 리뷰 기준에 아키텍처 준수 항목 포함해 구조적 일관성 유지
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- IMPROVEMENTS -->
+<section>
+  <div class="container">
+    <p class="section-label">Improvements</p>
+    <h2>기능 개선</h2>
+    <div class="imp-list">
+      <div class="imp-card">
+        <div class="imp-num">00 · Analytics</div>
+        <div class="imp-title">분석 체계 고도화</div>
+        <div class="imp-desc">GA + Amplitude 이벤트 스키마 정비. 진입 → 탐색 → 액션 핵심 퍼널 기준으로 지표 수집·해석 가능하도록 개선</div>
+      </div>
+      <div class="imp-card">
+        <div class="imp-num">01 · Module</div>
+        <div class="imp-title">모듈 구조 개선</div>
+        <div class="imp-desc">기능 단위 모듈 분리와 공통 레이어 정리로 유지보수성 향상. 변경 영향 범위 축소 및 협업 생산성 개선</div>
+      </div>
+      <div class="imp-card">
+        <div class="imp-num">02 · Performance</div>
+        <div class="imp-title">시작/화면 성능 개선</div>
+        <div class="imp-desc">벤치마크 기반 시작 성능 개선 사이클 운영. UI 상태 패턴 통일로 화면 안정성 및 예측 가능성 향상</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-card">
+      <div style="font-size:3rem">💘</div>
+      <h3>Piece Android</h3>
+      <p>Google Play에서 다운로드</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.puzzle.piece" target="_blank">▶ Google Play →</a>
+        <a class="btn btn-outline" href="https://github.com/kkh725/Piece_Android" target="_blank">⭐ GitHub →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Built with ❤️ · Piece Android — Dating App for Android
+</footer>
+
+</body>
+</html>
