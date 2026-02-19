@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Limber | 집중을 위한 앱 차단</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #080b12;
+      --surface: #0f1520;
+      --surface2: #161f30;
+      --accent: #7c3aed;
+      --accent2: #a78bfa;
+      --accent3: #c4b5fd;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --border: rgba(124,58,237,0.18);
+      --green: #34d399;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans KR', sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 2rem 7rem;
+      overflow: hidden;
+    }
+
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .orb1 {
+      width: 500px; height: 500px;
+      top: -100px; left: 50%;
+      background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%);
+    }
+    .orb2 {
+      width: 300px; height: 300px;
+      bottom: 0; right: 10%;
+      background: radial-gradient(circle, rgba(167,139,250,0.1) 0%, transparent 70%);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(124,58,237,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,58,237,0.06) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(ellipse 70% 70% at 55% 35%, black 0%, transparent 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: 820px;
+      margin: 0 auto;
+      z-index: 1;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(124,58,237,0.15);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 0.73rem;
+      color: var(--accent2);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); animation: blink 1.6s ease infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 11vw, 7.5rem);
+      letter-spacing: 0.06em;
+      line-height: 0.92;
+      background: linear-gradient(135deg, #e2e8f0 20%, var(--accent2) 60%, var(--accent3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin-bottom: 0.6rem;
+    }
+    .hero-tagline {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      max-width: 500px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #6d28d9; transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--accent2); color: var(--accent2); }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 880px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+    section { padding: 5rem 0; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent2);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 2.5rem; letter-spacing: -0.02em; }
+
+    /* ── FOCUS FLOW ── */
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    .flow-step {
+      background: var(--surface);
+      padding: 1.5rem 1.25rem;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .flow-step:hover { background: var(--surface2); }
+    .flow-emoji { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .flow-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent2);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.3rem;
+    }
+    .flow-title { font-size: 0.85rem; font-weight: 600; }
+    .flow-desc { font-size: 0.75rem; color: var(--muted); margin-top: 0.3rem; }
+
+    /* ── FEATURE GRID ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { border-color: rgba(124,58,237,0.5); transform: translateY(-2px); }
+    .feature-icon { font-size: 1.6rem; margin-bottom: 0.75rem; }
+    .feature-title { font-weight: 600; font-size: 0.93rem; margin-bottom: 0.4rem; }
+    .feature-desc { font-size: 0.83rem; color: var(--muted); }
+    .feature-tag {
+      display: inline-block;
+      margin-top: 0.6rem;
+      background: rgba(124,58,237,0.12);
+      border: 1px solid rgba(124,58,237,0.25);
+      border-radius: 999px;
+      padding: 1px 10px;
+      font-size: 0.7rem;
+      color: var(--accent2);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── TECH ── */
+    .tech-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .tech-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      transition: border-color 0.2s;
+    }
+    .tech-item:hover { border-color: rgba(124,58,237,0.35); }
+    .tech-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+    .tech-text { font-size: 0.87rem; }
+    .tech-text strong {
+      color: var(--accent2);
+      display: block;
+      margin-bottom: 2px;
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── ARCH ── */
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .arch-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .arch-layer {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent2);
+      margin-bottom: 0.3rem;
+    }
+    .arch-desc { font-size: 0.78rem; color: var(--muted); }
+
+    .arch-note {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* ── GITHUB CTA ── */
+    .cta-section { text-align: center; padding: 5rem 0 6rem; }
+    .cta-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3rem 4rem;
+    }
+    .cta-card h3 { font-size: 1.4rem; font-weight: 700; }
+    .cta-card p { color: var(--muted); font-size: 0.88rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── ANIM ── */
+    .fade-in { opacity: 0; transform: translateY(18px); animation: fi 0.6s ease forwards; }
+    @keyframes fi { to { opacity: 1; transform: none; } }
+    .d1 { animation-delay: 0.1s; } .d2 { animation-delay: 0.22s; }
+    .d3 { animation-delay: 0.36s; } .d4 { animation-delay: 0.5s; }
+
+    .tech-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .chip {
+      background: rgba(124,58,237,0.12);
+      border: 1px solid rgba(124,58,237,0.3);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 0.78rem;
+      color: var(--accent3);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.03em;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .chip:hover {
+      background: rgba(124,58,237,0.22);
+      border-color: rgba(124,58,237,0.55);
+    }
+
+    @media (max-width: 640px) {
+      .flow { grid-template-columns: repeat(2, 1fr); }
+      .arch-grid { grid-template-columns: 1fr; }
+      .cta-card { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-content">
+    <div class="badge fade-in"><span class="dot"></span> Android · Kotlin · Jetpack Compose</div>
+    <h1 class="fade-in d1">LIMBER</h1>
+    <p class="hero-sub fade-in d2">스마트폰 내 방해되는 앱을 차단하여<br/>나에게 온전히 집중할 수 있도록 돕는 앱</p>
+    <p class="hero-tagline fade-in d2">집중 후에는 회고를 통해 몰입을 점검하고, 리포트를 통해 나만의 집중 루틴을 만들어갈 수 있어요.</p>
+    <div class="hero-actions fade-in d3">
+      <a class="btn btn-primary" href="https://github.com/kkh725/Limber" target="_blank">⭐ GitHub</a>
+      <a class="btn btn-outline" href="#features">기능 보기</a>
+    </div>
+    <div class="tech-chips fade-in d4">
+      <span class="chip">Jetpack Compose</span>
+      <span class="chip">MVI</span>
+      <span class="chip">Multi Module</span>
+      <span class="chip">Clean Architecture</span>
+      <span class="chip">Hilt</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- FLOW -->
+<section>
+  <div class="container">
+    <p class="section-label">Focus Cycle</p>
+    <h2>집중의 흐름</h2>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-emoji">🎯</div>
+        <div class="flow-num">STEP 01</div>
+        <div class="flow-title">상황 선택</div>
+        <div class="flow-desc">학습·업무·독서 등 집중 목적 설정</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-emoji">🚫</div>
+        <div class="flow-num">STEP 02</div>
+        <div class="flow-title">앱 차단</div>
+        <div class="flow-desc">방해 앱 선택 후 즉시 or 예약 차단</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-emoji">⏱️</div>
+        <div class="flow-num">STEP 03</div>
+        <div class="flow-title">집중 실행</div>
+        <div class="flow-desc">타이머 동안 방해 없이 몰입</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-emoji">📊</div>
+        <div class="flow-num">STEP 04</div>
+        <div class="flow-title">회고 · 리포트</div>
+        <div class="flow-desc">몰입도 기록 & 주간 인사이트 확인</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+    <p class="section-label">Features</p>
+    <h2>주요 기능</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <div class="feature-title">집중 상황 선택</div>
+        <div class="feature-desc">학습, 업무, 독서 등 집중하고 싶은 상황을 직접 선택하여 목적에 맞는 집중 모드 시작</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🚫</div>
+        <div class="feature-title">앱 차단 타이머</div>
+        <div class="feature-desc">방해되는 앱을 선택하고 지금 바로 차단하거나, 원하는 시간에 자동으로 차단 예약 가능</div>
+        <span class="feature-tag">즉시 시작 / 예약</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <div class="feature-title">집중 실험 회고</div>
+        <div class="feature-desc">집중을 마친 후 간단한 회고로 몰입도를 기록. 작은 회고들이 쌓여 나만의 집중 습관을 발견</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📈</div>
+        <div class="feature-title">주간 집중 리포트</div>
+        <div class="feature-desc">집중 시간, 몰입도, 가장 많이 몰입한 활동 등을 주간 단위 인사이트로 제공</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- TECH -->
+<section>
+  <div class="container">
+    <p class="section-label">Tech Stack</p>
+    <h2>기술 구현</h2>
+    <div class="tech-list">
+      <div class="tech-item">
+        <div class="tech-icon">🚫</div>
+        <div class="tech-text">
+          <strong>AccessibilityService · App Blocking</strong>
+          AccessibilityService를 활용한 포그라운드 앱 감지 및 차단 제어. PackageManager로 사용자 설치 앱 목록 획득
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">⏰</div>
+        <div class="tech-text">
+          <strong>AlarmManager · 예약 차단</strong>
+          AlarmManager를 통해 앱이 종료된 백그라운드 상태에서도 특정 시각에 Block 모드 자동 ON/OFF 구현
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">📊</div>
+        <div class="tech-text">
+          <strong>UsageStatsManager · 사용량 분석</strong>
+          일·월·년 단위 앱 사용량 데이터 수집. 주간 리포트 및 집중 인사이트 제공에 활용
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">🎨</div>
+        <div class="tech-text">
+          <strong>Jetpack Compose · MVI</strong>
+          선언형 UI 패턴과 MVI 아키텍처로 단방향 데이터 흐름 및 상태 관리 구현
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ARCHITECTURE -->
+<section>
+  <div class="container">
+    <p class="section-label">Architecture</p>
+    <h2>멀티 모듈 구조</h2>
+    <div class="arch-grid">
+      <div class="arch-card">
+        <div class="arch-layer">:data</div>
+        <div class="arch-desc">Repository, DataSource, 로컬 DB, 외부 API 연동</div>
+      </div>
+      <div class="arch-card">
+        <div class="arch-layer">:domain</div>
+        <div class="arch-desc">UseCase, 비즈니스 로직, 순수 Kotlin 모듈</div>
+      </div>
+      <div class="arch-card">
+        <div class="arch-layer">:feature</div>
+        <div class="arch-desc">화면별 독립 모듈, Compose UI + ViewModel</div>
+      </div>
+    </div>
+    <div class="arch-note">
+      <span>⚙️</span>
+      <span><strong style="color: var(--accent2);">Build-Logic</strong> 을 통한 build.gradle 공통 로직 공유로 모듈별 빌드 설정을 체계적으로 관리</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-card">
+      <div style="font-size:3rem">🔮</div>
+      <h3>Limber</h3>
+      <p>GitHub에서 전체 코드 확인하기</p>
+      <a class="btn btn-primary" href="https://github.com/kkh725/Limber" target="_blank">⭐ GitHub Repository →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Built with 💜 · Limber — Focus App for Android
+</footer>
+
+</body>
+</html>
