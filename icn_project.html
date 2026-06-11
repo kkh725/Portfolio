@@ -4,348 +4,534 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>인천공항+ | ICN 실내지도</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --bg: #0a0e1a;
-      --surface: #111827;
-      --surface2: #1a2235;
-      --accent: #3b82f6;
-      --accent2: #06b6d4;
-      --text: #e2e8f0;
-      --muted: #64748b;
-      --border: rgba(59,130,246,0.15);
+      --bg: #ffffff;
+      --fg: #222222;
+      --fg-50: rgba(34,34,34,0.5);
+      --fg-30: rgba(34,34,34,0.3);
+      --fg-10: rgba(34,34,34,0.1);
+      --primary: #007AFF;
+      --secondary: #00C676;
+      --point: #E2FF00;
+      --red: #FF3B30;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    html { scroll-behavior: smooth; }
+
     body {
       background: var(--bg);
-      color: var(--text);
-      font-family: 'Noto Sans KR', sans-serif;
-      line-height: 1.7;
+      color: var(--fg);
+      font-family: 'Noto Sans KR', -apple-system, sans-serif;
+      letter-spacing: -0.025rem;
+      line-height: 1.6;
       overflow-x: hidden;
     }
 
-    /* BG noise texture */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ── HERO ── */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 4rem 2rem 6rem;
-      overflow: hidden;
-    }
-
-    .hero-grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(59,130,246,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59,130,246,0.05) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%);
-    }
-
-    .hero-glow {
-      position: absolute;
-      top: -10%;
-      left: 30%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .hero-content {
-      position: relative;
-      max-width: 860px;
+    /* ── LAYOUT ── */
+    .wrap {
+      width: 100%;
+      max-width: 540px;
       margin: 0 auto;
-      z-index: 1;
+      padding: 0 1.25rem;
     }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(59,130,246,0.12);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 4px 14px;
-      font-size: 0.75rem;
-      color: var(--accent2);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); animation: blink 1.4s ease infinite; }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
-
-    h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3.5rem, 10vw, 7rem);
-      letter-spacing: 0.04em;
-      line-height: 0.95;
-      background: linear-gradient(135deg, #e2e8f0 30%, var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 1rem;
-    }
-
-    .subtitle {
-      font-size: 1.1rem;
-      color: var(--muted);
-      max-width: 520px;
-      margin-bottom: 2.5rem;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.2s;
-      cursor: pointer;
-      border: none;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-    }
-    .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* ── CONTAINER ── */
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 2rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ── SECTION ── */
-    section { padding: 5rem 0; }
-
-    .section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--accent2);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-    }
-
-    h2 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 2.5rem;
-      letter-spacing: -0.02em;
+    section {
+      padding: 5rem 0 6rem;
     }
 
     .divider {
       border: none;
-      border-top: 1px solid var(--border);
-      margin: 0;
+      border-top: 1px solid var(--fg-10);
     }
 
-    /* ── PERF HIGHLIGHT ── */
-    .perf-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2.5rem;
+    /* ── TYPOGRAPHY ── */
+    .eyebrow {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 0.375rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.03rem;
+    }
+
+    .section-desc {
+      font-size: 0.875rem;
+      color: var(--fg-50);
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── SLIDE-UP ANIMATION ── */
+    .slide-up {
+      opacity: 0;
+      transform: translateY(28px);
+      animation: slideUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .d1 { animation-delay: 0.05s; }
+    .d2 { animation-delay: 0.15s; }
+    .d3 { animation-delay: 0.25s; }
+    .d4 { animation-delay: 0.38s; }
+    .d5 { animation-delay: 0.50s; }
+
+    @keyframes slideUp {
+      to { opacity: 1; transform: none; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 5rem 0;
+      position: relative;
+    }
+
+    .hero-inner {
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0;
+    }
+
+    /* Animated triangle shape — inspired by FirstShape.tsx */
+    .hero-shape {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 2rem;
+      animation: floatShape 3s ease-in-out infinite;
+    }
+
+    .hero-shape svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .shape-path {
+      stroke-dasharray: 320;
+      stroke-dashoffset: 320;
+      animation: drawPath 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+    }
+
+    @keyframes drawPath {
+      to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes floatShape {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .hero-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--secondary);
+      animation: pulse 1.4s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.75); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 8vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.04rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--primary);
+    }
+
+    .hero-sub {
+      font-size: 0.9rem;
+      color: var(--fg-50);
+      max-width: 380px;
+      margin-bottom: 2rem;
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.625rem 1.25rem;
+      border-radius: 999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.18s;
+      cursor: pointer;
+      border: none;
+      letter-spacing: -0.01rem;
+    }
+
+    .btn-fill {
+      background: var(--fg);
+      color: var(--bg);
+    }
+    .btn-fill:hover {
+      background: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--fg);
+      border: 1.5px solid var(--fg-30);
+    }
+    .btn-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    /* ── PERF SECTION ── */
+    .perf-highlight {
+      background: var(--fg);
+      color: var(--bg);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      gap: 2rem;
-      margin-bottom: 3rem;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
     }
 
     .perf-side { text-align: center; }
-    .perf-label { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem; font-family: 'JetBrains Mono', monospace; }
-    .perf-val { font-family: 'JetBrains Mono', monospace; font-size: 2.5rem; font-weight: 600; }
-    .perf-before { color: #ef4444; }
-    .perf-after { color: #22c55e; }
-    .perf-sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.3rem; }
+
+    .perf-label-sm {
+      font-size: 0.72rem;
+      opacity: 0.5;
+      margin-bottom: 0.5rem;
+    }
+
+    .perf-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.05rem;
+      line-height: 1;
+    }
+
+    .perf-number .unit {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .num-before { color: var(--red); }
+    .num-after { color: var(--secondary); }
+
+    .perf-sub-label {
+      font-size: 0.72rem;
+      opacity: 0.4;
+      margin-top: 0.375rem;
+    }
+
+    .perf-badge {
+      display: inline-block;
+      background: var(--secondary);
+      color: var(--fg);
+      border-radius: 999px;
+      padding: 2px 10px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      margin-top: 0.5rem;
+    }
 
     .perf-arrow {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 4px;
-      color: var(--accent2);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
+      opacity: 0.4;
     }
 
-    .perf-arrow svg { width: 28px; height: 28px; }
+    .perf-arrow svg { width: 22px; height: 22px; }
+    .perf-arrow span { font-size: 0.65rem; opacity: 0.8; }
 
-    .improvement-tag {
-      display: inline-block;
-      background: rgba(34,197,94,0.1);
-      border: 1px solid rgba(34,197,94,0.25);
-      color: #22c55e;
+    /* ── OPT LIST ── */
+    .opt-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .opt-item {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--fg-10);
+    }
+    .opt-item:first-child { border-top: 1px solid var(--fg-10); }
+
+    .opt-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .opt-num {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--bg);
+      background: var(--primary);
       border-radius: 999px;
-      padding: 2px 12px;
-      font-size: 0.75rem;
-      font-family: 'JetBrains Mono', monospace;
-      margin-top: 0.5rem;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .opt-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .opt-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.375rem;
+    }
+
+    .opt-desc {
+      font-size: 0.85rem;
+      color: var(--fg-50);
+      line-height: 1.65;
     }
 
     /* ── FEATURE GRID ── */
     .feature-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1rem;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
     }
 
-    .feature-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-    .feature-card:hover { border-color: rgba(59,130,246,0.4); transform: translateY(-2px); }
-
-    .feature-icon {
-      font-size: 1.6rem;
-      margin-bottom: 0.75rem;
+    .feature-item {
+      padding: 1.5rem 1rem 1.5rem 0;
+      border-bottom: 1px solid var(--fg-10);
     }
 
-    .feature-title {
-      font-weight: 600;
-      font-size: 0.95rem;
-      margin-bottom: 0.4rem;
+    .feature-item:nth-child(even) {
+      padding-left: 1.25rem;
+      border-left: 1px solid var(--fg-10);
     }
 
-    .feature-desc { font-size: 0.85rem; color: var(--muted); }
+    .feature-item:nth-last-child(-n+2) {
+      border-bottom: none;
+    }
 
-    /* ── TECH LIST ── */
+    .feat-icon {
+      font-size: 1.4rem;
+      margin-bottom: 0.625rem;
+      display: block;
+    }
+
+    .feat-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .feat-desc {
+      font-size: 0.8rem;
+      color: var(--fg-50);
+      line-height: 1.6;
+    }
+
+    /* ── TECH STACK ── */
     .tech-list {
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
     }
 
     .tech-item {
       display: flex;
-      align-items: flex-start;
       gap: 1rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--fg-10);
+      align-items: flex-start;
+    }
+    .tech-item:first-child { border-top: 1px solid var(--fg-10); }
+
+    .tech-icon-wrap {
+      width: 36px;
+      height: 36px;
       border-radius: 10px;
-      padding: 1rem 1.25rem;
-    }
-
-    .tech-item-icon {
-      font-size: 1.2rem;
+      background: var(--fg-10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
       flex-shrink: 0;
-      margin-top: 2px;
+      margin-top: 1px;
     }
 
-    .tech-item-text { font-size: 0.88rem; color: var(--text); }
-    .tech-item-text strong { color: var(--accent2); display: block; margin-bottom: 2px; font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; }
+    .tech-body {}
 
-    /* ── OPTIMIZATION CARDS ── */
-    .opt-list { display: flex; flex-direction: column; gap: 1.25rem; }
-
-    .opt-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem 1.75rem;
-      border-left: 3px solid var(--accent);
+    .tech-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.25rem;
     }
 
-    .opt-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--accent);
-      letter-spacing: 0.1em;
-      margin-bottom: 0.4rem;
+    .tech-desc {
+      font-size: 0.83rem;
+      color: var(--fg-50);
+      line-height: 1.65;
     }
 
-    .opt-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }
-    .opt-desc { font-size: 0.87rem; color: var(--muted); }
+    /* ── SKILL CHIPS ── */
+    .skill-chips {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.75rem;
+    }
 
-    /* ── STORE LINK ── */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--fg-10);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    .chip-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+    }
+
+    .chip-blue .chip-dot { background: var(--primary); }
+    .chip-green .chip-dot { background: var(--secondary); }
+    .chip-lime .chip-dot { background: #b5c900; }
+
+    /* ── STORE ── */
     .store-section {
       text-align: center;
-      padding: 5rem 0 6rem;
     }
 
-    .store-card {
+    .store-box {
       display: inline-flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.5rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 3rem 4rem;
+      gap: 1.25rem;
     }
 
-    .store-card h3 { font-size: 1.4rem; font-weight: 700; }
-    .store-card p { color: var(--muted); font-size: 0.9rem; }
+    .store-shape {
+      width: 64px;
+      height: 64px;
+    }
+
+    .store-shape svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      animation: floatShape 3.5s ease-in-out infinite;
+      animation-delay: 0.5s;
+    }
+
+    .store-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.03rem;
+    }
+
+    .store-sub {
+      font-size: 0.85rem;
+      color: var(--fg-50);
+      margin-top: -0.5rem;
+    }
 
     /* ── FOOTER ── */
     footer {
-      border-top: 1px solid var(--border);
+      border-top: 1px solid var(--fg-10);
       text-align: center;
-      padding: 2rem;
-      font-size: 0.8rem;
-      color: var(--muted);
-      font-family: 'JetBrains Mono', monospace;
+      padding: 2rem 1rem;
+      font-size: 0.78rem;
+      color: var(--fg-50);
     }
 
-    /* ── ANIMATIONS ── */
-    .fade-in {
+    /* ── SCROLL REVEAL ── */
+    .reveal {
       opacity: 0;
       transform: translateY(20px);
-      animation: fadeIn 0.6s ease forwards;
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1);
     }
-    @keyframes fadeIn { to { opacity: 1; transform: none; } }
-    .delay-1 { animation-delay: 0.1s; }
-    .delay-2 { animation-delay: 0.2s; }
-    .delay-3 { animation-delay: 0.35s; }
-    .delay-4 { animation-delay: 0.5s; }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
 
-    @media (max-width: 600px) {
-      .perf-card { grid-template-columns: 1fr; }
-      .perf-arrow svg { transform: rotate(90deg); }
+    @media (max-width: 480px) {
+      .perf-highlight {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .perf-arrow svg {
+        transform: rotate(90deg);
+      }
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+      .feature-item:nth-child(even) {
+        padding-left: 0;
+        border-left: none;
+      }
+      .feature-item:nth-last-child(-n+2) {
+        border-bottom: 1px solid var(--fg-10);
+      }
+      .feature-item:last-child {
+        border-bottom: none;
+      }
     }
   </style>
 </head>
@@ -353,68 +539,105 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-glow"></div>
-  <div class="hero-content">
-    <div class="badge fade-in"><span class="dot"></span> Android · Kotlin · Google Maps SDK</div>
-    <h1 class="fade-in delay-1">인천공항+<br/>ICN 실내지도</h1>
-    <p class="subtitle fade-in delay-2">
-      인천국제공항 T1·T2·탑승동 전 층의 실내 지도, 길찾기, 실시간 위치, 경로 시뮬레이션을 제공하는 Android 네이티브 앱
+  <div class="hero-inner">
+
+    <!-- Animated triangle shape (meganmagic FirstShape) -->
+    <div class="hero-shape slide-up d1">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          class="shape-path"
+          d="M 50 145 L 100 60 L 150 145"
+          stroke="#007AFF"
+          stroke-width="56"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </div>
+
+    <div class="hero-eyebrow slide-up d2">
+      <span class="hero-dot"></span>
+      Android · Kotlin · Google Maps SDK
+    </div>
+
+    <h1 class="slide-up d3">
+      인천공항+<br/><em>ICN 실내지도</em>
+    </h1>
+
+    <p class="hero-sub slide-up d4">
+      인천국제공항 T1·T2·탑승동 전 층의 실내 지도, 길찾기,<br/>
+      실시간 위치, 경로 시뮬레이션을 제공하는 Android 네이티브 앱
     </p>
-    <div class="hero-actions fade-in delay-3">
-      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.incheonairport" target="_blank">
+
+    <div class="hero-actions slide-up d5">
+      <a class="btn btn-fill" href="https://play.google.com/store/search?q=%EC%9D%B8%EC%B2%9C%EA%B3%B5%ED%95%AD%2B&c=apps&hl=ko" target="_blank">
         ▶ Google Play
       </a>
       <a class="btn btn-outline" href="#tech">기술 스택 보기</a>
     </div>
+
   </div>
 </section>
 
 <hr class="divider"/>
 
-<!-- PERF -->
+<!-- PERFORMANCE -->
 <section>
-  <div class="container">
-    <p class="section-label">Performance Optimization</p>
-    <h2>핵심 성능 개선</h2>
+  <div class="wrap">
 
-    <div class="perf-card">
+    <div class="reveal">
+      <p class="eyebrow">Performance</p>
+      <h2 class="section-title">핵심 성능 개선</h2>
+      <p class="section-desc">초기 지도 로딩 시간을 99.6% 단축한 최적화 사례</p>
+    </div>
+
+    <div class="perf-highlight reveal">
       <div class="perf-side">
-        <div class="perf-label">최적화 전 (List)</div>
-        <div class="perf-val perf-before">2825<span style="font-size:1.2rem">ms</span></div>
-        <div class="perf-sub">초기 지도 로딩 시간</div>
+        <p class="perf-label-sm">최적화 전 · List</p>
+        <p class="perf-number num-before">2825<span class="unit">ms</span></p>
+        <p class="perf-sub-label">초기 지도 로딩 시간</p>
       </div>
       <div class="perf-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
         <span>HashMap</span>
       </div>
       <div class="perf-side">
-        <div class="perf-label">최적화 후 (HashMap)</div>
-        <div class="perf-val perf-after">10<span style="font-size:1.2rem">ms</span></div>
-        <div class="perf-sub">초기 지도 로딩 시간</div>
-        <div class="improvement-tag">▼ 99.6% 단축</div>
+        <p class="perf-label-sm">최적화 후 · HashMap</p>
+        <p class="perf-number num-after">10<span class="unit">ms</span></p>
+        <p class="perf-sub-label">초기 지도 로딩 시간</p>
+        <span class="perf-badge">▼ 99.6% 단축</span>
       </div>
     </div>
 
-    <div class="opt-list">
-      <div class="opt-card">
-        <div class="opt-num">01 · 초기 로딩</div>
-        <div class="opt-title">SDK 초기화 속도 개선</div>
-        <div class="opt-desc">POI 데이터 조회 구조를 List → HashMap으로 변경하여 O(n) 탐색을 O(1)로 단축. UI 블로킹 문제 해결 및 체감 로딩 속도 대폭 개선.</div>
+    <div class="opt-list reveal">
+      <div class="opt-item">
+        <div class="opt-meta">
+          <span class="opt-num">1</span>
+          <span class="opt-tag">초기 로딩</span>
+        </div>
+        <p class="opt-title">SDK 초기화 속도 개선</p>
+        <p class="opt-desc">POI 데이터 조회 구조를 List → HashMap으로 변경하여 O(n) 탐색을 O(1)로 단축. UI 블로킹 문제 해결 및 체감 로딩 속도 대폭 개선.</p>
       </div>
-      <div class="opt-card">
-        <div class="opt-num">02 · 렌더링</div>
-        <div class="opt-title">GeoJSON 렌더링 방식 개선</div>
-        <div class="opt-desc">SVG 벡터 방식(GeoJsonLayer)에서 PNG 비트맵 타일 방식(TileProvider + LRU Cache)으로 전환하여 대용량 GeoJSON 렌더링 성능 최적화.</div>
+      <div class="opt-item">
+        <div class="opt-meta">
+          <span class="opt-num">2</span>
+          <span class="opt-tag">렌더링</span>
+        </div>
+        <p class="opt-title">GeoJSON 렌더링 방식 개선</p>
+        <p class="opt-desc">SVG 벡터 방식(GeoJsonLayer)에서 PNG 비트맵 타일 방식(TileProvider + LRU Cache)으로 전환하여 대용량 GeoJSON 렌더링 성능 최적화.</p>
       </div>
-      <div class="opt-card">
-        <div class="opt-num">03 · 시뮬레이션</div>
-        <div class="opt-title">경로 시뮬레이션 애니메이션 개선</div>
-        <div class="opt-desc">AnimatorValue 사용 방식을 개선하여 경로 안내 시뮬레이션 화면의 부드러운 카메라 이동 및 마커 애니메이션 구현.</div>
+      <div class="opt-item">
+        <div class="opt-meta">
+          <span class="opt-num">3</span>
+          <span class="opt-tag">시뮬레이션</span>
+        </div>
+        <p class="opt-title">경로 시뮬레이션 애니메이션 개선</p>
+        <p class="opt-desc">AnimatorValue 사용 방식을 개선하여 경로 안내 시뮬레이션 화면의 부드러운 카메라 이동 및 마커 애니메이션 구현.</p>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -422,107 +645,126 @@
 
 <!-- FEATURES -->
 <section>
-  <div class="container">
-    <p class="section-label">Features</p>
-    <h2>주요 기능</h2>
+  <div class="wrap">
 
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🗺️</div>
-        <div class="feature-title">실내 지도</div>
-        <div class="feature-desc">T1, T2, 탑승동 및 빌딩별 층수로 나누어 인천공항 전 구역 실내 지도 구현</div>
+    <div class="reveal">
+      <p class="eyebrow">Features</p>
+      <h2 class="section-title">주요 기능</h2>
+      <p class="section-desc">인천공항 전 구역을 위한 8가지 핵심 기능</p>
+    </div>
+
+    <div class="feature-grid reveal">
+      <div class="feature-item">
+        <span class="feat-icon">🗺️</span>
+        <p class="feat-name">실내 지도</p>
+        <p class="feat-desc">T1, T2, 탑승동 및 빌딩별 층수로 나누어 전 구역 실내 지도 구현</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">🧭</div>
-        <div class="feature-title">길찾기</div>
-        <div class="feature-desc">출발·도착·경유지 선택 가능한 최적 경로 탐색 및 안내</div>
+      <div class="feature-item">
+        <span class="feat-icon">🧭</span>
+        <p class="feat-name">길찾기</p>
+        <p class="feat-desc">출발·도착·경유지 선택 가능한 최적 경로 탐색 및 안내</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">📍</div>
-        <div class="feature-title">실시간 내 위치</div>
-        <div class="feature-desc">블루투스 기반 포그라운드 서비스로 실시간 사용자 위치 표시</div>
+      <div class="feature-item">
+        <span class="feat-icon">📍</span>
+        <p class="feat-name">실시간 내 위치</p>
+        <p class="feat-desc">블루투스 기반 포그라운드 서비스로 실시간 사용자 위치 표시</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">▶️</div>
-        <div class="feature-title">경로 시뮬레이션</div>
-        <div class="feature-desc">출발 전 길안내 전체 경로를 미리 확인할 수 있는 시뮬레이션 화면</div>
+      <div class="feature-item">
+        <span class="feat-icon">▶️</span>
+        <p class="feat-name">경로 시뮬레이션</p>
+        <p class="feat-desc">출발 전 전체 경로를 미리 확인할 수 있는 시뮬레이션</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔍</div>
-        <div class="feature-title">검색</div>
-        <div class="feature-desc">사용자가 원하는 장소를 빠르게 찾을 수 있는 POI 검색 페이지</div>
+      <div class="feature-item">
+        <span class="feat-icon">🔍</span>
+        <p class="feat-name">검색</p>
+        <p class="feat-desc">원하는 장소를 빠르게 찾는 POI 검색 페이지</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">🏷️</div>
-        <div class="feature-title">카테고리</div>
-        <div class="feature-desc">카테고리 선택 시 POI 강조 및 카메라 자동 이동, 반경 확장 탐색 지원</div>
+      <div class="feature-item">
+        <span class="feat-icon">🏷️</span>
+        <p class="feat-name">카테고리</p>
+        <p class="feat-desc">카테고리 선택 시 POI 강조 및 카메라 자동 이동</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔭</div>
-        <div class="feature-title">LOD 시스템</div>
-        <div class="feature-desc">줌 레벨에 따른 마커 우선순위 기반 LOD 적용, 낮은 우선순위 객체 fade-out</div>
+      <div class="feature-item">
+        <span class="feat-icon">🔭</span>
+        <p class="feat-name">LOD 시스템</p>
+        <p class="feat-desc">줌 레벨에 따른 마커 우선순위 기반 LOD, 낮은 우선순위 fade-out</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">📖</div>
-        <div class="feature-title">튜토리얼</div>
-        <div class="feature-desc">처음 사용자를 위한 온보딩 튜토리얼 화면 구현</div>
+      <div class="feature-item">
+        <span class="feat-icon">📖</span>
+        <p class="feat-name">튜토리얼</p>
+        <p class="feat-desc">처음 사용자를 위한 온보딩 튜토리얼 화면 구현</p>
       </div>
     </div>
+
   </div>
 </section>
 
 <hr class="divider"/>
 
-<!-- TECH -->
+<!-- TECH STACK -->
 <section id="tech">
-  <div class="container">
-    <p class="section-label">Tech Stack</p>
-    <h2>기술 구현</h2>
+  <div class="wrap">
 
-    <div class="tech-list">
+    <div class="reveal">
+      <p class="eyebrow">Tech Stack</p>
+      <h2 class="section-title">기술 구현</h2>
+      <p class="section-desc">성능과 사용성을 위한 핵심 기술 선택</p>
+
+      <div class="skill-chips">
+        <span class="chip chip-blue"><span class="chip-dot"></span>Android</span>
+        <span class="chip chip-blue"><span class="chip-dot"></span>Kotlin</span>
+        <span class="chip chip-green"><span class="chip-dot"></span>Google Maps SDK</span>
+        <span class="chip chip-green"><span class="chip-dot"></span>GeoJSON</span>
+        <span class="chip chip-lime"><span class="chip-dot"></span>GitHub Actions</span>
+        <span class="chip chip-lime"><span class="chip-dot"></span>ProGuard</span>
+      </div>
+    </div>
+
+    <div class="tech-list reveal">
       <div class="tech-item">
-        <div class="tech-item-icon">🗾</div>
-        <div class="tech-item-text">
-          <strong>Indoor Map · GeoJSON</strong>
-          인천공항 전용 GeoJSON 기반 T1·T2·탑승동 각 층 실내 지도 적용. TileProvider + LRU Cache로 비트맵 타일 변환·캐싱하여 렌더링 성능 최적화
+        <div class="tech-icon-wrap">🗾</div>
+        <div class="tech-body">
+          <p class="tech-name">Indoor Map · GeoJSON</p>
+          <p class="tech-desc">인천공항 전용 GeoJSON 기반 T1·T2·탑승동 각 층 실내 지도 적용. TileProvider + LRU Cache로 비트맵 타일 변환·캐싱하여 렌더링 성능 최적화</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-item-icon">📡</div>
-        <div class="tech-item-text">
-          <strong>Pathfinding · Dijkstra</strong>
-          노드·경로 데이터 기반 그래프 구축, 다익스트라 알고리즘으로 최적 경로 탐색. 경유지 및 Switch 구조 지원
+        <div class="tech-icon-wrap">📡</div>
+        <div class="tech-body">
+          <p class="tech-name">Pathfinding · Dijkstra</p>
+          <p class="tech-desc">노드·경로 데이터 기반 그래프 구축, 다익스트라 알고리즘으로 최적 경로 탐색. 경유지 및 Switch 구조 지원</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-item-icon">📶</div>
-        <div class="tech-item-text">
-          <strong>LOD System · POI</strong>
-          우선순위 기반 LOD 시스템으로 줌 레벨에 따른 마커 표시 제어. POI 근접 탐색 및 해상도별 마커·텍스트 크기 자동 조정
+        <div class="tech-icon-wrap">📶</div>
+        <div class="tech-body">
+          <p class="tech-name">LOD System · POI</p>
+          <p class="tech-desc">우선순위 기반 LOD 시스템으로 줌 레벨에 따른 마커 표시 제어. POI 근접 탐색 및 해상도별 마커·텍스트 크기 자동 조정</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-item-icon">📱</div>
-        <div class="tech-item-text">
-          <strong>Background Service · BLE</strong>
-          블루투스, 포그라운드 서비스, 배터리 최적화 권한으로 백그라운드 실시간 위치 동작 지원
+        <div class="tech-icon-wrap">📱</div>
+        <div class="tech-body">
+          <p class="tech-name">Background Service · BLE</p>
+          <p class="tech-desc">블루투스, 포그라운드 서비스, 배터리 최적화 권한으로 백그라운드 실시간 위치 동작 지원</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-item-icon">⚡</div>
-        <div class="tech-item-text">
-          <strong>Data Loading Strategy</strong>
-          초기 로딩 시 로컬 assets 우선 사용, 이후 백그라운드에서 최신 데이터 갱신하는 하이브리드 로딩 전략
+        <div class="tech-icon-wrap">⚡</div>
+        <div class="tech-body">
+          <p class="tech-name">Data Loading Strategy</p>
+          <p class="tech-desc">초기 로딩 시 로컬 assets 우선 사용, 이후 백그라운드에서 최신 데이터 갱신하는 하이브리드 로딩 전략</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-item-icon">🚀</div>
-        <div class="tech-item-text">
-          <strong>CI/CD · Security</strong>
-          GitHub Actions 조건부 자동 배포 파이프라인 구성. ProGuard 코드 난독화 적용
+        <div class="tech-icon-wrap">🚀</div>
+        <div class="tech-body">
+          <p class="tech-name">CI/CD · Security</p>
+          <p class="tech-desc">GitHub Actions 조건부 자동 배포 파이프라인 구성. ProGuard 코드 난독화 적용</p>
         </div>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -530,21 +772,46 @@
 
 <!-- STORE -->
 <section class="store-section">
-  <div class="container">
-    <div class="store-card">
-      <div style="font-size:3rem">✈️</div>
-      <h3>인천공항+ (ICN지도)</h3>
-      <p>Google Play에서 다운로드</p>
-      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.incheonairport" target="_blank">
+  <div class="wrap">
+
+    <div class="store-box reveal">
+
+      <!-- Small rounded-rect shape for variety -->
+      <div class="store-shape">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="44" height="44" rx="14"
+            stroke="#00C676" stroke-width="10" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <p class="store-title">인천공항+ (ICN지도)</p>
+      <p class="store-sub">Google Play에서 다운로드</p>
+
+      <a class="btn btn-fill" href="https://play.google.com/store/search?q=%EC%9D%B8%EC%B2%9C%EA%B3%B5%ED%95%AD%2B&c=apps&hl=ko" target="_blank">
         Google Play에서 보기 →
       </a>
     </div>
+
   </div>
 </section>
 
 <footer>
   Built with ❤️ · Incheon Airport Indoor Navigation Android App
 </footer>
+
+<script>
+  // Scroll reveal
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(el => io.observe(el));
+</script>
 
 </body>
 </html>
