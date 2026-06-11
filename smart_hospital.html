@@ -4,427 +4,530 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Smart Hospital | Hicardi Android</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --bg: #0c1018;
-      --surface: #141923;
-      --surface2: #1b2333;
-      --accent: #4b9cf4;
-      --accent2: #82bcff;
-      --accent3: #b8d8ff;
-      --text: #dde6f0;
-      --muted: #6b7a90;
-      --muted2: #394556;
-      --border: rgba(75, 156, 244, 0.16);
-      --border2: rgba(255, 255, 255, 0.07);
-      --red: #f87171;
+      --bg: #ffffff;
+      --fg: #222222;
+      --fg-50: rgba(34,34,34,0.5);
+      --fg-30: rgba(34,34,34,0.3);
+      --fg-10: rgba(34,34,34,0.1);
+      --primary: #007AFF;
+      --secondary: #00C676;
+      --red: #FF3B30;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
-      color: var(--text);
+      color: var(--fg);
       font-family: 'Noto Sans KR', -apple-system, sans-serif;
-      line-height: 1.7;
+      letter-spacing: -0.025rem;
+      line-height: 1.6;
+      overflow-x: hidden;
     }
+
+    .wrap {
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    section { padding: 5rem 0 6rem; }
+    .divider { border: none; border-top: 1px solid var(--fg-10); }
+
+    /* ── TYPOGRAPHY ── */
+    .eyebrow {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 0.375rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.03rem;
+    }
+
+    .section-desc {
+      font-size: 0.875rem;
+      color: var(--fg-50);
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .sub-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.75rem;
+      margin-top: 2.5rem;
+    }
+    .sub-label:first-child { margin-top: 0; }
+
+    /* ── ANIMATIONS ── */
+    .slide-up {
+      opacity: 0;
+      transform: translateY(28px);
+      animation: slideUp 0.55s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    .d1{animation-delay:0.05s} .d2{animation-delay:0.15s}
+    .d3{animation-delay:0.25s} .d4{animation-delay:0.38s} .d5{animation-delay:0.50s}
+
+    @keyframes slideUp { to { opacity: 1; transform: none; } }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
 
     /* ── HERO ── */
     .hero {
-      padding: 7rem 2rem 5.5rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .hero-eyebrow {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--accent);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 1.75rem;
+      min-height: 100vh;
       display: flex;
       align-items: center;
-      gap: 10px;
+      padding: 5rem 0;
     }
 
-    .hero-eyebrow::before {
-      content: '';
-      display: block;
-      width: 24px;
-      height: 1px;
-      background: var(--accent);
-      flex-shrink: 0;
+    .hero-inner {
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
 
-    h1 {
-      font-size: clamp(2.6rem, 7vw, 5rem);
-      font-weight: 800;
-      line-height: 1.08;
-      letter-spacing: -0.04em;
-      margin-bottom: 1.5rem;
+    .hero-shape {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 2rem;
+      animation: float 3s ease-in-out infinite;
     }
+
+    .hero-shape svg { width: 100%; height: 100%; overflow: visible; }
+
+    .diamond-path {
+      stroke-dasharray: 340;
+      stroke-dashoffset: 340;
+      animation: draw 0.9s cubic-bezier(0.22,1,0.36,1) 0.2s forwards;
+    }
+
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .hero-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: pulse 1.4s ease infinite;
+    }
+
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.75)} }
+
+    .hero h1 {
+      font-size: clamp(2rem, 8vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.04rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 em { font-style: normal; color: var(--primary); }
 
     .hero-desc {
-      font-size: 1.05rem;
-      color: var(--muted);
-      max-width: 580px;
-      margin-bottom: 2.75rem;
-      line-height: 1.85;
+      font-size: 0.875rem;
+      color: var(--fg-50);
+      max-width: 420px;
+      margin-bottom: 2rem;
+      line-height: 1.75;
     }
 
-    .hero-stats {
+    /* ── STATS ── */
+    .stats-row {
       display: flex;
-      gap: 3.5rem;
-      margin-bottom: 2.5rem;
-      flex-wrap: wrap;
+      gap: 0;
+      margin-bottom: 2rem;
+      width: 100%;
+      max-width: 360px;
     }
 
-    .stat-item { display: flex; flex-direction: column; gap: 5px; }
+    .stat-item {
+      flex: 1;
+      text-align: center;
+      padding: 1rem 0.5rem;
+      border-right: 1px solid var(--fg-10);
+    }
+    .stat-item:last-child { border-right: none; }
 
     .stat-num {
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--accent2);
-      letter-spacing: -0.03em;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.04rem;
       line-height: 1;
+      margin-bottom: 0.375rem;
     }
 
     .stat-label {
-      font-size: 0.75rem;
-      color: var(--muted);
-      font-family: 'JetBrains Mono', monospace;
-      letter-spacing: 0.04em;
+      font-size: 0.72rem;
+      color: var(--fg-50);
     }
 
-    .tech-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.625rem 1.25rem;
+      border-radius: 999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.18s;
+      cursor: pointer;
+      border: none;
+      letter-spacing: -0.01rem;
+    }
+
+    .btn-fill { background: var(--fg); color: var(--bg); }
+    .btn-fill:hover { background: var(--primary); transform: translateY(-2px); }
+
+    /* ── SKILL CHIPS ── */
+    .skill-chips {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
     .chip {
-      background: var(--surface2);
-      border: 1px solid var(--border2);
-      border-radius: 6px;
-      padding: 5px 12px;
-      font-size: 0.73rem;
-      color: var(--muted);
-      font-family: 'JetBrains Mono', monospace;
-      transition: color 0.15s, border-color 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--fg-10);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--fg);
     }
 
-    .chip:hover {
-      color: var(--accent2);
-      border-color: var(--border);
-    }
-
-    /* ── LAYOUT ── */
-    .wrapper { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
-    .divider { border: none; border-top: 1px solid var(--border2); }
-    section { padding: 5rem 0; }
-
-    .section-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.67rem;
-      color: var(--accent);
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-
-    h2 {
-      font-size: 1.85rem;
-      font-weight: 700;
-      margin-bottom: 2.5rem;
-      letter-spacing: -0.03em;
-    }
+    .chip-dot { width: 5px; height: 5px; border-radius: 50%; }
+    .chip-blue .chip-dot { background: var(--primary); }
+    .chip-green .chip-dot { background: var(--secondary); }
 
     /* ── OVERVIEW ── */
     .overview-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 1px;
-      background: var(--border2);
-      border: 1px solid var(--border2);
-      border-radius: 12px;
+      gap: 0;
+      border: 1px solid var(--fg-10);
+      border-radius: 14px;
       overflow: hidden;
       margin-bottom: 1.25rem;
     }
 
-    .overview-cell { background: var(--surface); padding: 1.4rem 1.2rem; }
+    .overview-cell {
+      padding: 1.25rem 0.875rem;
+      border-right: 1px solid var(--fg-10);
+      text-align: center;
+    }
+    .overview-cell:last-child { border-right: none; }
 
     .overview-label {
       font-size: 0.65rem;
-      color: var(--muted);
-      font-family: 'JetBrains Mono', monospace;
-      letter-spacing: 0.07em;
+      color: var(--fg-50);
+      margin-bottom: 0.375rem;
       text-transform: uppercase;
-      margin-bottom: 0.4rem;
+      letter-spacing: 0.05em;
     }
 
-    .overview-val { font-size: 1.15rem; font-weight: 700; }
+    .overview-val {
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
 
     .overview-val.sm {
-      font-size: 0.82rem;
-      font-weight: 500;
-      color: var(--accent2);
-      line-height: 1.5;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--primary);
     }
 
-    .deploy-box {
-      background: var(--surface);
-      border: 1px solid var(--border2);
+    .hospital-box {
+      background: var(--fg-10);
       border-radius: 12px;
-      padding: 1.4rem 1.5rem;
+      padding: 1.25rem;
     }
 
-    .deploy-title {
-      font-size: 0.67rem;
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--muted);
-      letter-spacing: 0.08em;
+    .hospital-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--fg-50);
+      margin-bottom: 0.75rem;
       text-transform: uppercase;
-      margin-bottom: 0.9rem;
+      letter-spacing: 0.05em;
     }
 
-    .deploy-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .hospital-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 
     .htag {
-      background: var(--surface2);
-      border: 1px solid var(--border2);
-      border-radius: 6px;
-      padding: 4px 11px;
+      background: var(--bg);
+      border: 1px solid var(--fg-10);
+      border-radius: 8px;
+      padding: 4px 10px;
       font-size: 0.78rem;
-      color: var(--text);
     }
 
     .htag-more {
-      background: rgba(75, 156, 244, 0.08);
-      border-color: var(--border);
-      color: var(--accent2);
+      background: rgba(0,122,255,0.08);
+      border-color: rgba(0,122,255,0.2);
+      color: var(--primary);
       font-weight: 600;
     }
 
-    /* ── FEATURES ── */
-    .feature-list {
+    /* ── FEATURE GRID ── */
+    .feature-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: var(--border2);
-      border: 1px solid var(--border2);
-      border-radius: 12px;
-      overflow: hidden;
+      gap: 0;
     }
 
     .feature-item {
-      background: var(--surface);
-      padding: 1.6rem 1.5rem;
+      padding: 1.5rem 1rem 1.5rem 0;
+      border-bottom: 1px solid var(--fg-10);
       display: flex;
-      gap: 1rem;
+      gap: 0.875rem;
       align-items: flex-start;
-      transition: background 0.15s;
     }
 
-    .feature-item:hover { background: var(--surface2); }
-    .feature-icon { font-size: 1.35rem; flex-shrink: 0; margin-top: 2px; }
-    .feature-title { font-weight: 600; font-size: 0.93rem; margin-bottom: 0.3rem; }
-    .feature-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+    .feature-item:nth-child(even) {
+      padding-left: 1.25rem;
+      border-left: 1px solid var(--fg-10);
+    }
+
+    .feature-item:nth-last-child(-n+2) { border-bottom: none; }
+
+    .feat-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .feat-name { font-weight: 700; font-size: 0.88rem; margin-bottom: 0.3rem; }
+    .feat-desc { font-size: 0.78rem; color: var(--fg-50); line-height: 1.6; }
 
     /* ── ARCH COMPARE ── */
     .arch-compare {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
+      gap: 0.75rem;
       margin-bottom: 1rem;
     }
 
     .arch-card {
-      background: var(--surface);
-      border: 1px solid var(--border2);
+      background: var(--fg-10);
       border-radius: 12px;
-      padding: 1.5rem;
+      padding: 1.25rem;
     }
 
-    .arch-card.before { border-left: 3px solid var(--red); }
-    .arch-card.after  { border-left: 3px solid var(--accent); }
+    .arch-card.before { border-top: 3px solid var(--red); }
+    .arch-card.after  { border-top: 3px solid var(--secondary); }
 
     .arch-card-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.67rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 0.6rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
     }
 
     .arch-card.before .arch-card-label { color: var(--red); }
-    .arch-card.after  .arch-card-label { color: var(--accent); }
-    .arch-card-body { font-size: 0.86rem; color: var(--muted); line-height: 1.7; }
+    .arch-card.after  .arch-card-label { color: var(--secondary); }
+    .arch-card-body { font-size: 0.83rem; color: var(--fg-50); line-height: 1.65; }
 
     .arch-result {
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-left: 3px solid var(--accent2);
+      background: rgba(0,198,118,0.08);
+      border: 1px solid rgba(0,198,118,0.2);
       border-radius: 10px;
-      padding: 1.1rem 1.4rem;
+      padding: 1rem 1.25rem;
       font-size: 0.87rem;
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
 
+    .arch-result strong { color: var(--secondary); }
+
     /* ── CODE BLOCK ── */
     .code-block {
-      background: var(--surface);
-      border: 1px solid var(--border2);
+      background: var(--fg-10);
       border-radius: 12px;
-      padding: 1.75rem 2rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
+      padding: 1.5rem;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.76rem;
       margin-bottom: 1.25rem;
       overflow-x: auto;
-      line-height: 1.95;
+      line-height: 1.9;
     }
 
-    .code-title { font-weight: 600; color: var(--accent2); margin-bottom: 1rem; font-size: 0.83rem; }
-    .code-line  { color: var(--muted); }
-    .code-hl    { color: var(--accent3); }
-    .code-cm    { color: var(--muted2); }
-    .code-dim   { color: #2c3a4e; }
+    .code-title { font-weight: 700; color: var(--fg); margin-bottom: 0.75rem; font-size: 0.83rem; }
+    .code-hl { color: var(--primary); font-weight: 600; }
+    .code-cm { color: var(--fg-50); }
+    .code-dim { color: var(--fg-30); }
 
     /* ── DEP FLOW ── */
     .dep-flow {
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--surface);
-      border: 1px solid var(--border2);
+      background: var(--fg-10);
       border-radius: 12px;
-      padding: 2rem;
+      padding: 1.5rem 1rem;
       margin-bottom: 1rem;
       flex-wrap: wrap;
-      gap: 0;
-      row-gap: 1rem;
+      gap: 0.5rem;
+      row-gap: 0.75rem;
     }
 
     .dep-node {
-      background: var(--surface2);
-      border: 1px solid var(--border2);
+      background: var(--bg);
+      border: 1px solid var(--fg-10);
       border-radius: 10px;
-      padding: 0.7rem 1.1rem;
+      padding: 0.625rem 0.875rem;
       text-align: center;
-      min-width: 100px;
     }
 
     .dep-node.center {
-      border-color: var(--border);
-      background: rgba(75, 156, 244, 0.06);
+      border-color: rgba(0,122,255,0.3);
+      background: rgba(0,122,255,0.05);
     }
 
     .dep-node-layer {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
-      color: var(--muted);
-      letter-spacing: 0.06em;
+      font-size: 0.6rem;
+      color: var(--fg-50);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
       margin-bottom: 3px;
     }
 
-    .dep-node-name { font-size: 0.84rem; font-weight: 700; color: var(--text); }
-    .dep-node.center .dep-node-name { color: var(--accent2); }
-    .dep-arrow { font-size: 1.1rem; color: var(--muted2); padding: 0 0.5rem; flex-shrink: 0; }
-
-    /* ── NOTE ── */
-    .note {
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-radius: 10px;
-      padding: 1rem 1.25rem;
-      font-size: 0.84rem;
-      color: var(--muted);
-      margin-bottom: 0.75rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      line-height: 1.7;
-    }
-
-    .note code {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--accent2);
-      background: rgba(75, 156, 244, 0.1);
-      padding: 1px 5px;
-      border-radius: 3px;
-    }
+    .dep-node-name { font-size: 0.8rem; font-weight: 700; }
+    .dep-node.center .dep-node-name { color: var(--primary); }
+    .dep-arrow { font-size: 1rem; color: var(--fg-30); flex-shrink: 0; padding: 0 0.25rem; }
 
     /* ── MVI FLOW ── */
     .mvi-flow {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--border2);
-      border: 1px solid var(--border2);
+      gap: 0;
+      border: 1px solid var(--fg-10);
       border-radius: 12px;
       overflow: hidden;
       margin-bottom: 1rem;
     }
 
-    .mvi-step { background: var(--surface); padding: 1.25rem 1rem; text-align: center; }
-    .mvi-num { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.3rem; }
-    .mvi-name { font-size: 0.82rem; font-weight: 700; margin-bottom: 0.25rem; }
-    .mvi-desc { font-size: 0.72rem; color: var(--muted); }
+    .mvi-step {
+      padding: 1.25rem 0.875rem;
+      text-align: center;
+      border-right: 1px solid var(--fg-10);
+    }
+    .mvi-step:last-child { border-right: none; }
+
+    .mvi-num { font-size: 0.6rem; color: var(--primary); margin-bottom: 0.3rem; font-weight: 700; }
+    .mvi-name { font-size: 0.8rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .mvi-desc { font-size: 0.72rem; color: var(--fg-50); line-height: 1.5; }
 
     /* ── SCAN ARCH ── */
-    .scan-arch { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .scan-arch {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
 
     .scan-node {
-      background: var(--surface);
-      border: 1px solid var(--border2);
+      background: var(--fg-10);
       border-radius: 12px;
-      padding: 1.4rem 1.2rem;
+      padding: 1.1rem;
       text-align: center;
     }
 
     .scan-node.center {
-      border-color: var(--border);
-      background: rgba(75, 156, 244, 0.05);
+      background: rgba(0,122,255,0.06);
+      border: 1px solid rgba(0,122,255,0.15);
     }
 
-    .scan-node-layer { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 0.4rem; }
-    .scan-node-name { font-size: 0.87rem; font-weight: 700; margin-bottom: 0.35rem; }
-    .scan-node.center .scan-node-name { color: var(--accent2); }
-    .scan-node-desc { font-size: 0.74rem; color: var(--muted); line-height: 1.6; }
+    .scan-node-layer { font-size: 0.6rem; color: var(--fg-50); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.35rem; }
+    .scan-node-name { font-size: 0.82rem; font-weight: 700; margin-bottom: 0.3rem; line-height: 1.4; }
+    .scan-node.center .scan-node-name { color: var(--primary); }
+    .scan-node-desc { font-size: 0.73rem; color: var(--fg-50); line-height: 1.5; }
 
-    /* ── IMPL ── */
-    .impl-list { display: flex; flex-direction: column; gap: 1rem; }
+    /* ── NOTE ── */
+    .note {
+      background: var(--fg-10);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      font-size: 0.83rem;
+      color: var(--fg-50);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      line-height: 1.65;
+    }
+
+    .note code {
+      font-family: 'SF Mono', monospace;
+      font-size: 0.76rem;
+      color: var(--primary);
+      background: rgba(0,122,255,0.08);
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    /* ── IMPL LIST ── */
+    .impl-list { display: flex; flex-direction: column; }
 
     .impl-card {
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-radius: 12px;
-      padding: 1.6rem 1.75rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--fg-10);
     }
+    .impl-card:first-child { border-top: 1px solid var(--fg-10); }
 
     .impl-header {
       display: flex;
       align-items: baseline;
-      gap: 1rem;
+      gap: 0.75rem;
       margin-bottom: 1rem;
       flex-wrap: wrap;
     }
 
-    .impl-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.67rem;
-      color: var(--accent);
-      letter-spacing: 0.1em;
-      flex-shrink: 0;
-    }
+    .impl-num { font-size: 0.7rem; font-weight: 700; color: var(--primary); }
+    .impl-title { font-weight: 700; font-size: 0.95rem; }
 
-    .impl-title { font-weight: 700; font-size: 0.97rem; }
-    .impl-items { display: flex; flex-direction: column; gap: 0.45rem; }
+    .impl-items { display: flex; flex-direction: column; gap: 0.4rem; }
 
     .impl-item {
-      font-size: 0.84rem;
-      color: var(--muted);
-      padding-left: 1.1rem;
+      font-size: 0.83rem;
+      color: var(--fg-50);
+      padding-left: 1rem;
       position: relative;
       line-height: 1.65;
     }
@@ -433,97 +536,75 @@
       content: '—';
       position: absolute;
       left: 0;
-      color: var(--muted2);
+      color: var(--fg-30);
       font-size: 0.7rem;
     }
 
-    /* ── TECH STACK ── */
-    .tech-list { display: flex; flex-direction: column; gap: 0.7rem; }
+    /* ── LINT GRID ── */
+    .lint-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .lint-item {
+      background: var(--fg-10);
+      border-radius: 8px;
+      padding: 0.875rem 1rem;
+    }
+
+    .lint-name { font-size: 0.72rem; font-weight: 700; color: var(--primary); margin-bottom: 0.25rem; font-family: 'SF Mono', monospace; }
+    .lint-desc { font-size: 0.75rem; color: var(--fg-50); line-height: 1.5; }
+
+    /* ── TECH LIST ── */
+    .tech-list { display: flex; flex-direction: column; }
 
     .tech-item {
       display: flex;
-      gap: 1.25rem;
+      gap: 1rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--fg-10);
       align-items: flex-start;
-      padding: 1rem 1.25rem;
-      background: var(--surface);
-      border: 1px solid var(--border2);
+    }
+    .tech-item:first-child { border-top: 1px solid var(--fg-10); }
+
+    .tech-icon-wrap {
+      width: 36px;
+      height: 36px;
       border-radius: 10px;
-      transition: border-color 0.15s;
+      background: var(--fg-10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
     }
 
-    .tech-item:hover { border-color: var(--border); }
-    .tech-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
-
-    .tech-name {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.76rem;
-      color: var(--accent2);
-      display: block;
-      margin-bottom: 3px;
-      font-weight: 600;
-    }
-
-    .tech-desc { font-size: 0.84rem; color: var(--muted); line-height: 1.65; }
-
-    /* ── SUB LABEL ── */
-    .sub-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.67rem;
-      color: var(--accent);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-      margin-top: 2.5rem;
-    }
-
-    .sub-label:first-child { margin-top: 0; }
-
-    /* ── LINT GRID ── */
-    .lint-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
-
-    .lint-item {
-      background: var(--surface2);
-      border: 1px solid var(--border2);
-      border-radius: 8px;
-      padding: 0.9rem 1.1rem;
-    }
-
-    .lint-name {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.74rem;
-      color: var(--accent2);
-      margin-bottom: 3px;
-    }
-
-    .lint-desc { font-size: 0.78rem; color: var(--muted); }
+    .tech-name { font-size: 0.8rem; font-weight: 700; color: var(--primary); margin-bottom: 0.25rem; }
+    .tech-desc { font-size: 0.83rem; color: var(--fg-50); line-height: 1.65; }
 
     /* ── FOOTER ── */
     footer {
-      border-top: 1px solid var(--border2);
-      padding: 2rem;
+      border-top: 1px solid var(--fg-10);
       text-align: center;
-      font-size: 0.76rem;
-      color: var(--muted);
-      font-family: 'JetBrains Mono', monospace;
+      padding: 2rem 1rem;
+      font-size: 0.78rem;
+      color: var(--fg-50);
     }
 
-    /* ── FADE IN ── */
-    .fade-in { opacity: 0; transform: translateY(14px); animation: fi 0.5s ease forwards; }
-    @keyframes fi { to { opacity: 1; transform: none; } }
-    .d1 { animation-delay: 0.06s; }
-    .d2 { animation-delay: 0.18s; }
-    .d3 { animation-delay: 0.3s; }
-    .d4 { animation-delay: 0.42s; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 640px) {
+    @media (max-width: 540px) {
       .overview-grid { grid-template-columns: repeat(3, 1fr); }
+      .overview-cell:nth-child(3) { border-right: none; }
       .arch-compare { grid-template-columns: 1fr; }
-      .feature-list { grid-template-columns: 1fr; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .feature-item:nth-child(even) { padding-left: 0; border-left: none; }
+      .feature-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--fg-10); }
+      .feature-item:last-child { border-bottom: none; }
       .mvi-flow { grid-template-columns: repeat(2, 1fr); }
+      .mvi-step:nth-child(2) { border-right: none; }
       .scan-arch { grid-template-columns: 1fr; }
-      .lint-grid { grid-template-columns: 1fr; }
-      .hero-stats { gap: 2rem; }
       .dep-flow { flex-direction: column; }
       .dep-arrow { transform: rotate(90deg); }
     }
@@ -532,70 +613,91 @@
 <body>
 
 <!-- HERO -->
-<header>
-  <div class="hero">
-    <div class="hero-eyebrow fade-in">Android · Kotlin · Jetpack Compose</div>
-    <h1 class="fade-in d1">Smart Hospital<br/>Hicardi</h1>
-    <p class="hero-desc fade-in d2">병원 현장에서 환자–기기 매핑, PDA 바코드 스캔, 활력징후 모니터링을 안정적으로 지원하는 Android 의료 앱. 기존 SI 방식의 코드 복제 구조를 탈피해 단일 코드베이스로 20개 이상 병원을 커버하는 공통 모듈 아키텍처를 설계·주도.</p>
-    <div class="hero-stats fade-in d3">
+<section class="hero">
+  <div class="hero-inner">
+
+    <!-- Diamond shape -->
+    <div class="hero-shape slide-up d1">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="diamond-path"
+          d="M 100 30 L 170 100 L 100 170 L 30 100 Z"
+          stroke="#00C676" stroke-width="44" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="hero-eyebrow slide-up d2">
+      <span class="hero-dot"></span>
+      Android · Kotlin · Jetpack Compose
+    </div>
+
+    <h1 class="slide-up d3">Smart Hospital<br/><em>Hicardi</em></h1>
+
+    <p class="hero-desc slide-up d4">
+      병원 현장에서 환자–기기 매핑, PDA 바코드 스캔, 활력징후 모니터링을 안정적으로 지원하는 Android 의료 앱. 기존 SI 방식의 코드 복제 구조를 탈피해 단일 코드베이스로 20개 이상 병원을 커버하는 공통 모듈 아키텍처를 설계·주도.
+    </p>
+
+    <div class="stats-row slide-up d4">
       <div class="stat-item">
-        <div class="stat-num">20+</div>
-        <div class="stat-label">실 도입 병원</div>
+        <p class="stat-num">20+</p>
+        <p class="stat-label">실 도입 병원</p>
       </div>
       <div class="stat-item">
-        <div class="stat-num">21</div>
-        <div class="stat-label">Gradle 모듈</div>
+        <p class="stat-num">21</p>
+        <p class="stat-label">Gradle 모듈</p>
       </div>
       <div class="stat-item">
-        <div class="stat-num">50%</div>
-        <div class="stat-label">개발 공수 절감</div>
+        <p class="stat-num">50%</p>
+        <p class="stat-label">개발 공수 절감</p>
       </div>
     </div>
-    <div class="tech-chips fade-in d4">
-      <span class="chip">Jetpack Compose</span>
-      <span class="chip">MVI · UDF</span>
-      <span class="chip">Multi Module</span>
-      <span class="chip">Clean Architecture</span>
-      <span class="chip">Hilt</span>
-      <span class="chip">CameraX · ML Kit</span>
-      <span class="chip">Room</span>
-      <span class="chip">WebSocket</span>
+
+    <div class="skill-chips slide-up d5">
+      <span class="chip chip-blue"><span class="chip-dot"></span>Jetpack Compose</span>
+      <span class="chip chip-blue"><span class="chip-dot"></span>MVI · UDF</span>
+      <span class="chip chip-green"><span class="chip-dot"></span>Multi Module</span>
+      <span class="chip chip-green"><span class="chip-dot"></span>Clean Architecture</span>
+      <span class="chip chip-blue"><span class="chip-dot"></span>CameraX · ML Kit</span>
+      <span class="chip chip-blue"><span class="chip-dot"></span>WebSocket</span>
     </div>
+
   </div>
-</header>
+</section>
 
 <hr class="divider"/>
 
 <!-- OVERVIEW -->
 <section>
-  <div class="wrapper">
-    <p class="section-num">01 · Overview</p>
-    <h2>프로젝트 개요</h2>
-    <div class="overview-grid">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">Overview</p>
+      <h2 class="section-title">프로젝트 개요</h2>
+      <p class="section-desc">20개 이상 병원에 실 도입된 의료 Android 앱</p>
+    </div>
+    <div class="overview-grid reveal">
       <div class="overview-cell">
-        <div class="overview-label">PM</div>
-        <div class="overview-val">1명</div>
+        <p class="overview-label">PM</p>
+        <p class="overview-val">1명</p>
       </div>
       <div class="overview-cell">
-        <div class="overview-label">Server</div>
-        <div class="overview-val">3명</div>
+        <p class="overview-label">Server</p>
+        <p class="overview-val">3명</p>
       </div>
       <div class="overview-cell">
-        <div class="overview-label">Design</div>
-        <div class="overview-val">1명</div>
+        <p class="overview-label">Design</p>
+        <p class="overview-val">1명</p>
       </div>
       <div class="overview-cell">
-        <div class="overview-label">Android</div>
-        <div class="overview-val">2명</div>
+        <p class="overview-label">Android</p>
+        <p class="overview-val">2명</p>
       </div>
       <div class="overview-cell">
-        <div class="overview-label">내 역할</div>
-        <div class="overview-val sm">아키텍처 전환 주도<br/>스캔 로직 공통화</div>
+        <p class="overview-label">내 역할</p>
+        <p class="overview-val sm">아키텍처 전환 주도<br/>스캔 로직 공통화</p>
       </div>
     </div>
-    <div class="deploy-box">
-      <div class="deploy-title">실 도입 병원 20곳+</div>
-      <div class="deploy-tags">
+    <div class="hospital-box reveal">
+      <p class="hospital-label">실 도입 병원 20곳+</p>
+      <div class="hospital-tags">
         <span class="htag">용인세브란스병원</span>
         <span class="htag">연세세브란스병원</span>
         <span class="htag">아주대병원</span>
@@ -610,50 +712,53 @@
 
 <!-- FEATURES -->
 <section id="features">
-  <div class="wrapper">
-    <p class="section-num">02 · Features</p>
-    <h2>핵심 기능</h2>
-    <div class="feature-list">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">Features</p>
+      <h2 class="section-title">핵심 기능</h2>
+      <p class="section-desc">병원 현장을 위한 6가지 핵심 기능</p>
+    </div>
+    <div class="feature-grid reveal">
       <div class="feature-item">
-        <div class="feature-icon">📷</div>
+        <div class="feat-icon">📷</div>
         <div>
-          <div class="feature-title">멀티 스캔 지원</div>
-          <div class="feature-desc">M3Mobile · PointMobile PM · Bluebird PDA 바코드 스캔 및 CameraX + ML Kit 카메라 스캔 통합 지원</div>
+          <p class="feat-name">멀티 스캔 지원</p>
+          <p class="feat-desc">M3Mobile · PointMobile PM · Bluebird PDA 바코드 스캔 및 CameraX + ML Kit 카메라 스캔 통합 지원</p>
         </div>
       </div>
       <div class="feature-item">
-        <div class="feature-icon">🔗</div>
+        <div class="feat-icon">🔗</div>
         <div>
-          <div class="feature-title">환자–기기 매핑</div>
-          <div class="feature-desc">바코드 파싱 결과에 따라 환자·기기 매핑 및 해제. ParseBarcodeContentsUseCase로 sealed 분기 처리</div>
+          <p class="feat-name">환자–기기 매핑</p>
+          <p class="feat-desc">바코드 파싱 결과에 따라 환자·기기 매핑 및 해제. ParseBarcodeContentsUseCase로 sealed 분기 처리</p>
         </div>
       </div>
       <div class="feature-item">
-        <div class="feature-icon">💓</div>
+        <div class="feat-icon">💓</div>
         <div>
-          <div class="feature-title">활력징후 모니터링</div>
-          <div class="feature-desc">WebSocket 기반 실시간 바이탈 수신. 일자별 DailyVitalSign 리스트 및 모니터링 화면 제공</div>
+          <p class="feat-name">활력징후 모니터링</p>
+          <p class="feat-desc">WebSocket 기반 실시간 바이탈 수신. 일자별 DailyVitalSign 리스트 및 모니터링 화면 제공</p>
         </div>
       </div>
       <div class="feature-item">
-        <div class="feature-icon">⚙️</div>
+        <div class="feat-icon">⚙️</div>
         <div>
-          <div class="feature-title">런타임 병원 설정</div>
-          <div class="feature-desc">QR 스캔 또는 수기 입력으로 서버 URL · OAuth · ScanType 동적 설정. 클라이언트 단 오입력 사전 검증</div>
+          <p class="feat-name">런타임 병원 설정</p>
+          <p class="feat-desc">QR 스캔 또는 수기 입력으로 서버 URL · OAuth · ScanType 동적 설정. 클라이언트 단 오입력 사전 검증</p>
         </div>
       </div>
       <div class="feature-item">
-        <div class="feature-icon">🔔</div>
+        <div class="feat-icon">🔔</div>
         <div>
-          <div class="feature-title">전역 이벤트 처리</div>
-          <div class="feature-desc">로딩 · 스낵바 · 앱 재시작 · 종료를 EventHelper 채널로 일원화. feature 간 결합 없이 전파</div>
+          <p class="feat-name">전역 이벤트 처리</p>
+          <p class="feat-desc">로딩 · 스낵바 · 앱 재시작 · 종료를 EventHelper 채널로 일원화. feature 간 결합 없이 전파</p>
         </div>
       </div>
       <div class="feature-item">
-        <div class="feature-icon">📋</div>
+        <div class="feat-icon">📋</div>
         <div>
-          <div class="feature-title">API 로그 & 메일 전송</div>
-          <div class="feature-desc">FileLoggingInterceptor로 api_log.txt 생성. 내부망 장애 시 앱 내에서 직접 메일 첨부 전송 가능</div>
+          <p class="feat-name">API 로그 & 메일 전송</p>
+          <p class="feat-desc">FileLoggingInterceptor로 api_log.txt 생성. 내부망 장애 시 앱 내에서 직접 메일 첨부 전송 가능</p>
         </div>
       </div>
     </div>
@@ -662,24 +767,27 @@
 
 <hr class="divider"/>
 
-<!-- ARCH HIGHLIGHT -->
+<!-- ARCH IMPROVEMENT -->
 <section id="arch">
-  <div class="wrapper">
-    <p class="section-num">03 · Architecture Improvement</p>
-    <h2>아키텍처 개선</h2>
-    <div class="arch-compare">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">Architecture Improvement</p>
+      <h2 class="section-title">아키텍처 개선</h2>
+      <p class="section-desc">SI 방식에서 공통 모듈 구조로의 전환</p>
+    </div>
+    <div class="arch-compare reveal">
       <div class="arch-card before">
-        <div class="arch-card-label">Before — SI 방식</div>
-        <div class="arch-card-body">프로젝트별 "개발 후 폐기" 반복. 병원마다 코드베이스 복제, 공통 버그 수정도 각각 적용 필요. 신규 병원 추가 시 전체 재개발에 가까운 공수 발생</div>
+        <p class="arch-card-label">BEFORE — SI 방식</p>
+        <p class="arch-card-body">프로젝트별 "개발 후 폐기" 반복. 병원마다 코드베이스 복제, 공통 버그 수정도 각각 적용 필요. 신규 병원 추가 시 전체 재개발에 가까운 공수 발생</p>
       </div>
       <div class="arch-card after">
-        <div class="arch-card-label">After — 공통 모듈 구조</div>
-        <div class="arch-card-body">feature 모듈 기반 단일 코드베이스. 병원별 차이는 ScanType · HospitalConfig 분기로 흡수. 버그 수정 1회로 전 병원 반영</div>
+        <p class="arch-card-label">AFTER — 공통 모듈 구조</p>
+        <p class="arch-card-body">feature 모듈 기반 단일 코드베이스. 병원별 차이는 ScanType · HospitalConfig 분기로 흡수. 버그 수정 1회로 전 병원 반영</p>
       </div>
     </div>
-    <div class="arch-result">
+    <div class="arch-result reveal">
       <span>✅</span>
-      <span>단일 코드베이스 전환으로 신규 병원 개발 공수 약 <strong style="color:var(--accent2)">50% 절감</strong></span>
+      <span>단일 코드베이스 전환으로 신규 병원 개발 공수 약 <strong>50% 절감</strong></span>
     </div>
   </div>
 </section>
@@ -688,130 +796,128 @@
 
 <!-- ARCH DETAIL -->
 <section>
-  <div class="wrapper">
-    <p class="section-num">04 · Architecture Detail</p>
-    <h2>아키텍처 상세</h2>
-
-    <p class="sub-label">1 · 전체 모듈 구조 (21 modules)</p>
-    <div class="code-block">
-      <div class="code-title">📦 Smart Hospital</div>
-      <div class="code-line"><span class="code-dim">├── </span><span class="code-hl">:app</span>                           <span class="code-cm">// 진입점, 전역 DI, 네비게이션 조립</span></div>
-      <div class="code-line"><span class="code-dim">│</span></div>
-      <div class="code-line"><span class="code-dim">├── </span><span class="code-hl">:feature/*</span>                     <span class="code-cm">// 화면 단위 기능 (6개 모듈)</span></div>
-      <div class="code-line"><span class="code-dim">│   ├── </span>:feature:auth                  <span class="code-cm">// 로그인, 인증</span></div>
-      <div class="code-line"><span class="code-dim">│   ├── </span>:feature:mapping               <span class="code-cm">// 환자-기기 매핑/언매핑</span></div>
-      <div class="code-line"><span class="code-dim">│   ├── </span>:feature:monitor-vital         <span class="code-cm">// 활력징후 모니터링</span></div>
-      <div class="code-line"><span class="code-dim">│   ├── </span>:feature:setting               <span class="code-cm">// 병원 환경 설정</span></div>
-      <div class="code-line"><span class="code-dim">│   ├── </span>:feature:user                  <span class="code-cm">// 사용자 정보</span></div>
-      <div class="code-line"><span class="code-dim">│   └── </span>:feature:exit                  <span class="code-cm">// 앱 종료 플로우</span></div>
-      <div class="code-line"><span class="code-dim">│</span></div>
-      <div class="code-line"><span class="code-dim">└── </span><span class="code-hl">:core/*</span>                        <span class="code-cm">// 공통 기반 (14개 모듈)</span></div>
-      <div class="code-line"><span class="code-dim">    ├── </span>:core:domain                   <span class="code-cm">// repository interface, model, usecase</span></div>
-      <div class="code-line"><span class="code-dim">    ├── </span>:core:data                     <span class="code-cm">// repository 구현체, mapper, DI</span></div>
-      <div class="code-line"><span class="code-dim">    ├── </span>:core:network                  <span class="code-cm">// API, RemoteDataSource, Interceptor</span></div>
-      <div class="code-line"><span class="code-dim">    ├── </span>:core:socket                   <span class="code-cm">// WebSocket (활력징후 실시간 수신)</span></div>
-      <div class="code-line"><span class="code-dim">    ├── </span>:core:database                 <span class="code-cm">// Room 로컬 DB</span></div>
-      <div class="code-line"><span class="code-dim">    ├── </span>:core:datastore:api            <span class="code-cm">// DataStore interface</span></div>
-      <div class="code-line"><span class="code-dim">    ├── </span>:core:datastore:impl           <span class="code-cm">// token, user, scan, hospital 저장</span></div>
-      <div class="code-line"><span class="code-dim">    ├── </span>:core:pda                      <span class="code-cm">// M3Mobile, PM, Bluebird SDK 추상화</span></div>
-      <div class="code-line"><span class="code-dim">    ├── </span>:core:designsystem             <span class="code-cm">// 공통 컴포넌트, 테마, 타이포그래피</span></div>
-      <div class="code-line"><span class="code-dim">    ├── </span>:core:navigation               <span class="code-cm">// NavigationEntry, NavigationHelper</span></div>
-      <div class="code-line"><span class="code-dim">    ├── </span>:core:common                   <span class="code-cm">// 공통 유틸, EventHelper</span></div>
-      <div class="code-line"><span class="code-dim">    ├── </span>:core:common-ui                <span class="code-cm">// 공통 UI 헬퍼</span></div>
-      <div class="code-line"><span class="code-dim">    └── </span>:core:testing                  <span class="code-cm">// Fake / Spy 테스트 더블 공유</span></div>
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">Architecture Detail</p>
+      <h2 class="section-title">아키텍처 상세</h2>
     </div>
 
-    <p class="sub-label">2 · 의존성 방향 (Dependency Rule)</p>
-    <div class="dep-flow">
-      <div class="dep-node">
-        <div class="dep-node-layer">UI Layer</div>
-        <div class="dep-node-name">feature/*</div>
+    <div class="reveal">
+      <p class="sub-label">1 · 전체 모듈 구조 (21 modules)</p>
+      <div class="code-block">
+        <p class="code-title">📦 Smart Hospital</p>
+        <div><span class="code-dim">├── </span><span class="code-hl">:app</span>                 <span class="code-cm">// 진입점, 전역 DI, 네비게이션 조립</span></div>
+        <div><span class="code-dim">├── </span><span class="code-hl">:feature/*</span>           <span class="code-cm">// 화면 단위 기능 (6개 모듈)</span></div>
+        <div><span class="code-dim">│   ├── </span>:feature:auth        <span class="code-cm">// 로그인, 인증</span></div>
+        <div><span class="code-dim">│   ├── </span>:feature:mapping     <span class="code-cm">// 환자-기기 매핑/언매핑</span></div>
+        <div><span class="code-dim">│   ├── </span>:feature:monitor-vital</div>
+        <div><span class="code-dim">│   ├── </span>:feature:setting</div>
+        <div><span class="code-dim">│   ├── </span>:feature:user</div>
+        <div><span class="code-dim">│   └── </span>:feature:exit</div>
+        <div><span class="code-dim">└── </span><span class="code-hl">:core/*</span>              <span class="code-cm">// 공통 기반 (14개 모듈)</span></div>
+        <div><span class="code-dim">    ├── </span>:core:domain         <span class="code-cm">// repository interface, model, usecase</span></div>
+        <div><span class="code-dim">    ├── </span>:core:data           <span class="code-cm">// repository 구현체, mapper, DI</span></div>
+        <div><span class="code-dim">    ├── </span>:core:network        <span class="code-cm">// API, RemoteDataSource, Interceptor</span></div>
+        <div><span class="code-dim">    ├── </span>:core:socket         <span class="code-cm">// WebSocket (활력징후 실시간 수신)</span></div>
+        <div><span class="code-dim">    ├── </span>:core:database       <span class="code-cm">// Room 로컬 DB</span></div>
+        <div><span class="code-dim">    ├── </span>:core:pda            <span class="code-cm">// M3Mobile, PM, Bluebird SDK 추상화</span></div>
+        <div><span class="code-dim">    ├── </span>:core:designsystem   <span class="code-cm">// 공통 컴포넌트, 테마, 타이포그래피</span></div>
+        <div><span class="code-dim">    ├── </span>:core:navigation     <span class="code-cm">// NavigationEntry, NavigationHelper</span></div>
+        <div><span class="code-dim">    ├── </span>:core:common         <span class="code-cm">// 공통 유틸, EventHelper</span></div>
+        <div><span class="code-dim">    └── </span>:core:testing        <span class="code-cm">// Fake / Spy 테스트 더블 공유</span></div>
       </div>
-      <div class="dep-arrow">→</div>
-      <div class="dep-node center">
-        <div class="dep-node-layer">Domain Layer</div>
-        <div class="dep-node-name">core:domain</div>
-      </div>
-      <div class="dep-arrow">←</div>
-      <div class="dep-node">
-        <div class="dep-node-layer">Data Layer</div>
-        <div class="dep-node-name">core:data</div>
-      </div>
-      <div class="dep-arrow">←</div>
-      <div class="dep-node">
-        <div class="dep-node-layer">Network / Local</div>
-        <div class="dep-node-name">core:network<br/>core:socket<br/>core:database</div>
-      </div>
-    </div>
-    <div class="note">
-      <span>⚖️</span>
-      <span>UI(feature)는 domain 인터페이스만 바라보고 구현체(data · network · socket · database)는 하위 계층으로 숨김. feature 간 직접 참조 없이 <code>core:navigation</code>을 통해 소통</span>
-    </div>
 
-    <p class="sub-label">3 · MVI (UDF) 상태관리 흐름</p>
-    <div class="mvi-flow">
-      <div class="mvi-step">
-        <div class="mvi-num">Step 01</div>
-        <div class="mvi-name">UI Action</div>
-        <div class="mvi-desc">사용자 인터랙션 → UiEvent 발행</div>
+      <p class="sub-label">2 · 의존성 방향 (Dependency Rule)</p>
+      <div class="dep-flow">
+        <div class="dep-node">
+          <p class="dep-node-layer">UI Layer</p>
+          <p class="dep-node-name">feature/*</p>
+        </div>
+        <span class="dep-arrow">→</span>
+        <div class="dep-node center">
+          <p class="dep-node-layer">Domain Layer</p>
+          <p class="dep-node-name">core:domain</p>
+        </div>
+        <span class="dep-arrow">←</span>
+        <div class="dep-node">
+          <p class="dep-node-layer">Data Layer</p>
+          <p class="dep-node-name">core:data</p>
+        </div>
+        <span class="dep-arrow">←</span>
+        <div class="dep-node">
+          <p class="dep-node-layer">Network / Local</p>
+          <p class="dep-node-name">core:network<br/>core:socket<br/>core:database</p>
+        </div>
       </div>
-      <div class="mvi-step">
-        <div class="mvi-num">Step 02</div>
-        <div class="mvi-name">handleEvent()</div>
-        <div class="mvi-desc">ViewModel 이벤트 처리 · usecase 호출</div>
+      <div class="note">
+        <span>⚖️</span>
+        <span>UI(feature)는 domain 인터페이스만 바라보고 구현체(data · network · socket · database)는 하위 계층으로 숨김. feature 간 직접 참조 없이 <code>core:navigation</code>을 통해 소통</span>
       </div>
-      <div class="mvi-step">
-        <div class="mvi-num">Step 03</div>
-        <div class="mvi-name">reduce { copy }</div>
-        <div class="mvi-desc">불변 UiState 생성 · StateFlow 갱신</div>
-      </div>
-      <div class="mvi-step">
-        <div class="mvi-num">Step 04</div>
-        <div class="mvi-name">UI Render</div>
-        <div class="mvi-desc">Compose StateFlow 구독 후 리컴포지션</div>
-      </div>
-    </div>
-    <div class="note">
-      <span>📡</span>
-      <span>전역 이벤트(로딩 · 스낵바 · 앱 종료)는 <code>EventHelper</code> 채널로 처리 — feature 결합 없이 공통 이벤트 전파</span>
-    </div>
 
-    <p class="sub-label">4 · 스캔 추상화 (core:pda)</p>
-    <div class="scan-arch">
-      <div class="scan-node">
-        <div class="scan-node-layer">PDA Scan</div>
-        <div class="scan-node-name">M3Mobile<br/>PointMobile PM<br/>Bluebird</div>
-        <div class="scan-node-desc">기종별 Native SDK<br/>NoOpPdaManager (비-PDA 폴백)</div>
+      <p class="sub-label">3 · MVI (UDF) 상태관리 흐름</p>
+      <div class="mvi-flow">
+        <div class="mvi-step">
+          <p class="mvi-num">Step 01</p>
+          <p class="mvi-name">UI Action</p>
+          <p class="mvi-desc">사용자 인터랙션 → UiEvent 발행</p>
+        </div>
+        <div class="mvi-step">
+          <p class="mvi-num">Step 02</p>
+          <p class="mvi-name">handleEvent()</p>
+          <p class="mvi-desc">ViewModel 이벤트 처리 · usecase 호출</p>
+        </div>
+        <div class="mvi-step">
+          <p class="mvi-num">Step 03</p>
+          <p class="mvi-name">reduce { copy }</p>
+          <p class="mvi-desc">불변 UiState 생성 · StateFlow 갱신</p>
+        </div>
+        <div class="mvi-step">
+          <p class="mvi-num">Step 04</p>
+          <p class="mvi-name">UI Render</p>
+          <p class="mvi-desc">Compose StateFlow 구독 후 리컴포지션</p>
+        </div>
       </div>
-      <div class="scan-node center">
-        <div class="scan-node-layer">core:pda</div>
-        <div class="scan-node-name">PdaManager<br/>interface</div>
-        <div class="scan-node-desc">ScanType으로 런타임 분기<br/>DisposableEffect<br/>생명주기 통합</div>
+      <div class="note">
+        <span>📡</span>
+        <span>전역 이벤트(로딩 · 스낵바 · 앱 종료)는 <code>EventHelper</code> 채널로 처리 — feature 결합 없이 공통 이벤트 전파</span>
       </div>
-      <div class="scan-node">
-        <div class="scan-node-layer">Camera Scan</div>
-        <div class="scan-node-name">CameraX<br/>ML Kit</div>
-        <div class="scan-node-desc">카메라 기반 바코드</div>
-      </div>
-    </div>
-    <div class="note">
-      <span>🔌</span>
-      <span>병원 설정의 <code>ScanType</code> 값 하나로 PDA / Camera 경로 런타임 분기 — feature 코드는 스캔 기종을 알 필요 없음</span>
-    </div>
 
-    <p class="sub-label">5 · Build-Logic Convention Plugin (10개)</p>
-    <div class="code-block" style="margin-bottom:0">
-      <div class="code-title">🔧 build-logic/convention</div>
-      <div class="code-line"><span class="code-hl">AndroidFeatureConventionPlugin</span>          <span class="code-cm">// feature 공통 의존성 일괄 적용</span></div>
-      <div class="code-line"><span class="code-hl">AndroidLibraryConventionPlugin</span>           <span class="code-cm">// library 기본 설정</span></div>
-      <div class="code-line"><span class="code-hl">AndroidLibraryComposeConventionPlugin</span>    <span class="code-cm">// Compose 설정 포함</span></div>
-      <div class="code-line"><span class="code-hl">AndroidApplicationConventionPlugin</span>       <span class="code-cm">// app 모듈 기본 설정</span></div>
-      <div class="code-line"><span class="code-hl">AndroidApplicationComposeConventionPlugin</span><span class="code-cm">// app + Compose 설정</span></div>
-      <div class="code-line"><span class="code-hl">HiltConventionPlugin</span>                     <span class="code-cm">// Hilt 설정 일괄 적용</span></div>
-      <div class="code-line"><span class="code-hl">NetWorkConventionPlugin</span>                  <span class="code-cm">// 네트워크 공통 의존성</span></div>
-      <div class="code-line"><span class="code-hl">AndroidRoomConventionPlugin</span>              <span class="code-cm">// Room 설정</span></div>
-      <div class="code-line"><span class="code-hl">AndroidTestConventionPlugin</span>              <span class="code-cm">// JUnit5, MockK 테스트 설정</span></div>
-      <div class="code-line"><span class="code-hl">AndroidLintConventionPlugin</span>              <span class="code-cm">// 커스텀 Lint 규칙 연결</span></div>
+      <p class="sub-label">4 · 스캔 추상화 (core:pda)</p>
+      <div class="scan-arch">
+        <div class="scan-node">
+          <p class="scan-node-layer">PDA Scan</p>
+          <p class="scan-node-name">M3Mobile<br/>PointMobile PM<br/>Bluebird</p>
+          <p class="scan-node-desc">기종별 Native SDK<br/>NoOpPdaManager (비-PDA 폴백)</p>
+        </div>
+        <div class="scan-node center">
+          <p class="scan-node-layer">core:pda</p>
+          <p class="scan-node-name">PdaManager<br/>interface</p>
+          <p class="scan-node-desc">ScanType으로 런타임 분기<br/>DisposableEffect<br/>생명주기 통합</p>
+        </div>
+        <div class="scan-node">
+          <p class="scan-node-layer">Camera Scan</p>
+          <p class="scan-node-name">CameraX<br/>ML Kit</p>
+          <p class="scan-node-desc">카메라 기반 바코드</p>
+        </div>
+      </div>
+      <div class="note">
+        <span>🔌</span>
+        <span>병원 설정의 <code>ScanType</code> 값 하나로 PDA / Camera 경로 런타임 분기 — feature 코드는 스캔 기종을 알 필요 없음</span>
+      </div>
+
+      <p class="sub-label">5 · Build-Logic Convention Plugin (10개)</p>
+      <div class="code-block" style="margin-bottom:0">
+        <p class="code-title">🔧 build-logic/convention</p>
+        <div><span class="code-hl">AndroidFeatureConventionPlugin</span>          <span class="code-cm">// feature 공통 의존성 일괄 적용</span></div>
+        <div><span class="code-hl">AndroidLibraryConventionPlugin</span>           <span class="code-cm">// library 기본 설정</span></div>
+        <div><span class="code-hl">AndroidLibraryComposeConventionPlugin</span>    <span class="code-cm">// Compose 설정 포함</span></div>
+        <div><span class="code-hl">AndroidApplicationConventionPlugin</span>       <span class="code-cm">// app 모듈 기본 설정</span></div>
+        <div><span class="code-hl">HiltConventionPlugin</span>                     <span class="code-cm">// Hilt 설정 일괄 적용</span></div>
+        <div><span class="code-hl">NetWorkConventionPlugin</span>                  <span class="code-cm">// 네트워크 공통 의존성</span></div>
+        <div><span class="code-hl">AndroidRoomConventionPlugin</span>              <span class="code-cm">// Room 설정</span></div>
+        <div><span class="code-hl">AndroidTestConventionPlugin</span>              <span class="code-cm">// JUnit5, MockK 테스트 설정</span></div>
+        <div><span class="code-hl">AndroidLintConventionPlugin</span>              <span class="code-cm">// 커스텀 Lint 규칙 연결</span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -820,10 +926,12 @@
 
 <!-- IMPLEMENTATION -->
 <section>
-  <div class="wrapper">
-    <p class="section-num">05 · Implementation</p>
-    <h2>상세 구현</h2>
-    <div class="impl-list">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">Implementation</p>
+      <h2 class="section-title">상세 구현</h2>
+    </div>
+    <div class="impl-list reveal">
 
       <div class="impl-card">
         <div class="impl-header">
@@ -831,10 +939,10 @@
           <span class="impl-title">Multi-Module + MVI 전환</span>
         </div>
         <div class="impl-items">
-          <div class="impl-item">app / feature / core 3계층 21개 모듈 분리. feature는 core에만 의존, feature 간 직접 참조 없음</div>
-          <div class="impl-item">BaseViewModel + UiState + UiEvent + reduce 패턴으로 상태관리 표준화</div>
-          <div class="impl-item">build-logic 컨벤션 플러그인 10개로 모듈별 Gradle 설정 일관성 확보</div>
-          <div class="impl-item">feature/mapping 모듈을 구현 기준 예제(reference module)로 관리. 신규 feature 작업 시 기준점으로 활용</div>
+          <p class="impl-item">app / feature / core 3계층 21개 모듈 분리. feature는 core에만 의존, feature 간 직접 참조 없음</p>
+          <p class="impl-item">BaseViewModel + UiState + UiEvent + reduce 패턴으로 상태관리 표준화</p>
+          <p class="impl-item">build-logic 컨벤션 플러그인 10개로 모듈별 Gradle 설정 일관성 확보</p>
+          <p class="impl-item">feature/mapping 모듈을 reference module로 관리. 신규 feature 작업 시 기준점으로 활용</p>
         </div>
       </div>
 
@@ -844,10 +952,10 @@
           <span class="impl-title">PDA 스캔 공통화</span>
         </div>
         <div class="impl-items">
-          <div class="impl-item">PdaManager 인터페이스로 M3Mobile · PointMobile PM · Bluebird SDK 의존성 추상화</div>
-          <div class="impl-item">PDA 미사용 환경을 위한 NoOpPdaManager로 CameraX 경로와 안전하게 분리</div>
-          <div class="impl-item">병원 설정의 ScanType 값 하나로 런타임 분기 — feature 코드에서 스캔 기종 제거</div>
-          <div class="impl-item">Compose DisposableEffect 기반 리스너 등록·해제 일원화로 생명주기 누수 방지</div>
+          <p class="impl-item">PdaManager 인터페이스로 M3Mobile · PointMobile PM · Bluebird SDK 의존성 추상화</p>
+          <p class="impl-item">PDA 미사용 환경을 위한 NoOpPdaManager로 CameraX 경로와 안전하게 분리</p>
+          <p class="impl-item">병원 설정의 ScanType 값 하나로 런타임 분기 — feature 코드에서 스캔 기종 제거</p>
+          <p class="impl-item">Compose DisposableEffect 기반 리스너 등록·해제 일원화로 생명주기 누수 방지</p>
         </div>
       </div>
 
@@ -857,10 +965,10 @@
           <span class="impl-title">내부망 운영 안정화</span>
         </div>
         <div class="impl-items">
-          <div class="impl-item">FileLoggingInterceptor로 모든 요청·응답을 api_log.txt에 기록</div>
-          <div class="impl-item">FileLogUtil + 앱 내 메일 전송으로 현장 장애 시 로그 회수 표준화, 디버깅 리드타임 단축</div>
-          <div class="impl-item">AuthInterceptor + TokenManager로 OAuth 토큰 자동 갱신 처리</div>
-          <div class="impl-item">HTTP / API 에러 코드 분류 체계 정리 (ErrorHelper, HttpResponseException)</div>
+          <p class="impl-item">FileLoggingInterceptor로 모든 요청·응답을 api_log.txt에 기록</p>
+          <p class="impl-item">FileLogUtil + 앱 내 메일 전송으로 현장 장애 시 로그 회수 표준화</p>
+          <p class="impl-item">AuthInterceptor + TokenManager로 OAuth 토큰 자동 갱신 처리</p>
+          <p class="impl-item">HTTP / API 에러 코드 분류 체계 정리 (ErrorHelper, HttpResponseException)</p>
         </div>
       </div>
 
@@ -870,9 +978,9 @@
           <span class="impl-title">WebSocket 기반 실시간 모니터링</span>
         </div>
         <div class="impl-items">
-          <div class="impl-item">MonitorBioSocket으로 활력징후 실시간 수신 (core:socket 모듈)</div>
-          <div class="impl-item">MonitorRepositoryImpl에서 remote datasource + local datasource + socket 조합</div>
-          <div class="impl-item">BioSensing 도메인 모델로 변환 후 Flow로 상위 레이어 노출</div>
+          <p class="impl-item">MonitorBioSocket으로 활력징후 실시간 수신 (core:socket 모듈)</p>
+          <p class="impl-item">MonitorRepositoryImpl에서 remote datasource + local datasource + socket 조합</p>
+          <p class="impl-item">BioSensing 도메인 모델로 변환 후 Flow로 상위 레이어 노출</p>
         </div>
       </div>
 
@@ -883,28 +991,28 @@
         </div>
         <div class="lint-grid">
           <div class="lint-item">
-            <div class="lint-name">ScreenFileStructureDetector</div>
-            <div class="lint-desc">Screen 파일에 Route / Screen 외 구현이 섞이는 것 방지</div>
+            <p class="lint-name">ScreenFileStructureDetector</p>
+            <p class="lint-desc">Screen 파일에 Route / Screen 외 구현이 섞이는 것 방지</p>
           </div>
           <div class="lint-item">
-            <div class="lint-name">ComponentsFileVisibilityDetector</div>
-            <div class="lint-desc">컴포넌트 파일 visibility 규칙 강제</div>
+            <p class="lint-name">ComponentsFileVisibilityDetector</p>
+            <p class="lint-desc">컴포넌트 파일 visibility 규칙 강제</p>
           </div>
           <div class="lint-item">
-            <div class="lint-name">PreviewMustBePrivateDetector</div>
-            <div class="lint-desc">Preview 함수 private 가시성 강제</div>
+            <p class="lint-name">PreviewMustBePrivateDetector</p>
+            <p class="lint-desc">Preview 함수 private 가시성 강제</p>
           </div>
           <div class="lint-item">
-            <div class="lint-name">PreviewRequiredDetector</div>
-            <div class="lint-desc">주요 컴포넌트 Preview 누락 감지</div>
+            <p class="lint-name">PreviewRequiredDetector</p>
+            <p class="lint-desc">주요 컴포넌트 Preview 누락 감지</p>
           </div>
           <div class="lint-item">
-            <div class="lint-name">SingleLineWhenBlockDetector</div>
-            <div class="lint-desc">when 블록 단일 라인 규칙 적용</div>
+            <p class="lint-name">SingleLineWhenBlockDetector</p>
+            <p class="lint-desc">when 블록 단일 라인 규칙 적용</p>
           </div>
           <div class="lint-item">
-            <div class="lint-name">EnumObjectPascalCaseDetector</div>
-            <div class="lint-desc">Enum · Object PascalCase 네이밍 강제</div>
+            <p class="lint-name">EnumObjectPascalCaseDetector</p>
+            <p class="lint-desc">Enum · Object PascalCase 네이밍 강제</p>
           </div>
         </div>
       </div>
@@ -917,43 +1025,45 @@
 
 <!-- TECH STACK -->
 <section>
-  <div class="wrapper">
-    <p class="section-num">06 · Tech Stack</p>
-    <h2>기술 스택</h2>
-    <div class="tech-list">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">Tech Stack</p>
+      <h2 class="section-title">기술 스택</h2>
+    </div>
+    <div class="tech-list reveal">
       <div class="tech-item">
-        <div class="tech-icon">📷</div>
+        <div class="tech-icon-wrap">📷</div>
         <div>
-          <span class="tech-name">CameraX · ML Kit Barcode Scanning · core:pda</span>
-          <span class="tech-desc">카메라 바코드 스캔과 M3Mobile · PM · Bluebird PDA를 PdaManager 인터페이스로 추상화해 런타임 분기. NoOpPdaManager로 비-PDA 기기 대응</span>
+          <p class="tech-name">CameraX · ML Kit Barcode Scanning · core:pda</p>
+          <p class="tech-desc">카메라 바코드 스캔과 M3Mobile · PM · Bluebird PDA를 PdaManager 인터페이스로 추상화해 런타임 분기. NoOpPdaManager로 비-PDA 기기 대응</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon">🏗️</div>
+        <div class="tech-icon-wrap">🏗️</div>
         <div>
-          <span class="tech-name">Multi Module · Clean Architecture · Hilt</span>
-          <span class="tech-desc">app / feature / core 3계층 21개 모듈. build-logic 컨벤션 플러그인으로 일관성 확보. Hilt로 module-scoped DI 관리</span>
+          <p class="tech-name">Multi Module · Clean Architecture · Hilt</p>
+          <p class="tech-desc">app / feature / core 3계층 21개 모듈. build-logic 컨벤션 플러그인으로 일관성 확보. Hilt로 module-scoped DI 관리</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon">🎨</div>
+        <div class="tech-icon-wrap">🎨</div>
         <div>
-          <span class="tech-name">Jetpack Compose · MVI (UDF)</span>
-          <span class="tech-desc">UiState + UiEvent + SideEffect 기반 단방향 데이터 흐름. BaseViewModel + reduce 패턴 표준화. core:designsystem으로 테마 · 컴포넌트 관리</span>
+          <p class="tech-name">Jetpack Compose · MVI (UDF)</p>
+          <p class="tech-desc">UiState + UiEvent + SideEffect 기반 단방향 데이터 흐름. BaseViewModel + reduce 패턴 표준화. core:designsystem으로 테마 · 컴포넌트 관리</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon">🌐</div>
+        <div class="tech-icon-wrap">🌐</div>
         <div>
-          <span class="tech-name">Retrofit · OkHttp · WebSocket</span>
-          <span class="tech-desc">FileLoggingInterceptor로 API 로그 파일 생성. AuthInterceptor로 OAuth 토큰 자동 갱신. WebSocket(core:socket)으로 활력징후 실시간 수신</span>
+          <p class="tech-name">Retrofit · OkHttp · WebSocket</p>
+          <p class="tech-desc">FileLoggingInterceptor로 API 로그 파일 생성. AuthInterceptor로 OAuth 토큰 자동 갱신. WebSocket(core:socket)으로 활력징후 실시간 수신</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon">💾</div>
+        <div class="tech-icon-wrap">💾</div>
         <div>
-          <span class="tech-name">Room · DataStore (API/Impl 분리)</span>
-          <span class="tech-desc">core:database에서 Room으로 로컬 데이터 영속화. core:datastore를 api/impl로 분리해 token · user · scan · hospital 설정값 독립 관리</span>
+          <p class="tech-name">Room · DataStore (API/Impl 분리)</p>
+          <p class="tech-desc">core:database에서 Room으로 로컬 데이터 영속화. core:datastore를 api/impl로 분리해 token · user · scan · hospital 설정값 독립 관리</p>
         </div>
       </div>
     </div>
@@ -963,6 +1073,14 @@
 <footer>
   Smart Hospital Hicardi — Android Medical App
 </footer>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  els.forEach(el => io.observe(el));
+</script>
 
 </body>
 </html>
