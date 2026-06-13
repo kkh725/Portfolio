@@ -363,12 +363,6 @@
       border-bottom: none;
     }
 
-    .feat-icon {
-      font-size: 1.4rem;
-      margin-bottom: 0.625rem;
-      display: block;
-    }
-
     .feat-name {
       font-weight: 700;
       font-size: 0.9rem;
@@ -395,19 +389,6 @@
       align-items: flex-start;
     }
     .tech-item:first-child { border-top: 1px solid var(--fg-10); }
-
-    .tech-icon-wrap {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: var(--fg-10);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
 
     .tech-body {}
 
@@ -734,42 +715,34 @@
 
     <div class="feature-grid reveal">
       <div class="feature-item">
-        <span class="feat-icon">🗺️</span>
         <p class="feat-name">실내 지도</p>
         <p class="feat-desc">T1, T2, 탑승동 및 빌딩별 층수로 나누어 전 구역 실내 지도 구현</p>
       </div>
       <div class="feature-item">
-        <span class="feat-icon">🧭</span>
         <p class="feat-name">길찾기</p>
         <p class="feat-desc">출발·도착·경유지 선택 가능한 최적 경로 탐색 및 안내</p>
       </div>
       <div class="feature-item">
-        <span class="feat-icon">📍</span>
         <p class="feat-name">실시간 내 위치</p>
         <p class="feat-desc">블루투스 기반 포그라운드 서비스로 실시간 사용자 위치 표시</p>
       </div>
       <div class="feature-item">
-        <span class="feat-icon">▶️</span>
         <p class="feat-name">경로 시뮬레이션</p>
         <p class="feat-desc">출발 전 전체 경로를 미리 확인할 수 있는 시뮬레이션</p>
       </div>
       <div class="feature-item">
-        <span class="feat-icon">🔍</span>
         <p class="feat-name">검색</p>
         <p class="feat-desc">원하는 장소를 빠르게 찾는 POI 검색 페이지</p>
       </div>
       <div class="feature-item">
-        <span class="feat-icon">🏷️</span>
         <p class="feat-name">카테고리</p>
         <p class="feat-desc">카테고리 선택 시 POI 강조 및 카메라 자동 이동</p>
       </div>
       <div class="feature-item">
-        <span class="feat-icon">🔭</span>
         <p class="feat-name">LOD 시스템</p>
         <p class="feat-desc">줌 레벨에 따른 마커 우선순위 기반 LOD, 낮은 우선순위 fade-out</p>
       </div>
       <div class="feature-item">
-        <span class="feat-icon">📖</span>
         <p class="feat-name">튜토리얼</p>
         <p class="feat-desc">처음 사용자를 위한 온보딩 튜토리얼 화면 구현</p>
       </div>
@@ -801,42 +774,36 @@
 
     <div class="tech-list reveal">
       <div class="tech-item">
-        <div class="tech-icon-wrap">🗾</div>
         <div class="tech-body">
           <p class="tech-name">Indoor Map · GeoJSON</p>
           <p class="tech-desc">인천공항 전용 GeoJSON 기반 T1·T2·탑승동 각 층 실내 지도 적용. TileProvider + LRU Cache로 비트맵 타일 변환·캐싱하여 렌더링 성능 최적화</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon-wrap">📡</div>
         <div class="tech-body">
           <p class="tech-name">Pathfinding · Dijkstra</p>
           <p class="tech-desc">노드·경로 데이터 기반 그래프 구축, 다익스트라 알고리즘으로 최적 경로 탐색. 경유지 및 Switch 구조 지원</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon-wrap">📶</div>
         <div class="tech-body">
           <p class="tech-name">LOD System · POI</p>
           <p class="tech-desc">우선순위 기반 LOD 시스템으로 줌 레벨에 따른 마커 표시 제어. POI 근접 탐색 및 해상도별 마커·텍스트 크기 자동 조정</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon-wrap">📱</div>
         <div class="tech-body">
           <p class="tech-name">Background Service · BLE</p>
           <p class="tech-desc">블루투스, 포그라운드 서비스, 배터리 최적화 권한으로 백그라운드 실시간 위치 동작 지원</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon-wrap">⚡</div>
         <div class="tech-body">
           <p class="tech-name">Data Loading Strategy</p>
           <p class="tech-desc">초기 로딩 시 로컬 assets 우선 사용, 이후 백그라운드에서 최신 데이터 갱신하는 하이브리드 로딩 전략</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon-wrap">🚀</div>
         <div class="tech-body">
           <p class="tech-name">CI/CD · Security</p>
           <p class="tech-desc">GitHub Actions 조건부 자동 배포 파이프라인 구성. ProGuard 코드 난독화 적용</p>
