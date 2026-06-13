@@ -467,14 +467,14 @@
     }
 
     .store-shape {
-      width: 64px;
-      height: 64px;
+      width: 80px;
+      height: 80px;
     }
 
-    .store-shape svg {
+    .store-shape img {
       width: 100%;
       height: 100%;
-      overflow: visible;
+      border-radius: 18px;
       animation: floatShape 3.5s ease-in-out infinite;
       animation-delay: 0.5s;
     }
@@ -855,12 +855,8 @@
 
     <div class="store-box reveal">
 
-      <!-- Small rounded-rect shape for variety -->
       <div class="store-shape">
-        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="10" y="10" width="44" height="44" rx="14"
-            stroke="#00C676" stroke-width="10" stroke-linejoin="round"/>
-        </svg>
+        <img src="assets/images/ic_icn.webp" alt="인천공항+ 아이콘"/>
       </div>
 
       <p class="store-title">인천공항+ (ICN지도)</p>
