@@ -500,6 +500,56 @@
       color: var(--fg-50);
     }
 
+    /* ── VIDEO COMPARE ── */
+    .video-compare {
+      margin-top: 1.25rem;
+    }
+
+    .video-compare-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--fg-50);
+      margin-bottom: 0.625rem;
+    }
+
+    .video-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.625rem;
+    }
+
+    .video-item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--fg-10);
+    }
+
+    .video-item video {
+      width: 100%;
+      display: block;
+    }
+
+    .video-tag {
+      position: absolute;
+      top: 7px;
+      left: 7px;
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+
+    .video-tag.before {
+      background: rgba(255,59,48,0.15);
+      color: var(--red);
+    }
+
+    .video-tag.after {
+      background: rgba(0,198,118,0.15);
+      color: var(--secondary);
+    }
+
     /* ── SCROLL REVEAL ── */
     .reveal {
       opacity: 0;
@@ -619,6 +669,19 @@
         </div>
         <p class="opt-title">SDK 초기화 속도 개선</p>
         <p class="opt-desc">POI 데이터 조회 구조를 List → HashMap으로 변경하여 O(n) 탐색을 O(1)로 단축. UI 블로킹 문제 해결 및 체감 로딩 속도 대폭 개선.</p>
+        <div class="video-compare">
+          <p class="video-compare-title">비교 영상</p>
+          <div class="video-pair">
+            <div class="video-item">
+              <span class="video-tag before">최적화 전</span>
+              <video src="assets/videos/v1_초기로딩.mp4" autoplay loop muted playsinline></video>
+            </div>
+            <div class="video-item">
+              <span class="video-tag after">최적화 후</span>
+              <video src="assets/videos/v2_초기로딩.mp4" autoplay loop muted playsinline></video>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="opt-item">
         <div class="opt-meta">
@@ -627,6 +690,19 @@
         </div>
         <p class="opt-title">GeoJSON 렌더링 방식 개선</p>
         <p class="opt-desc">SVG 벡터 방식(GeoJsonLayer)에서 PNG 비트맵 타일 방식(TileProvider + LRU Cache)으로 전환하여 대용량 GeoJSON 렌더링 성능 최적화.</p>
+        <div class="video-compare">
+          <p class="video-compare-title">비교 영상</p>
+          <div class="video-pair">
+            <div class="video-item">
+              <span class="video-tag before">SVG · GeoJsonLayer</span>
+              <video src="assets/videos/v1_렌더링방식.mp4" autoplay loop muted playsinline></video>
+            </div>
+            <div class="video-item">
+              <span class="video-tag after">PNG 타일 · LRU Cache</span>
+              <video src="assets/videos/v2_렌더링방식.mp4" autoplay loop muted playsinline></video>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="opt-item">
         <div class="opt-meta">
