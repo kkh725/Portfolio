@@ -487,16 +487,18 @@
     .arch-diagram-wrap {
       width: 100%;
       overflow-x: auto;
-      border-radius: 12px;
-      border: 1px solid var(--fg-10);
-      margin-bottom: 1.5rem;
-      background: #fff;
+      border-top: 1px solid var(--fg-10);
+      border-bottom: 1px solid var(--fg-10);
+      margin-bottom: 2rem;
+      background: #fafafa;
+      -webkit-overflow-scrolling: touch;
     }
 
     .arch-diagram-wrap img {
       display: block;
-      width: 100%;
-      min-width: 480px;
+      height: 300px;
+      width: auto;
+      max-width: none;
     }
 
     .note code {
@@ -775,11 +777,13 @@
       <p class="eyebrow">Architecture Detail</p>
       <h2 class="section-title">아키텍처 상세</h2>
     </div>
+  </div>
 
-    <div class="arch-diagram-wrap reveal">
-      <img src="assets/images/aos_sh.png" alt="Smart Hospital 모듈 의존성 다이어그램"/>
-    </div>
+  <div class="arch-diagram-wrap reveal">
+    <img src="assets/images/aos_sh.png" alt="Smart Hospital 모듈 의존성 다이어그램"/>
+  </div>
 
+  <div class="wrap">
     <div class="reveal">
       <p class="sub-label">1 · 전체 모듈 구조 (21 modules)</p>
       <div class="code-block">
