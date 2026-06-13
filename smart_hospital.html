@@ -319,9 +319,6 @@
     .feature-item {
       padding: 1.5rem 1rem 1.5rem 0;
       border-bottom: 1px solid var(--fg-10);
-      display: flex;
-      gap: 0.875rem;
-      align-items: flex-start;
     }
 
     .feature-item:nth-child(even) {
@@ -331,7 +328,6 @@
 
     .feature-item:nth-last-child(-n+2) { border-bottom: none; }
 
-    .feat-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
     .feat-name { font-weight: 700; font-size: 0.88rem; margin-bottom: 0.3rem; }
     .feat-desc { font-size: 0.78rem; color: var(--fg-50); line-height: 1.6; }
 
@@ -369,9 +365,6 @@
       border-radius: 10px;
       padding: 1rem 1.25rem;
       font-size: 0.87rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
     }
 
     .arch-result strong { color: var(--secondary); }
@@ -487,10 +480,23 @@
       font-size: 0.83rem;
       color: var(--fg-50);
       margin-bottom: 0.75rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
       line-height: 1.65;
+    }
+
+    /* ── ARCH DIAGRAM ── */
+    .arch-diagram-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--fg-10);
+      margin-bottom: 1.5rem;
+      background: #fff;
+    }
+
+    .arch-diagram-wrap img {
+      display: block;
+      width: 100%;
+      min-width: 480px;
     }
 
     .note code {
@@ -568,19 +574,6 @@
       align-items: flex-start;
     }
     .tech-item:first-child { border-top: 1px solid var(--fg-10); }
-
-    .tech-icon-wrap {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: var(--fg-10);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
 
     .tech-name { font-size: 0.8rem; font-weight: 700; color: var(--primary); margin-bottom: 0.25rem; }
     .tech-desc { font-size: 0.83rem; color: var(--fg-50); line-height: 1.65; }
@@ -720,46 +713,28 @@
     </div>
     <div class="feature-grid reveal">
       <div class="feature-item">
-        <div class="feat-icon">📷</div>
-        <div>
-          <p class="feat-name">멀티 스캔 지원</p>
-          <p class="feat-desc">M3Mobile · PointMobile PM · Bluebird PDA 바코드 스캔 및 CameraX + ML Kit 카메라 스캔 통합 지원</p>
-        </div>
+        <p class="feat-name">멀티 스캔 지원</p>
+        <p class="feat-desc">M3Mobile · PointMobile PM · Bluebird PDA 바코드 스캔 및 CameraX + ML Kit 카메라 스캔 통합 지원</p>
       </div>
       <div class="feature-item">
-        <div class="feat-icon">🔗</div>
-        <div>
-          <p class="feat-name">환자–기기 매핑</p>
-          <p class="feat-desc">바코드 파싱 결과에 따라 환자·기기 매핑 및 해제. ParseBarcodeContentsUseCase로 sealed 분기 처리</p>
-        </div>
+        <p class="feat-name">환자–기기 매핑</p>
+        <p class="feat-desc">바코드 파싱 결과에 따라 환자·기기 매핑 및 해제. ParseBarcodeContentsUseCase로 sealed 분기 처리</p>
       </div>
       <div class="feature-item">
-        <div class="feat-icon">💓</div>
-        <div>
-          <p class="feat-name">활력징후 모니터링</p>
-          <p class="feat-desc">WebSocket 기반 실시간 바이탈 수신. 일자별 DailyVitalSign 리스트 및 모니터링 화면 제공</p>
-        </div>
+        <p class="feat-name">활력징후 모니터링</p>
+        <p class="feat-desc">WebSocket 기반 실시간 바이탈 수신. 일자별 DailyVitalSign 리스트 및 모니터링 화면 제공</p>
       </div>
       <div class="feature-item">
-        <div class="feat-icon">⚙️</div>
-        <div>
-          <p class="feat-name">런타임 병원 설정</p>
-          <p class="feat-desc">QR 스캔 또는 수기 입력으로 서버 URL · OAuth · ScanType 동적 설정. 클라이언트 단 오입력 사전 검증</p>
-        </div>
+        <p class="feat-name">런타임 병원 설정</p>
+        <p class="feat-desc">QR 스캔 또는 수기 입력으로 서버 URL · OAuth · ScanType 동적 설정. 클라이언트 단 오입력 사전 검증</p>
       </div>
       <div class="feature-item">
-        <div class="feat-icon">🔔</div>
-        <div>
-          <p class="feat-name">전역 이벤트 처리</p>
-          <p class="feat-desc">로딩 · 스낵바 · 앱 재시작 · 종료를 EventHelper 채널로 일원화. feature 간 결합 없이 전파</p>
-        </div>
+        <p class="feat-name">전역 이벤트 처리</p>
+        <p class="feat-desc">로딩 · 스낵바 · 앱 재시작 · 종료를 EventHelper 채널로 일원화. feature 간 결합 없이 전파</p>
       </div>
       <div class="feature-item">
-        <div class="feat-icon">📋</div>
-        <div>
-          <p class="feat-name">API 로그 & 메일 전송</p>
-          <p class="feat-desc">FileLoggingInterceptor로 api_log.txt 생성. 내부망 장애 시 앱 내에서 직접 메일 첨부 전송 가능</p>
-        </div>
+        <p class="feat-name">API 로그 & 메일 전송</p>
+        <p class="feat-desc">FileLoggingInterceptor로 api_log.txt 생성. 내부망 장애 시 앱 내에서 직접 메일 첨부 전송 가능</p>
       </div>
     </div>
   </div>
@@ -786,8 +761,7 @@
       </div>
     </div>
     <div class="arch-result reveal">
-      <span>✅</span>
-      <span>단일 코드베이스 전환으로 신규 병원 개발 공수 약 <strong>50% 절감</strong></span>
+      단일 코드베이스 전환으로 신규 병원 개발 공수 약 <strong>50% 절감</strong>
     </div>
   </div>
 </section>
@@ -802,10 +776,14 @@
       <h2 class="section-title">아키텍처 상세</h2>
     </div>
 
+    <div class="arch-diagram-wrap reveal">
+      <img src="assets/images/aos_sh.png" alt="Smart Hospital 모듈 의존성 다이어그램"/>
+    </div>
+
     <div class="reveal">
       <p class="sub-label">1 · 전체 모듈 구조 (21 modules)</p>
       <div class="code-block">
-        <p class="code-title">📦 Smart Hospital</p>
+        <p class="code-title">Smart Hospital</p>
         <div><span class="code-dim">├── </span><span class="code-hl">:app</span>                 <span class="code-cm">// 진입점, 전역 DI, 네비게이션 조립</span></div>
         <div><span class="code-dim">├── </span><span class="code-hl">:feature/*</span>           <span class="code-cm">// 화면 단위 기능 (6개 모듈)</span></div>
         <div><span class="code-dim">│   ├── </span>:feature:auth        <span class="code-cm">// 로그인, 인증</span></div>
@@ -850,8 +828,7 @@
         </div>
       </div>
       <div class="note">
-        <span>⚖️</span>
-        <span>UI(feature)는 domain 인터페이스만 바라보고 구현체(data · network · socket · database)는 하위 계층으로 숨김. feature 간 직접 참조 없이 <code>core:navigation</code>을 통해 소통</span>
+        UI(feature)는 domain 인터페이스만 바라보고 구현체(data · network · socket · database)는 하위 계층으로 숨김. feature 간 직접 참조 없이 <code>core:navigation</code>을 통해 소통
       </div>
 
       <p class="sub-label">3 · MVI (UDF) 상태관리 흐름</p>
@@ -878,8 +855,7 @@
         </div>
       </div>
       <div class="note">
-        <span>📡</span>
-        <span>전역 이벤트(로딩 · 스낵바 · 앱 종료)는 <code>EventHelper</code> 채널로 처리 — feature 결합 없이 공통 이벤트 전파</span>
+        전역 이벤트(로딩 · 스낵바 · 앱 종료)는 <code>EventHelper</code> 채널로 처리 — feature 결합 없이 공통 이벤트 전파
       </div>
 
       <p class="sub-label">4 · 스캔 추상화 (core:pda)</p>
@@ -901,13 +877,12 @@
         </div>
       </div>
       <div class="note">
-        <span>🔌</span>
-        <span>병원 설정의 <code>ScanType</code> 값 하나로 PDA / Camera 경로 런타임 분기 — feature 코드는 스캔 기종을 알 필요 없음</span>
+        병원 설정의 <code>ScanType</code> 값 하나로 PDA / Camera 경로 런타임 분기 — feature 코드는 스캔 기종을 알 필요 없음
       </div>
 
       <p class="sub-label">5 · Build-Logic Convention Plugin (10개)</p>
       <div class="code-block" style="margin-bottom:0">
-        <p class="code-title">🔧 build-logic/convention</p>
+        <p class="code-title">build-logic/convention</p>
         <div><span class="code-hl">AndroidFeatureConventionPlugin</span>          <span class="code-cm">// feature 공통 의존성 일괄 적용</span></div>
         <div><span class="code-hl">AndroidLibraryConventionPlugin</span>           <span class="code-cm">// library 기본 설정</span></div>
         <div><span class="code-hl">AndroidLibraryComposeConventionPlugin</span>    <span class="code-cm">// Compose 설정 포함</span></div>
@@ -1032,35 +1007,30 @@
     </div>
     <div class="tech-list reveal">
       <div class="tech-item">
-        <div class="tech-icon-wrap">📷</div>
         <div>
           <p class="tech-name">CameraX · ML Kit Barcode Scanning · core:pda</p>
           <p class="tech-desc">카메라 바코드 스캔과 M3Mobile · PM · Bluebird PDA를 PdaManager 인터페이스로 추상화해 런타임 분기. NoOpPdaManager로 비-PDA 기기 대응</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon-wrap">🏗️</div>
         <div>
           <p class="tech-name">Multi Module · Clean Architecture · Hilt</p>
           <p class="tech-desc">app / feature / core 3계층 21개 모듈. build-logic 컨벤션 플러그인으로 일관성 확보. Hilt로 module-scoped DI 관리</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon-wrap">🎨</div>
         <div>
           <p class="tech-name">Jetpack Compose · MVI (UDF)</p>
           <p class="tech-desc">UiState + UiEvent + SideEffect 기반 단방향 데이터 흐름. BaseViewModel + reduce 패턴 표준화. core:designsystem으로 테마 · 컴포넌트 관리</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon-wrap">🌐</div>
         <div>
           <p class="tech-name">Retrofit · OkHttp · WebSocket</p>
           <p class="tech-desc">FileLoggingInterceptor로 API 로그 파일 생성. AuthInterceptor로 OAuth 토큰 자동 갱신. WebSocket(core:socket)으로 활력징후 실시간 수신</p>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon-wrap">💾</div>
         <div>
           <p class="tech-name">Room · DataStore (API/Impl 분리)</p>
           <p class="tech-desc">core:database에서 Room으로 로컬 데이터 영속화. core:datastore를 api/impl로 분리해 token · user · scan · hospital 설정값 독립 관리</p>
