@@ -155,7 +155,7 @@
     .hero-sub {
       font-size: 0.9rem;
       color: var(--fg-50);
-      max-width: 380px;
+      max-width: 460px;
       margin-bottom: 2rem;
       line-height: 1.7;
     }
@@ -198,8 +198,11 @@
     .skill-chips {
       display: flex;
       gap: 0.5rem;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       justify-content: center;
+      width: 100vw;
+      padding: 0 20px;
+      box-sizing: border-box;
     }
 
     .chip {
@@ -212,6 +215,8 @@
       font-size: 0.75rem;
       font-weight: 600;
       color: var(--fg);
+      flex-shrink: 0;
+      white-space: nowrap;
     }
 
     .chip-dot { width: 5px; height: 5px; border-radius: 50%; }
@@ -536,6 +541,9 @@
 
     <div class="hero-actions slide-up d5">
       <a class="btn btn-fill" href="https://play.google.com/store/apps/details?id=com.puzzle.piece" target="_blank">▶ Google Play</a>
+      <a class="btn btn-fill" href="https://apps.apple.com/kr/app/%ED%94%BC%EC%8A%A4-%EC%A7%84%EC%A7%9C-%EC%9D%B8%EC%97%B0%EC%9D%84-%EC%B0%BE%EB%8A%94-%EA%B2%8C%EC%9D%B4-%EB%A7%8C%EB%82%A8/id6742348014" target="_blank">🍎 App Store</a>
+      <a class="btn btn-outline" href="https://puzzly.site/" target="_blank">🌐 Website</a>
+      <a class="btn btn-outline" href="https://www.instagram.com/piece_puzzly?igsh=MXNwMmMwanFkOGkyNQ%3D%3D" target="_blank">📷 Instagram</a>
       <a class="btn btn-outline" href="https://github.com/kkh725/Piece_Android" target="_blank">⭐ GitHub</a>
     </div>
 
@@ -1002,6 +1010,9 @@
       <p class="cta-sub">Google Play에서 다운로드</p>
       <div class="btn-row">
         <a class="btn btn-fill" href="https://play.google.com/store/apps/details?id=com.puzzle.piece" target="_blank">▶ Google Play →</a>
+        <a class="btn btn-fill" href="https://apps.apple.com/kr/app/%ED%94%BC%EC%8A%A4-%EC%A7%84%EC%A7%9C-%EC%9D%B8%EC%97%B0%EC%9D%84-%EC%B0%BE%EB%8A%94-%EA%B2%8C%EC%9D%B4-%EB%A7%8C%EB%82%A8/id6742348014" target="_blank">🍎 App Store →</a>
+        <a class="btn btn-outline" href="https://puzzly.site/" target="_blank">🌐 Website</a>
+        <a class="btn btn-outline" href="https://www.instagram.com/piece_puzzly?igsh=MXNwMmMwanFkOGkyNQ%3D%3D" target="_blank">📷 Instagram</a>
         <a class="btn btn-outline" href="https://github.com/kkh725/Piece_Android" target="_blank">⭐ GitHub →</a>
       </div>
     </div>

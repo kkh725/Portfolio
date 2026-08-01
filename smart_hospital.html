@@ -63,15 +63,6 @@
       margin-bottom: 2.5rem;
     }
 
-    .sub-label {
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 0.75rem;
-      margin-top: 2.5rem;
-    }
-    .sub-label:first-child { margin-top: 0; }
-
     /* ── ANIMATIONS ── */
     .slide-up {
       opacity: 0;
@@ -309,27 +300,129 @@
       font-weight: 600;
     }
 
-    /* ── FEATURE GRID ── */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
+    /* wider column for sections with code blocks, so long lines don't need to scroll */
+    .wrap-wide { max-width: 820px; }
+
+    /* ── CASE STUDY ── */
+    .case-label {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--primary);
+      margin: 2.5rem 0 0.9rem;
+    }
+    .case-label:first-of-type { margin-top: 0; }
+
+    .case-desc {
+      font-size: 0.85rem;
+      color: var(--fg-50);
+      line-height: 1.75;
+      margin-bottom: 1.25rem;
     }
 
-    .feature-item {
-      padding: 1.5rem 1rem 1.5rem 0;
-      border-bottom: 1px solid var(--fg-10);
+    .case-desc code {
+      font-family: 'SF Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--primary);
+      background: rgba(0,122,255,0.08);
+      padding: 1px 5px;
+      border-radius: 4px;
     }
 
-    .feature-item:nth-child(even) {
-      padding-left: 1.25rem;
-      border-left: 1px solid var(--fg-10);
+    .code-block {
+      background: #1e1e1e;
+      border-radius: 14px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      overflow-x: auto;
     }
 
-    .feature-item:nth-last-child(-n+2) { border-bottom: none; }
+    .code-file {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      margin-bottom: 0.75rem;
+    }
 
-    .feat-name { font-weight: 700; font-size: 0.88rem; margin-bottom: 0.3rem; }
-    .feat-desc { font-size: 0.78rem; color: var(--fg-50); line-height: 1.6; }
+    .code-block pre {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.74rem;
+      line-height: 1.75;
+      color: #d4d4d4;
+      white-space: pre;
+    }
+
+    .code-block .cm { color: #6a9955; }
+    .code-block .kw { color: #c586c0; }
+    .code-block .fn { color: #dcdcaa; }
+    .code-block .tp { color: #4ec9b0; }
+
+    /* ── FEATURE SHOTS ── */
+    .shot-block { margin-bottom: 3rem; }
+    .shot-block:last-child { margin-bottom: 0; }
+
+    .shot-head {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .shot-icon { font-size: 1.2rem; }
+    .shot-name { font-weight: 700; font-size: 0.95rem; }
+    .shot-desc { font-size: 0.8rem; color: var(--fg-50); margin-bottom: 0.9rem; line-height: 1.6; }
+
+    /* auto-scrolling marquee row (2+ screenshots) */
+    .shot-marquee {
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      overflow: hidden;
+      padding: 0.25rem 20px 0.75rem;
+      box-sizing: border-box;
+    }
+
+    .shot-track {
+      display: flex;
+      gap: 0.75rem;
+      width: max-content;
+      animation: shotMarquee linear infinite;
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+
+    @keyframes shotMarquee {
+      from { transform: translate3d(0,0,0); }
+      to { transform: translate3d(calc(-50% - 0.375rem),0,0); }
+    }
+
+    /* centered static row (single screenshot) */
+    .shot-static {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.25rem 20px 0.75rem;
+      box-sizing: border-box;
+    }
+
+    .shot-track img,
+    .shot-static img {
+      height: 560px;
+      width: auto;
+      border-radius: 18px;
+      border: 1px solid var(--fg-10);
+      flex-shrink: 0;
+      background: var(--fg-10);
+    }
+
+    @media (max-width: 640px) {
+      .shot-track img, .shot-static img { height: 78vh; }
+    }
 
     /* ── ARCH COMPARE ── */
     .arch-compare {
@@ -369,120 +462,6 @@
 
     .arch-result strong { color: var(--secondary); }
 
-    /* ── CODE BLOCK ── */
-    .code-block {
-      background: var(--fg-10);
-      border-radius: 12px;
-      padding: 1.5rem;
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      font-size: 0.76rem;
-      margin-bottom: 1.25rem;
-      overflow-x: auto;
-      line-height: 1.9;
-    }
-
-    .code-title { font-weight: 700; color: var(--fg); margin-bottom: 0.75rem; font-size: 0.83rem; }
-    .code-hl { color: var(--primary); font-weight: 600; }
-    .code-cm { color: var(--fg-50); }
-    .code-dim { color: var(--fg-30); }
-
-    /* ── DEP FLOW ── */
-    .dep-flow {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--fg-10);
-      border-radius: 12px;
-      padding: 1.5rem 1rem;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      row-gap: 0.75rem;
-    }
-
-    .dep-node {
-      background: var(--bg);
-      border: 1px solid var(--fg-10);
-      border-radius: 10px;
-      padding: 0.625rem 0.875rem;
-      text-align: center;
-    }
-
-    .dep-node.center {
-      border-color: rgba(0,122,255,0.3);
-      background: rgba(0,122,255,0.05);
-    }
-
-    .dep-node-layer {
-      font-size: 0.6rem;
-      color: var(--fg-50);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin-bottom: 3px;
-    }
-
-    .dep-node-name { font-size: 0.8rem; font-weight: 700; }
-    .dep-node.center .dep-node-name { color: var(--primary); }
-    .dep-arrow { font-size: 1rem; color: var(--fg-30); flex-shrink: 0; padding: 0 0.25rem; }
-
-    /* ── MVI FLOW ── */
-    .mvi-flow {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      border: 1px solid var(--fg-10);
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 1rem;
-    }
-
-    .mvi-step {
-      padding: 1.25rem 0.875rem;
-      text-align: center;
-      border-right: 1px solid var(--fg-10);
-    }
-    .mvi-step:last-child { border-right: none; }
-
-    .mvi-num { font-size: 0.6rem; color: var(--primary); margin-bottom: 0.3rem; font-weight: 700; }
-    .mvi-name { font-size: 0.8rem; font-weight: 700; margin-bottom: 0.25rem; }
-    .mvi-desc { font-size: 0.72rem; color: var(--fg-50); line-height: 1.5; }
-
-    /* ── SCAN ARCH ── */
-    .scan-arch {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
-    }
-
-    .scan-node {
-      background: var(--fg-10);
-      border-radius: 12px;
-      padding: 1.1rem;
-      text-align: center;
-    }
-
-    .scan-node.center {
-      background: rgba(0,122,255,0.06);
-      border: 1px solid rgba(0,122,255,0.15);
-    }
-
-    .scan-node-layer { font-size: 0.6rem; color: var(--fg-50); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.35rem; }
-    .scan-node-name { font-size: 0.82rem; font-weight: 700; margin-bottom: 0.3rem; line-height: 1.4; }
-    .scan-node.center .scan-node-name { color: var(--primary); }
-    .scan-node-desc { font-size: 0.73rem; color: var(--fg-50); line-height: 1.5; }
-
-    /* ── NOTE ── */
-    .note {
-      background: var(--fg-10);
-      border-radius: 10px;
-      padding: 1rem 1.25rem;
-      font-size: 0.83rem;
-      color: var(--fg-50);
-      margin-bottom: 0.75rem;
-      line-height: 1.65;
-    }
-
     /* ── ARCH DIAGRAM ── */
     .arch-diagram-wrap {
       width: 100%;
@@ -503,84 +482,33 @@
       max-width: none;
     }
 
-    .note code {
-      font-family: 'SF Mono', monospace;
-      font-size: 0.76rem;
-      color: var(--primary);
-      background: rgba(0,122,255,0.08);
-      padding: 1px 5px;
-      border-radius: 4px;
+    /* ── CTA ── */
+    .cta-section { text-align: center; }
+
+    .cta-box {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
     }
 
-    /* ── IMPL LIST ── */
-    .impl-list { display: flex; flex-direction: column; }
+    .cta-shape { width: 72px; height: 72px; }
 
-    .impl-card {
-      padding: 1.5rem 0;
-      border-bottom: 1px solid var(--fg-10);
-    }
-    .impl-card:first-child { border-top: 1px solid var(--fg-10); }
-
-    .impl-header {
-      display: flex;
-      align-items: baseline;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
+    .cta-shape img {
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      animation: float 3.5s ease-in-out infinite;
+      animation-delay: 0.5s;
     }
 
-    .impl-num { font-size: 0.7rem; font-weight: 700; color: var(--primary); }
-    .impl-title { font-weight: 700; font-size: 0.95rem; }
-
-    .impl-items { display: flex; flex-direction: column; gap: 0.4rem; }
-
-    .impl-item {
-      font-size: 0.83rem;
-      color: var(--fg-50);
-      padding-left: 1rem;
-      position: relative;
-      line-height: 1.65;
+    .cta-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.03rem;
     }
 
-    .impl-item::before {
-      content: '—';
-      position: absolute;
-      left: 0;
-      color: var(--fg-30);
-      font-size: 0.7rem;
-    }
-
-    /* ── LINT GRID ── */
-    .lint-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-
-    .lint-item {
-      background: var(--fg-10);
-      border-radius: 8px;
-      padding: 0.875rem 1rem;
-    }
-
-    .lint-name { font-size: 0.72rem; font-weight: 700; color: var(--primary); margin-bottom: 0.25rem; font-family: 'SF Mono', monospace; }
-    .lint-desc { font-size: 0.75rem; color: var(--fg-50); line-height: 1.5; }
-
-    /* ── TECH LIST ── */
-    .tech-list { display: flex; flex-direction: column; }
-
-    .tech-item {
-      display: flex;
-      gap: 1rem;
-      padding: 1.25rem 0;
-      border-bottom: 1px solid var(--fg-10);
-      align-items: flex-start;
-    }
-    .tech-item:first-child { border-top: 1px solid var(--fg-10); }
-
-    .tech-name { font-size: 0.8rem; font-weight: 700; color: var(--primary); margin-bottom: 0.25rem; }
-    .tech-desc { font-size: 0.83rem; color: var(--fg-50); line-height: 1.65; }
+    .cta-sub { font-size: 0.85rem; color: var(--fg-50); margin-top: -0.5rem; }
 
     /* ── FOOTER ── */
     footer {
@@ -595,15 +523,6 @@
       .overview-grid { grid-template-columns: repeat(3, 1fr); }
       .overview-cell:nth-child(3) { border-right: none; }
       .arch-compare { grid-template-columns: 1fr; }
-      .feature-grid { grid-template-columns: 1fr; }
-      .feature-item:nth-child(even) { padding-left: 0; border-left: none; }
-      .feature-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--fg-10); }
-      .feature-item:last-child { border-bottom: none; }
-      .mvi-flow { grid-template-columns: repeat(2, 1fr); }
-      .mvi-step:nth-child(2) { border-right: none; }
-      .scan-arch { grid-template-columns: 1fr; }
-      .dep-flow { flex-direction: column; }
-      .dep-arrow { transform: rotate(90deg); }
     }
   </style>
 </head>
@@ -713,32 +632,101 @@
     <div class="reveal">
       <p class="eyebrow">Features</p>
       <h2 class="section-title">핵심 기능</h2>
-      <p class="section-desc">병원 현장을 위한 6가지 핵심 기능</p>
+      <p class="section-desc">실제 병원 현장에 도입된 화면으로 보는 7가지 핵심 기능</p>
     </div>
-    <div class="feature-grid reveal">
-      <div class="feature-item">
-        <p class="feat-name">멀티 스캔 지원</p>
-        <p class="feat-desc">M3Mobile · PointMobile PM · Bluebird PDA 바코드 스캔 및 CameraX + ML Kit 카메라 스캔 통합 지원</p>
+  </div>
+
+  <div class="wrap">
+    <div class="shot-block reveal">
+      <div class="shot-head"><span class="shot-icon">🔐</span><span class="shot-name">로그인 · 병원 설정</span></div>
+      <p class="shot-desc">QR 스캔 또는 수기 입력으로 서버 URL·OAuth·ScanType 동적 설정. 클라이언트 단 오입력 사전 검증</p>
+      <div class="shot-marquee">
+        <div class="shot-track" style="animation-duration: 50s;">
+          <img src="assets/images/sh/auth/01.webp" alt="로그인 화면"/>
+          <img src="assets/images/sh/auth/02.webp" alt="병원 정보 등록 화면"/>
+          <img src="assets/images/sh/auth/03.webp" alt="병원 서버 설정 화면"/>
+          <img src="assets/images/sh/auth/04.webp" alt="병원 정보 등록 폼(Code, API, OAuth)"/>
+          <img src="assets/images/sh/auth/05.webp" alt="업데이트 확인 실패 다이얼로그"/>
+          <img src="assets/images/sh/auth/06.webp" alt="앱 스플래시 화면"/>
+          <img src="assets/images/sh/auth/01.webp" alt="로그인 화면" aria-hidden="true"/>
+          <img src="assets/images/sh/auth/02.webp" alt="병원 정보 등록 화면" aria-hidden="true"/>
+          <img src="assets/images/sh/auth/03.webp" alt="병원 서버 설정 화면" aria-hidden="true"/>
+          <img src="assets/images/sh/auth/04.webp" alt="병원 정보 등록 폼(Code, API, OAuth)" aria-hidden="true"/>
+          <img src="assets/images/sh/auth/05.webp" alt="업데이트 확인 실패 다이얼로그" aria-hidden="true"/>
+          <img src="assets/images/sh/auth/06.webp" alt="앱 스플래시 화면" aria-hidden="true"/>
+        </div>
       </div>
-      <div class="feature-item">
-        <p class="feat-name">환자–기기 매핑</p>
-        <p class="feat-desc">바코드 파싱 결과에 따라 환자·기기 매핑 및 해제. ParseBarcodeContentsUseCase로 sealed 분기 처리</p>
+    </div>
+
+    <div class="shot-block reveal">
+      <div class="shot-head"><span class="shot-icon">🩹</span><span class="shot-name">환자–기기 매핑</span></div>
+      <p class="shot-desc">바코드 파싱 결과에 따라 환자·기기 매핑 및 해제. ParseBarcodeContentsUseCase로 sealed 분기 처리</p>
+      <div class="shot-marquee">
+        <div class="shot-track" style="animation-duration: 18s;">
+          <img src="assets/images/sh/mapping/01.webp" alt="환자-기기 매핑 화면"/>
+          <img src="assets/images/sh/mapping/02.webp" alt="바코드 스캔 완료 화면"/>
+          <img src="assets/images/sh/mapping/01.webp" alt="환자-기기 매핑 화면" aria-hidden="true"/>
+          <img src="assets/images/sh/mapping/02.webp" alt="바코드 스캔 완료 화면" aria-hidden="true"/>
+        </div>
       </div>
-      <div class="feature-item">
-        <p class="feat-name">활력징후 모니터링</p>
-        <p class="feat-desc">WebSocket 기반 실시간 바이탈 수신. 일자별 DailyVitalSign 리스트 및 모니터링 화면 제공</p>
+    </div>
+
+    <div class="shot-block reveal">
+      <div class="shot-head"><span class="shot-icon">💓</span><span class="shot-name">활력징후 모니터링</span></div>
+      <p class="shot-desc">WebSocket 기반 실시간 바이탈 수신. 일자별 DailyVitalSign 리스트 및 모니터링 화면 제공</p>
+      <div class="shot-marquee">
+        <div class="shot-track" style="animation-duration: 36s;">
+          <img src="assets/images/sh/vital/01.webp" alt="바이탈 상세 화면"/>
+          <img src="assets/images/sh/vital/02.webp" alt="바이탈 리스트 화면"/>
+          <img src="assets/images/sh/vital/03.webp" alt="실시간 바이탈 대시보드"/>
+          <img src="assets/images/sh/vital/04.webp" alt="실시간 바이탈 검색 화면"/>
+          <img src="assets/images/sh/vital/01.webp" alt="바이탈 상세 화면" aria-hidden="true"/>
+          <img src="assets/images/sh/vital/02.webp" alt="바이탈 리스트 화면" aria-hidden="true"/>
+          <img src="assets/images/sh/vital/03.webp" alt="실시간 바이탈 대시보드" aria-hidden="true"/>
+          <img src="assets/images/sh/vital/04.webp" alt="실시간 바이탈 검색 화면" aria-hidden="true"/>
+        </div>
       </div>
-      <div class="feature-item">
-        <p class="feat-name">런타임 병원 설정</p>
-        <p class="feat-desc">QR 스캔 또는 수기 입력으로 서버 URL · OAuth · ScanType 동적 설정. 클라이언트 단 오입력 사전 검증</p>
+    </div>
+
+    <div class="shot-block reveal">
+      <div class="shot-head"><span class="shot-icon">🔔</span><span class="shot-name">알림</span></div>
+      <p class="shot-desc">이상 징후·이탈 알림과 알림 이력을 한 곳에서 확인. 전역 이벤트는 EventHelper 채널로 일원화해 feature 간 결합 없이 전파</p>
+      <div class="shot-marquee">
+        <div class="shot-track" style="animation-duration: 18s;">
+          <img src="assets/images/sh/notification/01.webp" alt="이상 징후 알림 화면"/>
+          <img src="assets/images/sh/notification/03.webp" alt="이탈 메인 화면"/>
+          <img src="assets/images/sh/notification/01.webp" alt="이상 징후 알림 화면" aria-hidden="true"/>
+          <img src="assets/images/sh/notification/03.webp" alt="이탈 메인 화면" aria-hidden="true"/>
+        </div>
       </div>
-      <div class="feature-item">
-        <p class="feat-name">전역 이벤트 처리</p>
-        <p class="feat-desc">로딩 · 스낵바 · 앱 재시작 · 종료를 EventHelper 채널로 일원화. feature 간 결합 없이 전파</p>
+    </div>
+
+    <div class="shot-block reveal">
+      <div class="shot-head"><span class="shot-icon">⚙️</span><span class="shot-name">설정</span></div>
+      <p class="shot-desc">위젯 구성과 이탈 감지 등 앱 환경설정 관리</p>
+      <div class="shot-marquee">
+        <div class="shot-track" style="animation-duration: 18s;">
+          <img src="assets/images/sh/setting/01.webp" alt="설정 화면"/>
+          <img src="assets/images/sh/setting/02.webp" alt="위젯 설정 화면"/>
+          <img src="assets/images/sh/setting/01.webp" alt="설정 화면" aria-hidden="true"/>
+          <img src="assets/images/sh/setting/02.webp" alt="위젯 설정 화면" aria-hidden="true"/>
+        </div>
       </div>
-      <div class="feature-item">
-        <p class="feat-name">API 로그 & 메일 전송</p>
-        <p class="feat-desc">FileLoggingInterceptor로 api_log.txt 생성. 내부망 장애 시 앱 내에서 직접 메일 첨부 전송 가능</p>
+    </div>
+
+    <div class="shot-block reveal">
+      <div class="shot-head"><span class="shot-icon">📡</span><span class="shot-name">IoT 기기 관리</span></div>
+      <p class="shot-desc">연동된 IoT 기기 상세 상태 확인</p>
+      <div class="shot-static">
+        <img src="assets/images/sh/iot/02.webp" alt="IoT 기기 상세 화면"/>
+      </div>
+    </div>
+
+    <div class="shot-block reveal">
+      <div class="shot-head"><span class="shot-icon">🏢</span><span class="shot-name">부서 관리</span></div>
+      <p class="shot-desc">근무할 부서를 선택하고 관리</p>
+      <div class="shot-static">
+        <img src="assets/images/sh/user/01.webp" alt="부서 선택 화면"/>
       </div>
     </div>
   </div>
@@ -772,6 +760,264 @@
 
 <hr class="divider"/>
 
+<!-- CASE STUDY: WIDGET MENU -->
+<section>
+  <div class="wrap wrap-wide">
+    <div class="reveal">
+      <p class="eyebrow">Case Study 01</p>
+      <h2 class="section-title">병원별 메뉴 구성 시스템</h2>
+      <p class="section-desc">병원마다 다른 메뉴 요구사항을, 코드 분기 없이 하나의 원소스로 흡수한 방법</p>
+    </div>
+
+    <div class="reveal">
+      <p class="case-label">Problem — 병원마다 열어줘야 할 메뉴가 다른 구조</p>
+      <p class="case-desc">
+        병원마다 실제로 사용할 메뉴가 다르고, 어떤 메뉴를 열어줄지는 병원 현장의 관리자가 정합니다.
+        기존 SI 방식에서는 병원별로 메뉴 구성이 다른 앱을 각각 별도로 빌드·배포했는데, 이 방식이 유지되는 한
+        아무리 내부 로직을 공통 모듈로 정리해도 진짜 의미의 원소스라고 보기 어려웠습니다. 병원별로 메뉴
+        구성 자체가 다르다는 문제를 코드 분기가 아니라 설정값으로 흡수할 방법이 필요했습니다.
+      </p>
+    </div>
+
+    <div class="reveal">
+      <p class="case-label">Solution — 설정 화면에서 메뉴를 직접 켜고 끄고, 하단 바는 선택된 만큼만 스크롤로</p>
+      <p class="case-desc">
+        설정(Setting) 화면에 메뉴(Widget) on/off 및 드래그 재정렬 기능을 구현해, 관리자가 이 병원에서 열어줄
+        메뉴를 직접 고를 수 있게 했습니다. 선택 결과는 DataStore에 로컬로 저장되고, 하단 내비게이션 바는
+        고정된 탭이 아니라 선택된 메뉴 개수만큼 가로 스크롤되는 구조로 만들어, 병원마다 메뉴 개수와 구성이
+        달라도 코드 분기 없이 같은 화면·같은 코드로 대응할 수 있게 했습니다.
+      </p>
+
+      <div class="code-block">
+        <p class="code-file">WidgetManagerImpl.kt — 선택된 메뉴를 DataStore에 저장/조회</p>
+        <pre><span class="kw">class</span> <span class="tp">WidgetManagerImpl</span> @Inject <span class="kw">constructor</span>(
+    <span class="kw">private val</span> localWidgetDataSource: LocalWidgetDataSource,
+) : WidgetManager {
+    <span class="kw">override val</span> selectedCodes: Flow&lt;List&lt;WidgetCode&gt;&gt; =
+        localWidgetDataSource.widgetCodes.map { raw -&gt;
+            raw.split(<span class="tp">","</span>)
+                .filter { it.isNotEmpty() }
+                .mapNotNull { name -&gt; WidgetCode.entries.find { it.name == name } }
+                .ifEmpty { DEFAULT_CODES }
+        }
+
+    <span class="kw">override suspend fun</span> <span class="fn">saveSelectedCodes</span>(codes: List&lt;WidgetCode&gt;) {
+        localWidgetDataSource.setWidgetCodes(codes.joinToString(<span class="tp">","</span>) { it.name })
+    }
+}</pre>
+      </div>
+
+      <p class="case-desc">
+        하단 바는 선택된 코드 목록을 실제 내비게이션 목적지로 변환한 뒤, 고정 탭이 아니라
+        <code>horizontalScroll</code>이 적용된 <code>Row</code>로 렌더링합니다.
+      </p>
+
+      <div class="code-block">
+        <p class="code-file">SHAppBottomBar.kt — 선택된 메뉴 개수만큼 가로 스크롤되는 하단 바</p>
+        <pre><span class="kw">val</span> destinations = remember(selectedWidgetCodes) {
+    selectedWidgetCodes.mapNotNull { TopLevelDestination.fromWidgetCode(it) }
+}
+
+<span class="cm">// 고정 탭이 아니라, 선택된 메뉴 수만큼 가로 스크롤되는 Row</span>
+Row(
+    modifier = Modifier
+        .fillMaxHeight()
+        .horizontalScroll(rememberScrollState()),
+) {
+    destinations.forEach { destination -&gt;
+        SHBottomBarItem(destination = destination, ...)
+    }
+}</pre>
+      </div>
+
+      <p class="case-desc">
+        메뉴를 끄면 그 화면이 열려 있을 때 뒤로가기로 접근할 수 없도록, <code>MainActivity</code>가
+        <code>selectedWidgetCodes</code>를 계속 관찰하다가 방금 비활성화된 목적지의 백스택을 함께 정리합니다.
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- CASE STUDY: PDA ABSTRACTION -->
+<section>
+  <div class="wrap wrap-wide">
+    <div class="reveal">
+      <p class="eyebrow">Case Study 02</p>
+      <h2 class="section-title">PDA 스캔 추상화 · 서브모듈 분리</h2>
+      <p class="section-desc">제조사가 달라도 코드 한 줄만 늘리면 대응되는 구조, 그리고 프로젝트 간 재사용까지</p>
+    </div>
+
+    <div class="reveal">
+      <p class="case-label">Problem — 병원마다 다른 PDA 제조사, 그대로 두면 기기 수만큼 분기</p>
+      <p class="case-desc">
+        병원마다 도입된 바코드 스캐너(PDA) 제조사가 M3Mobile · PointMobile · Bluebird 등으로 제각각입니다.
+        제조사별 SDK는 초기화 방식, 리스너 등록 방식, 이벤트 전달 방식까지 전부 달라서, 그대로 화면 코드에
+        가져다 쓰면 기기 종류만큼 분기가 생기고, 새 제조사가 추가될 때마다 기존 화면·ViewModel까지 건드려야
+        하는 구조가 됩니다.
+      </p>
+    </div>
+
+    <div class="reveal">
+      <p class="case-label">Solution — 인터페이스로 감추고, ScanType 하나로 런타임 위임</p>
+      <p class="case-desc">
+        스캔 로직을 <code>PdaManager</code> 인터페이스로 추상화하고, 제조사별 구현체(M3Mobile · PointMobile ·
+        Bluebird)와 비-PDA 환경을 위한 <code>NoOpPdaManager</code>를 인터페이스 뒤로 감췄습니다. 화면과
+        ViewModel은 이 인터페이스 하나만 바라보기 때문에 어떤 PDA를 쓰는지 알 필요가 없습니다.
+      </p>
+
+      <div class="code-block">
+        <p class="code-file">core/pda/PdaManager.kt — 모든 제조사 구현체가 따르는 공통 인터페이스</p>
+        <pre><span class="kw">interface</span> <span class="tp">PdaManager</span> {
+    <span class="kw">fun</span> <span class="fn">initialize</span>()
+    <span class="kw">fun</span> <span class="fn">barcodeFlow</span>(): Flow&lt;String&gt;
+    <span class="kw">fun</span> <span class="fn">release</span>()
+}</pre>
+      </div>
+
+      <p class="case-desc">
+        병원 설정에 저장된 <code>ScanType</code> 값에 따라 <code>DynamicPdaManager</code>가 알맞은 구현체를
+        골라 위임합니다. 새 제조사가 추가되면 구현체 클래스 하나, <code>ScanType</code> 값 하나,
+        <code>when</code> 분기 한 줄만 늘리면 되고 — 기존 화면·ViewModel 코드는 전혀 건드리지 않습니다.
+      </p>
+
+      <div class="code-block">
+        <p class="code-file">app/di/PdaModule.kt — ScanType에 따라 알맞은 구현체로 위임</p>
+        <pre><span class="kw">private class</span> <span class="tp">DynamicPdaManager</span>(
+    <span class="kw">private val</span> context: Context,
+    <span class="kw">private val</span> scanConfigManager: ScanConfigManager,
+) : PdaManager {
+    <span class="kw">private var</span> delegate: PdaManager = NoOpPdaManager
+
+    <span class="kw">override fun</span> <span class="fn">initialize</span>() {
+        delegate = runBlocking {
+            <span class="kw">when</span> (scanConfigManager.scanConfig.first().scanType) {
+                ScanType.PdaM3       -&gt; M3BarcodeManagerImpl(context)
+                ScanType.PdaPm       -&gt; PMBarcodeManagerImpl(context)
+                ScanType.PdaBlueBird -&gt; BluebirdSdkManagerImpl(context)
+                <span class="kw">else</span> -&gt; NoOpPdaManager
+            }
+        }
+        delegate.initialize()
+    }
+
+    <span class="kw">override fun</span> <span class="fn">barcodeFlow</span>(): Flow&lt;String&gt; = delegate.barcodeFlow()
+    <span class="kw">override fun</span> <span class="fn">release</span>() = delegate.release()
+}</pre>
+      </div>
+
+      <p class="case-desc">
+        여기서 한 걸음 더 나아가, <code>core:pda</code> 모듈 자체를 별도 저장소로 분리해 <strong>Git
+        Submodule</strong>로 관리하고 있습니다. 이 프로젝트 안에서만 쓰고 버리는 코드가 아니라, 다른
+        프로젝트에서도 그대로 가져다 재사용할 수 있는 독립된 모듈로 만든 것입니다.
+      </p>
+
+      <div class="code-block">
+        <p class="code-file">.gitmodules — core:pda는 독립 저장소로 분리된 서브모듈</p>
+        <pre>[submodule <span class="tp">"core/pda"</span>]
+    path = core/pda
+    url = https://github.com/pntbiz-mobile/AOS_PDA_Interface.git</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- CASE STUDY: TESTING + LINT -->
+<section>
+  <div class="wrap wrap-wide">
+    <div class="reveal">
+      <p class="eyebrow">Case Study 03</p>
+      <h2 class="section-title">테스트 전략 & 커스텀 Lint</h2>
+      <p class="section-desc">리뷰어의 눈에만 기대지 않고, 테스트와 정적 분석으로 품질을 자동으로 지키는 방법</p>
+    </div>
+
+    <div class="reveal">
+      <p class="case-label">Problem — 기능이 늘수록 리뷰만으로는 못 잡는 것들</p>
+      <p class="case-desc">
+        참여 인원과 기능이 늘면서 코드 품질을 리뷰어의 눈에만 의존하기 어려워졌습니다. Mockito 기반 테스트는
+        mock 설정이 복잡해질수록 테스트 자체를 읽고 유지보수하기 어려워졌고, 네이밍·파일 구조·Preview 누락
+        같은 컨벤션 위반은 리뷰 때마다 반복적으로 지적되는 문제였습니다.
+      </p>
+    </div>
+
+    <div class="reveal">
+      <p class="case-label">Solution 1 — Mockito 없이 Fake/Spy + BDD 스타일 테스트</p>
+      <p class="case-desc">
+        Mockito 없이 Fake/Spy를 직접 구현하고, <code>given/when/then</code> 구조와 한글 테스트명으로 의도가
+        바로 읽히는 단위 테스트를 작성했습니다. <code>core:testing</code> 모듈에 재사용 가능한 Fake/Spy를
+        모아두어 프로덕션 코드에 테스트 전용 분기가 섞이지 않도록 했습니다.
+      </p>
+
+      <div class="code-block">
+        <p class="code-file">core/testing/SpyMappingRepository.kt — 호출 횟수·요청 값을 직접 기록하는 Spy</p>
+        <pre><span class="kw">var</span> mappingDeviceCallCount: Int = <span class="tp">0</span>
+    <span class="kw">private set</span>
+<span class="kw">val</span> mappingDeviceRequests: MutableList&lt;MappingDeviceRequest&gt; = mutableListOf()
+<span class="kw">var</span> mappingDeviceThrowable: Throwable? = <span class="kw">null</span>
+
+<span class="kw">override suspend fun</span> <span class="fn">mappingDevice</span>(...) {
+    mappingDeviceCallCount += <span class="tp">1</span>
+    mappingDeviceRequests += MappingDeviceRequest(...)
+    mappingDeviceThrowable?.<span class="kw">let</span> { <span class="kw">throw</span> it }
+}</pre>
+      </div>
+
+      <div class="code-block">
+        <p class="code-file">MappingRepositoryImplTest.kt — given/when/then + 한글 테스트명</p>
+        <pre><span class="kw">@Test</span>
+<span class="kw">fun</span> <span class="fn">`deviceInfo 만 들어오는 바코드 응답이면 기기 정보만 스캔된 것이고, 환자 정보는 없다`</span>() = runTest {
+    <span class="cm">// given</span>
+    mappingDataSource.setBarcodeResponse(MockBarcodeResponse.deviceInfoOnly())
+    <span class="cm">// when</span>
+    <span class="kw">val</span> result = mappingRepository.fetchBarcodeResult(barcode = <span class="tp">"01230123"</span>, groupNum = <span class="tp">10</span>)
+    <span class="cm">// then</span>
+    assertTrue(result <span class="kw">is</span> BarcodeScanResult.UnMappedDevice)
+}</pre>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <p class="case-label">Solution 2 — 반복되는 리뷰 지적을 커스텀 Lint 6종으로 자동화</p>
+      <p class="case-desc">
+        같은 리뷰 코멘트가 반복된다는 건 사람이 아니라 도구가 잡아야 한다는 신호였습니다. Screen 파일 구조,
+        Preview 가시성·누락, Enum·Object 네이밍, when 블록 스타일 등을 검사하는 커스텀 Lint 규칙 6종을 만들어
+        빌드 타임에 자동으로 검사하도록 했습니다.
+      </p>
+
+      <div class="code-block">
+        <p class="code-file">lint/EnumObjectPascalCaseDetector.kt — Enum 상수가 PascalCase인지 검사</p>
+        <pre><span class="kw">override fun</span> <span class="fn">createUastHandler</span>(context: JavaContext): UElementHandler =
+    <span class="kw">object</span> : UElementHandler() {
+        <span class="kw">override fun</span> <span class="fn">visitClass</span>(node: UClass) {
+            <span class="kw">if</span> (!node.isEnum) <span class="kw">return</span>
+            node.fields.filter { it.javaPsi <span class="kw">is</span> PsiEnumConstant }.forEach { field -&gt;
+                <span class="kw">val</span> name = field.name ?: <span class="kw">return</span>@forEach
+                <span class="kw">if</span> (!name.isPascalCase()) {
+                    context.report(
+                        issue = Issues.EnumObjectPascalCase,
+                        location = context.getLocation(field.sourcePsi ?: <span class="kw">return</span>@forEach),
+                        message = <span class="tp">"'$name' 은(는) PascalCase로 작성되어야 합니다."</span>,
+                    )
+                }
+            }
+        }
+    }</pre>
+      </div>
+
+      <p class="case-desc">
+        이 Lint 모듈은 <code>build-logic</code> 컨벤션 플러그인 안에 이미 포함돼 있어서, feature 모듈이
+        Compose 라이브러리 컨벤션만 적용하면 별도 설정 없이 6종의 검사를 자동으로 물려받습니다 — 멀티모듈
+        전체에 규칙을 일관되게 적용하기 위해 앞서 만든 build-logic 구조를 그대로 활용한 것입니다.
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
 <!-- ARCH DETAIL -->
 <section>
   <div class="wrap">
@@ -784,264 +1030,19 @@
   <div class="arch-diagram-wrap reveal">
     <img src="assets/images/aos_sh.png" alt="Smart Hospital 모듈 의존성 다이어그램"/>
   </div>
-
-  <div class="wrap">
-    <div class="reveal">
-      <p class="sub-label">1 · 전체 모듈 구조 (21 modules)</p>
-      <div class="code-block">
-        <p class="code-title">Smart Hospital</p>
-        <div><span class="code-dim">├── </span><span class="code-hl">:app</span>                 <span class="code-cm">// 진입점, 전역 DI, 네비게이션 조립</span></div>
-        <div><span class="code-dim">├── </span><span class="code-hl">:feature/*</span>           <span class="code-cm">// 화면 단위 기능 (6개 모듈)</span></div>
-        <div><span class="code-dim">│   ├── </span>:feature:auth        <span class="code-cm">// 로그인, 인증</span></div>
-        <div><span class="code-dim">│   ├── </span>:feature:mapping     <span class="code-cm">// 환자-기기 매핑/언매핑</span></div>
-        <div><span class="code-dim">│   ├── </span>:feature:monitor-vital</div>
-        <div><span class="code-dim">│   ├── </span>:feature:setting</div>
-        <div><span class="code-dim">│   ├── </span>:feature:user</div>
-        <div><span class="code-dim">│   └── </span>:feature:exit</div>
-        <div><span class="code-dim">└── </span><span class="code-hl">:core/*</span>              <span class="code-cm">// 공통 기반 (14개 모듈)</span></div>
-        <div><span class="code-dim">    ├── </span>:core:domain         <span class="code-cm">// repository interface, model, usecase</span></div>
-        <div><span class="code-dim">    ├── </span>:core:data           <span class="code-cm">// repository 구현체, mapper, DI</span></div>
-        <div><span class="code-dim">    ├── </span>:core:network        <span class="code-cm">// API, RemoteDataSource, Interceptor</span></div>
-        <div><span class="code-dim">    ├── </span>:core:socket         <span class="code-cm">// WebSocket (활력징후 실시간 수신)</span></div>
-        <div><span class="code-dim">    ├── </span>:core:database       <span class="code-cm">// Room 로컬 DB</span></div>
-        <div><span class="code-dim">    ├── </span>:core:pda            <span class="code-cm">// M3Mobile, PM, Bluebird SDK 추상화</span></div>
-        <div><span class="code-dim">    ├── </span>:core:designsystem   <span class="code-cm">// 공통 컴포넌트, 테마, 타이포그래피</span></div>
-        <div><span class="code-dim">    ├── </span>:core:navigation     <span class="code-cm">// NavigationEntry, NavigationHelper</span></div>
-        <div><span class="code-dim">    ├── </span>:core:common         <span class="code-cm">// 공통 유틸, EventHelper</span></div>
-        <div><span class="code-dim">    └── </span>:core:testing        <span class="code-cm">// Fake / Spy 테스트 더블 공유</span></div>
-      </div>
-
-      <p class="sub-label">2 · 의존성 방향 (Dependency Rule)</p>
-      <div class="dep-flow">
-        <div class="dep-node">
-          <p class="dep-node-layer">UI Layer</p>
-          <p class="dep-node-name">feature/*</p>
-        </div>
-        <span class="dep-arrow">→</span>
-        <div class="dep-node center">
-          <p class="dep-node-layer">Domain Layer</p>
-          <p class="dep-node-name">core:domain</p>
-        </div>
-        <span class="dep-arrow">←</span>
-        <div class="dep-node">
-          <p class="dep-node-layer">Data Layer</p>
-          <p class="dep-node-name">core:data</p>
-        </div>
-        <span class="dep-arrow">←</span>
-        <div class="dep-node">
-          <p class="dep-node-layer">Network / Local</p>
-          <p class="dep-node-name">core:network<br/>core:socket<br/>core:database</p>
-        </div>
-      </div>
-      <div class="note">
-        UI(feature)는 domain 인터페이스만 바라보고 구현체(data · network · socket · database)는 하위 계층으로 숨김. feature 간 직접 참조 없이 <code>core:navigation</code>을 통해 소통
-      </div>
-
-      <p class="sub-label">3 · MVI (UDF) 상태관리 흐름</p>
-      <div class="mvi-flow">
-        <div class="mvi-step">
-          <p class="mvi-num">Step 01</p>
-          <p class="mvi-name">UI Action</p>
-          <p class="mvi-desc">사용자 인터랙션 → UiEvent 발행</p>
-        </div>
-        <div class="mvi-step">
-          <p class="mvi-num">Step 02</p>
-          <p class="mvi-name">handleEvent()</p>
-          <p class="mvi-desc">ViewModel 이벤트 처리 · usecase 호출</p>
-        </div>
-        <div class="mvi-step">
-          <p class="mvi-num">Step 03</p>
-          <p class="mvi-name">reduce { copy }</p>
-          <p class="mvi-desc">불변 UiState 생성 · StateFlow 갱신</p>
-        </div>
-        <div class="mvi-step">
-          <p class="mvi-num">Step 04</p>
-          <p class="mvi-name">UI Render</p>
-          <p class="mvi-desc">Compose StateFlow 구독 후 리컴포지션</p>
-        </div>
-      </div>
-      <div class="note">
-        전역 이벤트(로딩 · 스낵바 · 앱 종료)는 <code>EventHelper</code> 채널로 처리 — feature 결합 없이 공통 이벤트 전파
-      </div>
-
-      <p class="sub-label">4 · 스캔 추상화 (core:pda)</p>
-      <div class="scan-arch">
-        <div class="scan-node">
-          <p class="scan-node-layer">PDA Scan</p>
-          <p class="scan-node-name">M3Mobile<br/>PointMobile PM<br/>Bluebird</p>
-          <p class="scan-node-desc">기종별 Native SDK<br/>NoOpPdaManager (비-PDA 폴백)</p>
-        </div>
-        <div class="scan-node center">
-          <p class="scan-node-layer">core:pda</p>
-          <p class="scan-node-name">PdaManager<br/>interface</p>
-          <p class="scan-node-desc">ScanType으로 런타임 분기<br/>DisposableEffect<br/>생명주기 통합</p>
-        </div>
-        <div class="scan-node">
-          <p class="scan-node-layer">Camera Scan</p>
-          <p class="scan-node-name">CameraX<br/>ML Kit</p>
-          <p class="scan-node-desc">카메라 기반 바코드</p>
-        </div>
-      </div>
-      <div class="note">
-        병원 설정의 <code>ScanType</code> 값 하나로 PDA / Camera 경로 런타임 분기 — feature 코드는 스캔 기종을 알 필요 없음
-      </div>
-
-      <p class="sub-label">5 · Build-Logic Convention Plugin (10개)</p>
-      <div class="code-block" style="margin-bottom:0">
-        <p class="code-title">build-logic/convention</p>
-        <div><span class="code-hl">AndroidFeatureConventionPlugin</span>          <span class="code-cm">// feature 공통 의존성 일괄 적용</span></div>
-        <div><span class="code-hl">AndroidLibraryConventionPlugin</span>           <span class="code-cm">// library 기본 설정</span></div>
-        <div><span class="code-hl">AndroidLibraryComposeConventionPlugin</span>    <span class="code-cm">// Compose 설정 포함</span></div>
-        <div><span class="code-hl">AndroidApplicationConventionPlugin</span>       <span class="code-cm">// app 모듈 기본 설정</span></div>
-        <div><span class="code-hl">HiltConventionPlugin</span>                     <span class="code-cm">// Hilt 설정 일괄 적용</span></div>
-        <div><span class="code-hl">NetWorkConventionPlugin</span>                  <span class="code-cm">// 네트워크 공통 의존성</span></div>
-        <div><span class="code-hl">AndroidRoomConventionPlugin</span>              <span class="code-cm">// Room 설정</span></div>
-        <div><span class="code-hl">AndroidTestConventionPlugin</span>              <span class="code-cm">// JUnit5, MockK 테스트 설정</span></div>
-        <div><span class="code-hl">AndroidLintConventionPlugin</span>              <span class="code-cm">// 커스텀 Lint 규칙 연결</span></div>
-      </div>
-    </div>
-  </div>
 </section>
 
 <hr class="divider"/>
 
-<!-- IMPLEMENTATION -->
-<section>
+<!-- CTA -->
+<section class="cta-section">
   <div class="wrap">
-    <div class="reveal">
-      <p class="eyebrow">Implementation</p>
-      <h2 class="section-title">상세 구현</h2>
-    </div>
-    <div class="impl-list reveal">
-
-      <div class="impl-card">
-        <div class="impl-header">
-          <span class="impl-num">01 · Architecture</span>
-          <span class="impl-title">Multi-Module + MVI 전환</span>
-        </div>
-        <div class="impl-items">
-          <p class="impl-item">app / feature / core 3계층 21개 모듈 분리. feature는 core에만 의존, feature 간 직접 참조 없음</p>
-          <p class="impl-item">BaseViewModel + UiState + UiEvent + reduce 패턴으로 상태관리 표준화</p>
-          <p class="impl-item">build-logic 컨벤션 플러그인 10개로 모듈별 Gradle 설정 일관성 확보</p>
-          <p class="impl-item">feature/mapping 모듈을 reference module로 관리. 신규 feature 작업 시 기준점으로 활용</p>
-        </div>
+    <div class="cta-box reveal">
+      <div class="cta-shape">
+        <img src="assets/images/sh/ic_sh.webp" alt="Smart Hospital 아이콘"/>
       </div>
-
-      <div class="impl-card">
-        <div class="impl-header">
-          <span class="impl-num">02 · Scan Abstraction</span>
-          <span class="impl-title">PDA 스캔 공통화</span>
-        </div>
-        <div class="impl-items">
-          <p class="impl-item">PdaManager 인터페이스로 M3Mobile · PointMobile PM · Bluebird SDK 의존성 추상화</p>
-          <p class="impl-item">PDA 미사용 환경을 위한 NoOpPdaManager로 CameraX 경로와 안전하게 분리</p>
-          <p class="impl-item">병원 설정의 ScanType 값 하나로 런타임 분기 — feature 코드에서 스캔 기종 제거</p>
-          <p class="impl-item">Compose DisposableEffect 기반 리스너 등록·해제 일원화로 생명주기 누수 방지</p>
-        </div>
-      </div>
-
-      <div class="impl-card">
-        <div class="impl-header">
-          <span class="impl-num">03 · Networking</span>
-          <span class="impl-title">내부망 운영 안정화</span>
-        </div>
-        <div class="impl-items">
-          <p class="impl-item">FileLoggingInterceptor로 모든 요청·응답을 api_log.txt에 기록</p>
-          <p class="impl-item">FileLogUtil + 앱 내 메일 전송으로 현장 장애 시 로그 회수 표준화</p>
-          <p class="impl-item">AuthInterceptor + TokenManager로 OAuth 토큰 자동 갱신 처리</p>
-          <p class="impl-item">HTTP / API 에러 코드 분류 체계 정리 (ErrorHelper, HttpResponseException)</p>
-        </div>
-      </div>
-
-      <div class="impl-card">
-        <div class="impl-header">
-          <span class="impl-num">04 · Real-time</span>
-          <span class="impl-title">WebSocket 기반 실시간 모니터링</span>
-        </div>
-        <div class="impl-items">
-          <p class="impl-item">MonitorBioSocket으로 활력징후 실시간 수신 (core:socket 모듈)</p>
-          <p class="impl-item">MonitorRepositoryImpl에서 remote datasource + local datasource + socket 조합</p>
-          <p class="impl-item">BioSensing 도메인 모델로 변환 후 Flow로 상위 레이어 노출</p>
-        </div>
-      </div>
-
-      <div class="impl-card">
-        <div class="impl-header">
-          <span class="impl-num">05 · Quality</span>
-          <span class="impl-title">커스텀 Lint 규칙 (6개)</span>
-        </div>
-        <div class="lint-grid">
-          <div class="lint-item">
-            <p class="lint-name">ScreenFileStructureDetector</p>
-            <p class="lint-desc">Screen 파일에 Route / Screen 외 구현이 섞이는 것 방지</p>
-          </div>
-          <div class="lint-item">
-            <p class="lint-name">ComponentsFileVisibilityDetector</p>
-            <p class="lint-desc">컴포넌트 파일 visibility 규칙 강제</p>
-          </div>
-          <div class="lint-item">
-            <p class="lint-name">PreviewMustBePrivateDetector</p>
-            <p class="lint-desc">Preview 함수 private 가시성 강제</p>
-          </div>
-          <div class="lint-item">
-            <p class="lint-name">PreviewRequiredDetector</p>
-            <p class="lint-desc">주요 컴포넌트 Preview 누락 감지</p>
-          </div>
-          <div class="lint-item">
-            <p class="lint-name">SingleLineWhenBlockDetector</p>
-            <p class="lint-desc">when 블록 단일 라인 규칙 적용</p>
-          </div>
-          <div class="lint-item">
-            <p class="lint-name">EnumObjectPascalCaseDetector</p>
-            <p class="lint-desc">Enum · Object PascalCase 네이밍 강제</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<hr class="divider"/>
-
-<!-- TECH STACK -->
-<section>
-  <div class="wrap">
-    <div class="reveal">
-      <p class="eyebrow">Tech Stack</p>
-      <h2 class="section-title">기술 스택</h2>
-    </div>
-    <div class="tech-list reveal">
-      <div class="tech-item">
-        <div>
-          <p class="tech-name">CameraX · ML Kit Barcode Scanning · core:pda</p>
-          <p class="tech-desc">카메라 바코드 스캔과 M3Mobile · PM · Bluebird PDA를 PdaManager 인터페이스로 추상화해 런타임 분기. NoOpPdaManager로 비-PDA 기기 대응</p>
-        </div>
-      </div>
-      <div class="tech-item">
-        <div>
-          <p class="tech-name">Multi Module · Clean Architecture · Hilt</p>
-          <p class="tech-desc">app / feature / core 3계층 21개 모듈. build-logic 컨벤션 플러그인으로 일관성 확보. Hilt로 module-scoped DI 관리</p>
-        </div>
-      </div>
-      <div class="tech-item">
-        <div>
-          <p class="tech-name">Jetpack Compose · MVI (UDF)</p>
-          <p class="tech-desc">UiState + UiEvent + SideEffect 기반 단방향 데이터 흐름. BaseViewModel + reduce 패턴 표준화. core:designsystem으로 테마 · 컴포넌트 관리</p>
-        </div>
-      </div>
-      <div class="tech-item">
-        <div>
-          <p class="tech-name">Retrofit · OkHttp · WebSocket</p>
-          <p class="tech-desc">FileLoggingInterceptor로 API 로그 파일 생성. AuthInterceptor로 OAuth 토큰 자동 갱신. WebSocket(core:socket)으로 활력징후 실시간 수신</p>
-        </div>
-      </div>
-      <div class="tech-item">
-        <div>
-          <p class="tech-name">Room · DataStore (API/Impl 분리)</p>
-          <p class="tech-desc">core:database에서 Room으로 로컬 데이터 영속화. core:datastore를 api/impl로 분리해 token · user · scan · hospital 설정값 독립 관리</p>
-        </div>
-      </div>
+      <p class="cta-title">Smart Hospital</p>
+      <p class="cta-sub">20개 이상 병원에 실 도입된 B2B 실시간 환자 모니터링 앱</p>
     </div>
   </div>
 </section>
