@@ -20,7 +20,7 @@
     .proj-section iframe {
       display: block;
       width: 100%;
-      height: 100vh;
+      height: 900px; /* placeholder until JS measures real content height */
       border: none;
     }
 
@@ -89,6 +89,41 @@
 </section>
 
 <script>
+  // Each embedded page has a `.hero { min-height: 100vh }` section. Inside an
+  // iframe, "100vh" is relative to the IFRAME's own height — so naively
+  // resizing the iframe to fit content creates a feedback loop (resize ->
+  // hero grows -> scrollHeight grows -> resize again, forever). Fix: pin the
+  // hero to the outer window's real viewport height (in px) once the iframe
+  // loads, so it renders exactly like a normal full-screen hero, then measure
+  // the now-stable scrollHeight and size the iframe to that.
+  function stabilizeAndFit(iframe) {
+    let doc;
+    try { doc = iframe.contentDocument; } catch (e) { return; }
+    if (!doc || !doc.body) return;
+
+    if (!doc.getElementById('__vh_fix__')) {
+      const style = doc.createElement('style');
+      style.id = '__vh_fix__';
+      style.textContent = `.hero { min-height: ${window.innerHeight}px !important; }`;
+      doc.head.appendChild(style);
+    }
+
+    const height = Math.max(doc.documentElement.scrollHeight, doc.body.scrollHeight);
+    if (height > 0) iframe.style.height = height + 'px';
+  }
+
+  ['iframe-1', 'iframe-2', 'iframe-3'].forEach(id => {
+    const iframe = document.getElementById(id);
+    iframe.addEventListener('load', () => {
+      stabilizeAndFit(iframe);
+      // re-check a few times for late image/font layout shifts; safe now
+      // that the hero height no longer depends on the iframe's own height
+      [50, 200, 600, 1200, 2500].forEach(delay => {
+        setTimeout(() => stabilizeAndFit(iframe), delay);
+      });
+    });
+  });
+
   // active link highlighting based on scroll position
   const tocLinks = document.querySelectorAll('.toc-nav a');
   const tocTargets = Array.from(tocLinks)
