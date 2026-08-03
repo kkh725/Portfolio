@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>kkh725 Portfolio — 스마트병원 · 피스 · 인천공항</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #ffffff;
+      overflow-x: hidden;
+      font-family: -apple-system, 'Noto Sans KR', sans-serif;
+    }
+
+    .proj-section {
+      width: 100%;
+    }
+
+    .proj-section iframe {
+      display: block;
+      width: 100%;
+      height: 100vh;
+      border: none;
+    }
+
+    .proj-divider {
+      border: none;
+      border-top: 8px solid #f0f0f0;
+    }
+
+    /* ── TOC NAV (project-level) ── */
+    .toc-nav {
+      position: fixed;
+      top: 50%;
+      right: 28px;
+      transform: translateY(-50%);
+      z-index: 1000;
+      display: none;
+      flex-direction: column;
+      gap: 0.85rem;
+      padding: 1rem 0;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(6px);
+      border-radius: 12px;
+    }
+
+    .toc-nav a {
+      font-size: 0.8rem;
+      color: rgba(34,34,34,0.35);
+      text-decoration: none;
+      font-weight: 700;
+      padding: 0.2rem 1rem 0.2rem 0.9rem;
+      border-right: 2px solid rgba(34,34,34,0.1);
+      transition: color 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .toc-nav a:hover { color: #222; }
+    .toc-nav a.active { color: #007AFF; border-right-color: #007AFF; }
+
+    @media (min-width: 1100px) {
+      .toc-nav { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="toc-nav" id="toc-nav">
+  <a href="#proj-smart-hospital">스마트병원</a>
+  <a href="#proj-piece">피스</a>
+  <a href="#proj-icn">인천공항</a>
+</nav>
+
+<section class="proj-section" id="proj-smart-hospital">
+  <iframe id="iframe-1" src="smart_hospital.html" title="Smart Hospital"></iframe>
+</section>
+
+<hr class="proj-divider"/>
+
+<section class="proj-section" id="proj-piece">
+  <iframe id="iframe-2" src="piece_project.html" title="Piece"></iframe>
+</section>
+
+<hr class="proj-divider"/>
+
+<section class="proj-section" id="proj-icn">
+  <iframe id="iframe-3" src="icn_project.html" title="인천공항+"></iframe>
+</section>
+
+<script>
+  // active link highlighting based on scroll position
+  const tocLinks = document.querySelectorAll('.toc-nav a');
+  const tocTargets = Array.from(tocLinks)
+    .map(a => document.querySelector(a.getAttribute('href')))
+    .filter(Boolean);
+
+  const tocIo = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = '#' + entry.target.id;
+      tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === id));
+    });
+  }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+
+  tocTargets.forEach(el => tocIo.observe(el));
+</script>
+
+</body>
+</html>

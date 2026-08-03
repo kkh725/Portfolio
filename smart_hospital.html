@@ -86,6 +86,10 @@
     }
     .reveal.visible { opacity: 1; transform: none; }
 
+    @media print {
+      .reveal, .slide-up { opacity: 1 !important; transform: none !important; }
+    }
+
     /* ── HERO ── */
     .hero {
       min-height: 100vh;
@@ -1384,6 +1388,12 @@ Row(
 </footer>
 
 <script>
+  // hide this page's own section nav when embedded in another page's iframe
+  if (window.self !== window.top) {
+    const tn = document.getElementById('toc-nav');
+    if (tn) tn.style.display = 'none';
+  }
+
   const els = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
