@@ -15,6 +15,7 @@
       --primary: #007AFF;
       --secondary: #00C676;
       --point: #E2FF00;
+      --red: #FF3B30;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -508,6 +509,68 @@
       margin: 2.5rem 0 0.9rem;
     }
     .case-label:first-of-type { margin-top: 0; }
+    .case-label.problem { color: var(--red); }
+
+    /* ── CONTRIBUTION SUMMARY ── */
+    .contribution-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .contribution-card {
+      display: block;
+      background: var(--fg-10);
+      border-radius: 14px;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: var(--fg);
+      transition: background 0.15s ease;
+      flex: 1 1 calc(33.333% - 0.667rem);
+      max-width: calc(33.333% - 0.667rem);
+      box-sizing: border-box;
+    }
+
+    .contribution-card:hover { background: var(--fg-30); }
+
+    .contribution-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem; }
+    .contribution-desc { font-size: 0.8rem; color: var(--fg-50); line-height: 1.6; }
+
+    @media (max-width: 640px) {
+      .contribution-card { flex: 1 1 100%; max-width: 100%; }
+    }
+
+    /* ── TOC NAV ── */
+    .toc-nav {
+      position: fixed;
+      top: 50%;
+      right: 28px;
+      transform: translateY(-50%);
+      z-index: 40;
+      display: none;
+      flex-direction: column;
+      gap: 0.7rem;
+      padding: 1rem 0;
+    }
+
+    .toc-nav a {
+      font-size: 0.75rem;
+      color: var(--fg-30);
+      text-decoration: none;
+      font-weight: 600;
+      padding-right: 0.85rem;
+      border-right: 2px solid var(--fg-10);
+      transition: color 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .toc-nav a:hover { color: var(--fg); }
+    .toc-nav a.active { color: var(--primary); border-right-color: var(--primary); }
+
+    @media (min-width: 1280px) {
+      .toc-nav { display: flex; }
+    }
 
     .case-desc {
       font-size: 0.85rem;
@@ -657,6 +720,16 @@
 </head>
 <body>
 
+<nav class="toc-nav" id="toc-nav">
+  <a href="#overview">개요</a>
+  <a href="#contribution">기여</a>
+  <a href="#case-1">Case 1</a>
+  <a href="#case-2">Case 2</a>
+  <a href="#case-3">Case 3</a>
+  <a href="#arch-detail">아키텍처</a>
+  <a href="#features">화면 보기</a>
+</nav>
+
 <!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
@@ -702,7 +775,7 @@
 <hr class="divider"/>
 
 <!-- OVERVIEW -->
-<section>
+<section id="overview">
   <div class="wrap wrap-wide">
     <div class="reveal">
       <p class="eyebrow">Overview</p>
@@ -736,7 +809,7 @@
     </div>
     <div class="overview-grid reveal" style="grid-template-columns: 1fr; margin-top: 0.75rem;">
       <div class="overview-cell">
-        <p class="overview-label">내 역할</p>
+        <p class="overview-label">주요 기여</p>
         <p class="overview-val sm">전반적인 Android 개발 · QA 개선<br/>결제 안정성 개선</p>
       </div>
     </div>
@@ -745,8 +818,44 @@
 
 <hr class="divider"/>
 
+<!-- CONTRIBUTION SUMMARY -->
+<section id="contribution">
+  <div class="wrap wrap-wide">
+    <div class="reveal">
+      <p class="eyebrow">My Contribution</p>
+      <h2 class="section-title">프로젝트 기여</h2>
+      <p class="section-desc">직접 발견하고 해결한 문제들</p>
+    </div>
+
+    <div class="contribution-grid reveal">
+      <a href="https://velog.io/@kkhyungyung0/%EB%A7%A4-PR%EB%A7%88%EB%8B%A4-%EA%B0%B1%EC%8B%A0%EB%90%98%EB%8A%94-%EB%AA%A8%EB%93%88-%EC%9D%98%EC%A1%B4%EC%84%B1-%EA%B7%B8%EB%9E%98%ED%94%84-CI%EB%A1%9C-%EC%9E%90%EB%8F%99%ED%99%94%ED%95%98%EA%B8%B0" class="contribution-card" target="_blank">
+        <p class="contribution-title">모듈 의존성 그래프 CI 자동화</p>
+        <p class="contribution-desc">모듈 구조 변경 시 의존성 그래프를 CI에서 자동으로 재생성하도록 구축했습니다.</p>
+      </a>
+      <a href="https://velog.io/@kkhyungyung0/AI%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-QA-%EC%99%84%EC%A0%84-%EC%9E%90%EB%8F%99%ED%99%94%ED%95%98%EA%B8%B0" class="contribution-card" target="_blank">
+        <p class="contribution-title">AI를 활용한 QA 자동화</p>
+        <p class="contribution-desc">MCP로 Claude를 기기에 연결해, QA 시나리오를 넘기면 테스트케이스를 자동으로 수행합니다.</p>
+      </a>
+      <a href="#case-1" class="contribution-card">
+        <p class="contribution-title">인앱 결제 유실 방지</p>
+        <p class="contribution-desc">지급과 소비 처리를 서버 단일 트랜잭션으로 묶어 결제 유실 가능성을 구조적으로 제거했습니다.</p>
+      </a>
+      <a href="#case-2" class="contribution-card">
+        <p class="contribution-title">회원가입 이탈 방지</p>
+        <p class="contribution-desc">Amplitude 퍼널 분석으로 이탈 지점을 찾고, 입력값 로컬 자동 저장으로 재입력 부담을 없앴습니다.</p>
+      </a>
+      <a href="#case-3" class="contribution-card">
+        <p class="contribution-title">인앱 로그 Drawer 구축</p>
+        <p class="contribution-desc">Logcat 없이도 QA 현장에서 바로 원인을 확인할 수 있는 관리자 전용 디버깅 도구를 만들었습니다.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
 <!-- CASE STUDY: BILLING -->
-<section>
+<section id="case-1">
   <div class="wrap wrap-wide">
     <div class="reveal">
       <p class="eyebrow">Case Study 01</p>
@@ -755,7 +864,7 @@
     </div>
 
     <div class="reveal">
-      <p class="case-label">Problem — 지급과 소비 처리(consume)가 분리되어 있던 구조</p>
+      <p class="case-label problem">Problem — 지급과 소비 처리(consume)가 분리되어 있던 구조</p>
       <p class="case-desc">
         기존 결제 흐름은 클라이언트가 Google Play 구매 후 서버 API를 호출해 재화를 지급받고,
         그 응답이 성공적으로 돌아오면 클라이언트가 다시 Google Play에 소비 처리(consume)를 요청하는 구조였습니다.
@@ -821,7 +930,7 @@
 <hr class="divider"/>
 
 <!-- CASE STUDY: SIGNUP -->
-<section>
+<section id="case-2">
   <div class="wrap wrap-wide">
     <div class="reveal">
       <p class="eyebrow">Case Study 02</p>
@@ -830,7 +939,7 @@
     </div>
 
     <div class="reveal">
-      <p class="case-label">Problem — Amplitude 회원가입 퍼널 분석 (최근 30일)</p>
+      <p class="case-label problem">Problem — Amplitude 회원가입 퍼널 분석 (최근 30일)</p>
       <div class="funnel-table">
         <table>
           <thead>
@@ -900,7 +1009,7 @@
 <hr class="divider"/>
 
 <!-- CASE STUDY: DEBUG DRAWER -->
-<section>
+<section id="case-3">
   <div class="wrap wrap-wide">
     <div class="reveal">
       <p class="eyebrow">Case Study 03</p>
@@ -917,7 +1026,7 @@
 
   <div class="wrap wrap-wide">
     <div class="reveal">
-      <p class="case-label">Problem — QA 이슈마다 개발자가 기기를 직접 붙잡고 Logcat을 봐야 했던 문제</p>
+      <p class="case-label problem">Problem — QA 이슈마다 개발자가 기기를 직접 붙잡고 Logcat을 봐야 했던 문제</p>
       <p class="case-desc">
         QA 중 이슈가 발견될 때마다 개발자가 해당 기기를 직접 건네받아 Logcat을 붙여서 원인을 확인해야 했습니다.
         어떤 유저의 계정이었는지, 어떤 API가 실패했는지, Amplitude 이벤트가 제대로 찍혔는지를 그 자리에서 바로
@@ -1011,7 +1120,7 @@
 <hr class="divider"/>
 
 <!-- ARCHITECTURE -->
-<section>
+<section id="arch-detail">
   <div class="wrap">
     <div class="reveal">
       <p class="eyebrow">Architecture</p>
@@ -1200,6 +1309,21 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
   }, { threshold: 0.12 });
   els.forEach(el => io.observe(el));
+
+  const tocLinks = document.querySelectorAll('.toc-nav a');
+  const tocTargets = Array.from(tocLinks)
+    .map(a => document.querySelector(a.getAttribute('href')))
+    .filter(Boolean);
+
+  const tocIo = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = '#' + entry.target.id;
+      tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === id));
+    });
+  }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+
+  tocTargets.forEach(el => tocIo.observe(el));
 </script>
 
 </body>
