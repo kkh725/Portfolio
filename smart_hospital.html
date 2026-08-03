@@ -63,6 +63,11 @@
       margin-bottom: 2.5rem;
     }
 
+    .section-desc strong {
+      color: var(--fg);
+      font-weight: 700;
+    }
+
     /* ── ANIMATIONS ── */
     .slide-up {
       opacity: 0;
@@ -91,7 +96,7 @@
 
     .hero-inner {
       width: 100%;
-      max-width: 540px;
+      max-width: 820px;
       margin: 0 auto;
       padding: 0 1.25rem;
       display: flex;
@@ -151,7 +156,7 @@
     .hero-desc {
       font-size: 0.875rem;
       color: var(--fg-50);
-      max-width: 420px;
+      max-width: 700px;
       margin-bottom: 2rem;
       line-height: 1.75;
     }
@@ -302,6 +307,7 @@
 
     /* wider column for sections with code blocks, so long lines don't need to scroll */
     .wrap-wide { max-width: 820px; }
+    .wrap-xwide { max-width: 1100px; }
 
     /* ── CASE STUDY ── */
     .case-label {
@@ -400,6 +406,7 @@
     .shot-static {
       display: flex;
       justify-content: center;
+      align-items: flex-end;
       flex-wrap: wrap;
       gap: 0.75rem;
       width: 100vw;
@@ -420,8 +427,144 @@
       background: var(--fg-10);
     }
 
+    .shot-static img.shot-wide {
+      height: auto;
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .shot-static.case-shot {
+      padding-top: 2rem;
+      padding-bottom: 2.5rem;
+    }
+
+    .shot-figure {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      margin: 0;
+    }
+
+    .shot-caption {
+      font-size: 0.75rem;
+      color: var(--fg-50);
+      text-align: center;
+    }
+
     @media (max-width: 640px) {
       .shot-track img, .shot-static img { height: 78vh; }
+    }
+
+    /* ── SECTION JUMP LINK ── */
+    .section-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .section-header-row .section-desc {
+      margin-bottom: 0;
+      text-align: left;
+      flex: 1;
+    }
+
+    .section-jump-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--fg);
+      background: var(--fg-10);
+      border: 1px solid var(--fg-10);
+      border-radius: 999px;
+      padding: 0.55rem 1.1rem;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.15s ease;
+    }
+
+    .section-jump-link:hover { background: var(--fg-30); }
+
+    .overview-jump-wrap {
+      text-align: center;
+      margin-top: 1.5rem;
+      padding-bottom: 2rem;
+    }
+
+    @media (max-width: 640px) {
+      .section-header-row { justify-content: flex-start; }
+      .section-header-row .section-desc { flex-basis: 100%; }
+    }
+
+    /* ── FEATURE DETAIL (text left, scrolling shots right) ── */
+    .feature-row {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .feature-row:last-child { margin-bottom: 0; }
+
+    .feature-row .feature-text {
+      flex: 0 0 260px;
+      max-width: 260px;
+    }
+
+    .feature-row .feature-text .shot-desc { margin-bottom: 0; }
+
+    .feature-row .feature-shots {
+      flex: 1;
+      min-width: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x proximity;
+      scrollbar-width: thin;
+    }
+
+    .feature-row .feature-shots .shot-track {
+      animation: none;
+    }
+
+    .feature-row .feature-shots .shot-track img {
+      height: 420px;
+      scroll-snap-align: start;
+    }
+
+    .feature-row .feature-shots .shot-static {
+      width: auto;
+      left: 0;
+      transform: none;
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      padding: 0.25rem 0 0.75rem;
+    }
+
+    .feature-row .feature-shots .shot-static img {
+      height: 420px;
+      scroll-snap-align: start;
+    }
+
+    @media (max-width: 900px) {
+      .feature-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+      }
+      .feature-row .feature-text {
+        flex-basis: auto;
+        max-width: 100%;
+      }
+      .feature-row .feature-shots .shot-track img,
+      .feature-row .feature-shots .shot-static img {
+        height: 60vh;
+      }
     }
 
     /* ── ARCH COMPARE ── */
@@ -583,11 +726,14 @@
 
 <!-- OVERVIEW -->
 <section>
-  <div class="wrap">
+  <div class="wrap wrap-wide">
     <div class="reveal">
       <p class="eyebrow">Overview</p>
       <h2 class="section-title">프로젝트 개요</h2>
-      <p class="section-desc">20개 이상 병원에 실 도입된 의료 Android 앱</p>
+      <p class="section-desc">Smart Hospital은 병동 현장에서 <strong>환자와 의료기기를 매핑</strong>하고, 환자의 <strong>활력징후를 실시간으로 모니터링</strong>하는 병원용 안드로이드 앱입니다. 기존에 병원 관리자들이 데스크탑에서 쓰던 <strong>SH 웹 솔루션을 모바일 환경에 맞게 재구성</strong>해, 병동 현장에서 바로 쓸 수 있도록 만들었습니다.<br/><br/>간호사는 PDA로 환자와 기기의 바코드를 스캔해 매핑하면, 이후 측정되는 활력징후가 실시간으로 앱에 표시됩니다. <strong>병동별로 환자 목록을 필터링·검색</strong>해 각 환자의 센싱 정보를 조회할 수 있고, <strong>IoT 기기 상태 확인과 이상징후 알림 관리</strong>도 한 화면에서 처리할 수 있습니다.</p>
+      <div class="overview-jump-wrap">
+        <a href="#feature-detail" class="section-jump-link">UI 흐름을 보고싶다면? <span>→</span></a>
+      </div>
     </div>
     <div class="overview-grid reveal">
       <div class="overview-cell">
@@ -610,150 +756,6 @@
         <p class="overview-label">내 역할</p>
         <p class="overview-val sm">아키텍처 전환 주도<br/>스캔 로직 공통화</p>
       </div>
-    </div>
-    <div class="hospital-box reveal">
-      <p class="hospital-label">실 도입 병원 20곳+</p>
-      <div class="hospital-tags">
-        <span class="htag">용인세브란스병원</span>
-        <span class="htag">연세세브란스병원</span>
-        <span class="htag">아주대병원</span>
-        <span class="htag">일산병원</span>
-        <span class="htag htag-more">외 16곳+</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider"/>
-
-<!-- FEATURES -->
-<section id="features">
-  <div class="wrap">
-    <div class="reveal">
-      <p class="eyebrow">Features</p>
-      <h2 class="section-title">핵심 기능</h2>
-      <p class="section-desc">실제 병원 현장에 도입된 화면으로 보는 7가지 핵심 기능</p>
-    </div>
-  </div>
-
-  <div class="wrap">
-    <div class="shot-block reveal">
-      <div class="shot-head"><span class="shot-icon">🔐</span><span class="shot-name">로그인 · 병원 설정</span></div>
-      <p class="shot-desc">QR 스캔 또는 수기 입력으로 서버 URL·OAuth·ScanType 동적 설정. 클라이언트 단 오입력 사전 검증</p>
-      <div class="shot-marquee">
-        <div class="shot-track" style="animation-duration: 50s;">
-          <img src="assets/images/sh/auth/01.webp" alt="로그인 화면"/>
-          <img src="assets/images/sh/auth/02.webp" alt="병원 정보 등록 화면"/>
-          <img src="assets/images/sh/auth/03.webp" alt="병원 서버 설정 화면"/>
-          <img src="assets/images/sh/auth/04.webp" alt="병원 정보 등록 폼(Code, API, OAuth)"/>
-          <img src="assets/images/sh/auth/05.webp" alt="업데이트 확인 실패 다이얼로그"/>
-          <img src="assets/images/sh/auth/06.webp" alt="앱 스플래시 화면"/>
-          <img src="assets/images/sh/auth/01.webp" alt="로그인 화면" aria-hidden="true"/>
-          <img src="assets/images/sh/auth/02.webp" alt="병원 정보 등록 화면" aria-hidden="true"/>
-          <img src="assets/images/sh/auth/03.webp" alt="병원 서버 설정 화면" aria-hidden="true"/>
-          <img src="assets/images/sh/auth/04.webp" alt="병원 정보 등록 폼(Code, API, OAuth)" aria-hidden="true"/>
-          <img src="assets/images/sh/auth/05.webp" alt="업데이트 확인 실패 다이얼로그" aria-hidden="true"/>
-          <img src="assets/images/sh/auth/06.webp" alt="앱 스플래시 화면" aria-hidden="true"/>
-        </div>
-      </div>
-    </div>
-
-    <div class="shot-block reveal">
-      <div class="shot-head"><span class="shot-icon">🩹</span><span class="shot-name">환자–기기 매핑</span></div>
-      <p class="shot-desc">바코드 파싱 결과에 따라 환자·기기 매핑 및 해제. ParseBarcodeContentsUseCase로 sealed 분기 처리</p>
-      <div class="shot-marquee">
-        <div class="shot-track" style="animation-duration: 18s;">
-          <img src="assets/images/sh/mapping/01.webp" alt="환자-기기 매핑 화면"/>
-          <img src="assets/images/sh/mapping/02.webp" alt="바코드 스캔 완료 화면"/>
-          <img src="assets/images/sh/mapping/01.webp" alt="환자-기기 매핑 화면" aria-hidden="true"/>
-          <img src="assets/images/sh/mapping/02.webp" alt="바코드 스캔 완료 화면" aria-hidden="true"/>
-        </div>
-      </div>
-    </div>
-
-    <div class="shot-block reveal">
-      <div class="shot-head"><span class="shot-icon">💓</span><span class="shot-name">활력징후 모니터링</span></div>
-      <p class="shot-desc">WebSocket 기반 실시간 바이탈 수신. 일자별 DailyVitalSign 리스트 및 모니터링 화면 제공</p>
-      <div class="shot-marquee">
-        <div class="shot-track" style="animation-duration: 36s;">
-          <img src="assets/images/sh/vital/01.webp" alt="바이탈 상세 화면"/>
-          <img src="assets/images/sh/vital/02.webp" alt="바이탈 리스트 화면"/>
-          <img src="assets/images/sh/vital/03.webp" alt="실시간 바이탈 대시보드"/>
-          <img src="assets/images/sh/vital/04.webp" alt="실시간 바이탈 검색 화면"/>
-          <img src="assets/images/sh/vital/01.webp" alt="바이탈 상세 화면" aria-hidden="true"/>
-          <img src="assets/images/sh/vital/02.webp" alt="바이탈 리스트 화면" aria-hidden="true"/>
-          <img src="assets/images/sh/vital/03.webp" alt="실시간 바이탈 대시보드" aria-hidden="true"/>
-          <img src="assets/images/sh/vital/04.webp" alt="실시간 바이탈 검색 화면" aria-hidden="true"/>
-        </div>
-      </div>
-    </div>
-
-    <div class="shot-block reveal">
-      <div class="shot-head"><span class="shot-icon">🔔</span><span class="shot-name">알림</span></div>
-      <p class="shot-desc">이상 징후·이탈 알림과 알림 이력을 한 곳에서 확인. 전역 이벤트는 EventHelper 채널로 일원화해 feature 간 결합 없이 전파</p>
-      <div class="shot-marquee">
-        <div class="shot-track" style="animation-duration: 18s;">
-          <img src="assets/images/sh/notification/01.webp" alt="이상 징후 알림 화면"/>
-          <img src="assets/images/sh/notification/03.webp" alt="이탈 메인 화면"/>
-          <img src="assets/images/sh/notification/01.webp" alt="이상 징후 알림 화면" aria-hidden="true"/>
-          <img src="assets/images/sh/notification/03.webp" alt="이탈 메인 화면" aria-hidden="true"/>
-        </div>
-      </div>
-    </div>
-
-    <div class="shot-block reveal">
-      <div class="shot-head"><span class="shot-icon">⚙️</span><span class="shot-name">설정</span></div>
-      <p class="shot-desc">위젯 구성과 이탈 감지 등 앱 환경설정 관리</p>
-      <div class="shot-marquee">
-        <div class="shot-track" style="animation-duration: 18s;">
-          <img src="assets/images/sh/setting/01.webp" alt="설정 화면"/>
-          <img src="assets/images/sh/setting/02.webp" alt="위젯 설정 화면"/>
-          <img src="assets/images/sh/setting/01.webp" alt="설정 화면" aria-hidden="true"/>
-          <img src="assets/images/sh/setting/02.webp" alt="위젯 설정 화면" aria-hidden="true"/>
-        </div>
-      </div>
-    </div>
-
-    <div class="shot-block reveal">
-      <div class="shot-head"><span class="shot-icon">📡</span><span class="shot-name">IoT 기기 관리</span></div>
-      <p class="shot-desc">연동된 IoT 기기 상세 상태 확인</p>
-      <div class="shot-static">
-        <img src="assets/images/sh/iot/02.webp" alt="IoT 기기 상세 화면"/>
-      </div>
-    </div>
-
-    <div class="shot-block reveal">
-      <div class="shot-head"><span class="shot-icon">🏢</span><span class="shot-name">부서 관리</span></div>
-      <p class="shot-desc">근무할 부서를 선택하고 관리</p>
-      <div class="shot-static">
-        <img src="assets/images/sh/user/01.webp" alt="부서 선택 화면"/>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider"/>
-
-<!-- ARCH IMPROVEMENT -->
-<section id="arch">
-  <div class="wrap">
-    <div class="reveal">
-      <p class="eyebrow">Architecture Improvement</p>
-      <h2 class="section-title">아키텍처 개선</h2>
-      <p class="section-desc">SI 방식에서 공통 모듈 구조로의 전환</p>
-    </div>
-    <div class="arch-compare reveal">
-      <div class="arch-card before">
-        <p class="arch-card-label">BEFORE — SI 방식</p>
-        <p class="arch-card-body">프로젝트별 "개발 후 폐기" 반복. 병원마다 코드베이스 복제, 공통 버그 수정도 각각 적용 필요. 신규 병원 추가 시 전체 재개발에 가까운 공수 발생</p>
-      </div>
-      <div class="arch-card after">
-        <p class="arch-card-label">AFTER — 공통 모듈 구조</p>
-        <p class="arch-card-body">feature 모듈 기반 단일 코드베이스. 병원별 차이는 ScanType · HospitalConfig 분기로 흡수. 버그 수정 1회로 전 병원 반영</p>
-      </div>
-    </div>
-    <div class="arch-result reveal">
-      단일 코드베이스 전환으로 신규 병원 개발 공수 약 <strong>50% 절감</strong>
     </div>
   </div>
 </section>
@@ -785,8 +787,25 @@
         설정(Setting) 화면에 메뉴(Widget) on/off 및 드래그 재정렬 기능을 구현해, 관리자가 이 병원에서 열어줄
         메뉴를 직접 고를 수 있게 했습니다. 선택 결과는 DataStore에 로컬로 저장되고, 하단 내비게이션 바는
         고정된 탭이 아니라 선택된 메뉴 개수만큼 가로 스크롤되는 구조로 만들어, 병원마다 메뉴 개수와 구성이
-        달라도 코드 분기 없이 같은 화면·같은 코드로 대응할 수 있게 했습니다.
+        달라도 코드 분기 없이 같은 화면·같은 코드로 대응할 수 있게 했습니다. 이 방식은 이미 병원 관리자들이 익숙하게
+        쓰고 있던 SH 웹 관리자 페이지의 "퀵메뉴 추가" 방식과 동일한 개념으로, 웹에서 검증된 UX를 그대로 앱에도
+        가져가려 한 선택이었습니다.
       </p>
+
+      <div class="shot-static case-shot">
+        <figure class="shot-figure">
+          <img class="shot-wide" src="assets/images/sh/web/01.webp" alt="SH 웹 관리자 페이지 — 사이드 메뉴에서 원하는 항목을 골라 퀵메뉴로 추가하는 방식"/>
+          <figcaption class="shot-caption">SH 웹 스크린샷 — 퀵메뉴 추가 방식</figcaption>
+        </figure>
+        <figure class="shot-figure">
+          <img src="assets/images/sh/widget/01.webp" alt="사용할 메뉴 관리 화면 — 선택된 메뉴 3/6, 드래그 재정렬"/>
+          <figcaption class="shot-caption">모바일 스크린샷 — 사용할 메뉴 관리</figcaption>
+        </figure>
+        <figure class="shot-figure">
+          <img src="assets/images/sh/mapping/03.webp" alt="선택된 메뉴 개수만큼 가로 스크롤되는 하단 내비게이션 바"/>
+          <figcaption class="shot-caption">모바일 스크린샷 — 선택된 메뉴만큼 스크롤되는 하단 바</figcaption>
+        </figure>
+      </div>
 
       <div class="code-block">
         <p class="code-file">WidgetManagerImpl.kt — 선택된 메뉴를 DataStore에 저장/조회</p>
@@ -925,11 +944,103 @@ Row(
 
 <hr class="divider"/>
 
-<!-- CASE STUDY: TESTING + LINT -->
+<!-- CASE STUDY: TOPBAR PRESET SCOPE -->
 <section>
   <div class="wrap wrap-wide">
     <div class="reveal">
       <p class="eyebrow">Case Study 03</p>
+      <h2 class="section-title">TopBar 슬롯 API — 커스텀 Compose Scope</h2>
+      <p class="section-desc">ColumnScope처럼, 슬롯 위치마다 허용되는 컴포저블을 컴파일 타임에 제한한 디자인시스템 API</p>
+    </div>
+
+    <div class="reveal">
+      <p class="case-label">Problem — 슬롯을 열어두면, 위치와 무관하게 아무 컴포저블이나 들어간다</p>
+      <p class="case-desc">
+        공통 TopBar를 만들 때 화면마다 필요한 버튼 조합(뒤로가기, 닫기, 카메라, 텍스트 버튼, 타이틀)이 다 다릅니다.
+        left/center/right 슬롯을 단순히 <code>@Composable () -&gt; Unit</code> 파라미터로 열어두면 자유도는
+        높아지지만, 디자인시스템에 없는 형태의 버튼이나 위치에 안 맞는 컴포넌트가 그대로 끼워질 수 있어
+        일관성이 쉽게 깨지는 구조였습니다.
+      </p>
+    </div>
+
+    <div class="reveal">
+      <p class="case-label">Solution — @DslMarker로 슬롯마다 격리된 Scope를 만들고, 허용된 컴포저블만 노출</p>
+      <p class="case-desc">
+        <code>ColumnScope</code> 안에서 <code>Modifier.weight()</code>만 특별히 쓸 수 있는 것과 같은 원리로,
+        <code>LeftPreset</code> · <code>CenterPreset</code> · <code>RightPreset</code> 세 개의 스코프 인터페이스를
+        만들고 <code>@DslMarker</code>로 서로 섞이지 않게 격리했습니다. 각 인터페이스는 그 위치에서만 쓸 수 있는
+        프리셋 함수(BackButton, HeadingText, CameraButton 등)만 노출합니다.
+      </p>
+
+      <div class="code-block">
+        <p class="code-file">preset/TopBarPresetScopeMarker.kt — ColumnScope와 같은 원리의 DSL 마커</p>
+        <pre><span class="cm">// @see androidx.compose.foundation.layout.ColumnScope</span>
+<span class="kw">@DslMarker</span>
+<span class="kw">annotation class</span> <span class="tp">TopBarPresetScopeMarker</span></pre>
+      </div>
+
+      <div class="code-block">
+        <p class="code-file">preset/LeftPreset.kt, RightPreset.kt — 슬롯마다 허용되는 컴포저블만 노출하는 인터페이스</p>
+        <pre><span class="kw">@TopBarPresetScopeMarker</span>
+<span class="kw">interface</span> <span class="tp">LeftPreset</span> {
+    <span class="kw">@Composable</span>
+    <span class="kw">fun</span> <span class="fn">BackButton</span>(onClick: () -&gt; Unit = {}, modifier: Modifier = Modifier)
+}
+
+<span class="kw">@TopBarPresetScopeMarker</span>
+<span class="kw">interface</span> <span class="tp">RightPreset</span> {
+    <span class="kw">@Composable</span>
+    <span class="kw">fun</span> <span class="fn">CloseButton</span>(onClick: () -&gt; Unit = {}, modifier: Modifier = Modifier)
+    <span class="kw">@Composable</span>
+    <span class="kw">fun</span> <span class="fn">CameraButton</span>(onClick: () -&gt; Unit = {}, modifier: Modifier = Modifier)
+    <span class="kw">@Composable</span>
+    <span class="kw">fun</span> <span class="fn">TextButton</span>(text: String, onClick: () -&gt; Unit = {}, enabled: Boolean = <span class="tp">true</span>, modifier: Modifier = Modifier)
+}</pre>
+      </div>
+
+      <p class="case-desc">
+        <code>SHTopBar</code>의 <code>left</code>/<code>center</code>/<code>right</code> 파라미터는 각 Preset을
+        리시버로 갖는 람다(<code>@Composable LeftPreset.() -&gt; Unit</code>)로 선언되어 있어서, 호출부에서는
+        해당 스코프에 정의된 프리셋 함수만 자동완성에 뜨고 그 외의 컴포저블은 애초에 넣을 수 없습니다.
+      </p>
+
+      <div class="code-block">
+        <p class="code-file">topbar/TopBar.kt — 슬롯 파라미터가 각 Preset을 리시버로 갖는 람다</p>
+        <pre><span class="kw">@Composable</span>
+<span class="kw">fun</span> <span class="fn">SHTopBar</span>(
+    left: (<span class="kw">@Composable</span> LeftPreset.() -&gt; Unit)? = <span class="kw">null</span>,
+    center: (<span class="kw">@Composable</span> CenterPreset.() -&gt; Unit)? = <span class="kw">null</span>,
+    right: (<span class="kw">@Composable</span> RightPreset.() -&gt; Unit)? = <span class="kw">null</span>,
+    modifier: Modifier = Modifier,
+) {
+    <span class="cm">// left?.let { LeftPresetScopeImpl.left() } 형태로 각 스코프의 구현체에 위임</span>
+}</pre>
+      </div>
+
+      <div class="code-block">
+        <p class="code-file">feature/mapping/MappingScreen.kt — 위치에 맞는 프리셋 함수만 골라 쓰는 호출부</p>
+        <pre>SHTopBar(
+    left = { <span class="fn">BackButton</span>(onClick = onBackClick) },
+    center = { <span class="fn">HeadingText</span>(stringResource(id = R.string.core_ui_mapping_title)) },
+    right = { <span class="fn">CameraButton</span>(onClick = onCameraClick) },
+)</pre>
+      </div>
+
+      <p class="case-desc">
+        새 프리셋이 필요하면 해당 인터페이스에 함수 하나만 추가하면 되고, 위치에 맞지 않는 조합은 리뷰에서
+        걸러낼 필요 없이 컴파일 타임에 막힙니다.
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- CASE STUDY: TESTING + LINT -->
+<section>
+  <div class="wrap wrap-wide">
+    <div class="reveal">
+      <p class="eyebrow">Case Study 04</p>
       <h2 class="section-title">테스트 전략 & 커스텀 Lint</h2>
       <p class="section-desc">리뷰어의 눈에만 기대지 않고, 테스트와 정적 분석으로 품질을 자동으로 지키는 방법</p>
     </div>
@@ -1029,6 +1140,116 @@ Row(
 
   <div class="arch-diagram-wrap reveal">
     <img src="assets/images/aos_sh.png" alt="Smart Hospital 모듈 의존성 다이어그램"/>
+  </div>
+
+  <div class="wrap wrap-wide reveal">
+    <p class="case-desc">
+      <code>core:datastore:api</code> / <code>core:datastore:impl</code>처럼 인터페이스(api)와 구현체(impl)를
+      별도 모듈로 분리했습니다. 상위 모듈은 api 모듈에만 컴파일 타임으로 의존하고, 실제 구현체는 app 모듈에서
+      런타임에 주입되기 때문에 구현이 바뀌어도 이를 사용하는 feature·core 모듈은 다시 컴파일할 필요가 없습니다.
+    </p>
+    <p class="case-desc">
+      계층은 <code>core:domain</code>(모델·repository 인터페이스·usecase) · <code>core:data</code>(repository
+      구현체·mapper) · <code>feature</code>(MVI 기반 presentation)로 나눈 Clean Architecture 구조이며, 의존성은
+      항상 <code>app → feature → core</code> 한 방향으로만 흐르도록 강제하고 있습니다.
+    </p>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- FEATURE DETAIL (screenshots) -->
+<section id="feature-detail">
+  <div class="wrap wrap-xwide">
+    <div class="reveal">
+      <p class="eyebrow">Feature Detail</p>
+      <h2 class="section-title">화면으로 보는 핵심 기능</h2>
+      <p class="section-desc">실제 병원 현장에 도입된 화면</p>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-text">
+        <div class="shot-head"><span class="shot-icon">🔐</span><span class="shot-name">로그인 · 병원 설정 · 부서 선택</span></div>
+        <p class="shot-desc">QR 스캔 또는 수기 입력으로 서버 URL·OAuth·ScanType 동적 설정. 근무할 부서 선택까지 로그인 플로우에서 처리. 클라이언트 단 오입력 사전 검증</p>
+      </div>
+      <div class="feature-shots">
+        <div class="shot-track">
+          <img src="assets/images/sh/auth/01.webp" alt="로그인 화면"/>
+          <img src="assets/images/sh/auth/02.webp" alt="병원 정보 등록 화면"/>
+          <img src="assets/images/sh/auth/03.webp" alt="병원 서버 설정 화면"/>
+          <img src="assets/images/sh/user/01.webp" alt="부서 선택 화면"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-text">
+        <div class="shot-head"><span class="shot-icon">🩹</span><span class="shot-name">환자–기기 매핑</span></div>
+        <p class="shot-desc">바코드 파싱 결과에 따라 환자·기기 매핑 및 해제. ParseBarcodeContentsUseCase로 sealed 분기 처리</p>
+      </div>
+      <div class="feature-shots">
+        <div class="shot-track">
+          <img src="assets/images/sh/mapping/01.webp" alt="환자-기기 매핑 화면"/>
+          <img src="assets/images/sh/mapping/02.webp" alt="바코드 스캔 완료 화면"/>
+          <img src="assets/images/sh/mapping/03.webp" alt="바코드 스캔 대기 화면"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-text">
+        <div class="shot-head"><span class="shot-icon">💓</span><span class="shot-name">활력징후 모니터링</span></div>
+        <p class="shot-desc">WebSocket 기반 실시간 바이탈 수신. 일자별 DailyVitalSign 리스트 및 모니터링 화면 제공</p>
+      </div>
+      <div class="feature-shots">
+        <div class="shot-track">
+          <img src="assets/images/sh/vital/02.webp" alt="바이탈 리스트 화면"/>
+          <img src="assets/images/sh/vital/01.webp" alt="바이탈 상세 화면"/>
+          <img src="assets/images/sh/vital/03.webp" alt="실시간 바이탈 대시보드"/>
+          <img src="assets/images/sh/vital/05.webp" alt="병동 선택 화면"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-text">
+        <div class="shot-head"><span class="shot-icon">🔔</span><span class="shot-name">알림</span></div>
+        <p class="shot-desc">이상 징후·이탈 알림과 알림 이력을 한 곳에서 확인. 전역 이벤트는 EventHelper 채널로 일원화해 feature 간 결합 없이 전파</p>
+      </div>
+      <div class="feature-shots">
+        <div class="shot-track">
+          <img src="assets/images/sh/notification/01.webp" alt="이상 징후 알림 화면"/>
+          <img src="assets/images/sh/notification/03.webp" alt="이탈 메인 화면"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-text">
+        <div class="shot-head"><span class="shot-icon">⚙️</span><span class="shot-name">설정</span></div>
+        <p class="shot-desc">위젯 구성과 이탈 감지 등 앱 환경설정 관리</p>
+      </div>
+      <div class="feature-shots">
+        <div class="shot-track">
+          <img src="assets/images/sh/setting/01.webp" alt="설정 화면"/>
+          <img src="assets/images/sh/setting/02.webp" alt="위젯 설정 화면"/>
+          <img src="assets/images/sh/setting/03.webp" alt="이상 징후 알림 설정 화면"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-text">
+        <div class="shot-head"><span class="shot-icon">📡</span><span class="shot-name">IoT 기기 관리</span></div>
+        <p class="shot-desc">연동된 IoT 기기 목록과 상세 상태 확인</p>
+      </div>
+      <div class="feature-shots">
+        <div class="shot-static">
+          <img src="assets/images/sh/iot/01.webp" alt="IoT 기기별 현황 리스트 화면"/>
+          <img src="assets/images/sh/iot/02.webp" alt="IoT 기기 상세 화면"/>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
