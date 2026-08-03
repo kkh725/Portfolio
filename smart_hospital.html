@@ -324,6 +324,7 @@
       margin: 2.5rem 0 0.9rem;
     }
     .case-label:first-of-type { margin-top: 0; }
+    .case-label.problem { color: var(--red); }
 
     .case-desc {
       font-size: 0.85rem;
@@ -582,6 +583,64 @@
       margin-bottom: 1rem;
     }
 
+    /* ── CONTRIBUTION SUMMARY ── */
+    .contribution-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .contribution-card {
+      display: block;
+      background: var(--fg-10);
+      border-radius: 14px;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: var(--fg);
+      transition: background 0.15s ease;
+    }
+
+    .contribution-card:hover { background: var(--fg-30); }
+
+    .contribution-icon { font-size: 1.4rem; margin-bottom: 0.75rem; display: block; }
+    .contribution-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem; }
+    .contribution-desc { font-size: 0.8rem; color: var(--fg-50); line-height: 1.6; }
+
+    @media (max-width: 640px) {
+      .contribution-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── TOC NAV ── */
+    .toc-nav {
+      position: fixed;
+      top: 50%;
+      right: 28px;
+      transform: translateY(-50%);
+      z-index: 40;
+      display: none;
+      flex-direction: column;
+      gap: 0.7rem;
+      padding: 1rem 0;
+    }
+
+    .toc-nav a {
+      font-size: 0.75rem;
+      color: var(--fg-30);
+      text-decoration: none;
+      font-weight: 600;
+      padding-right: 0.85rem;
+      border-right: 2px solid var(--fg-10);
+      transition: color 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .toc-nav a:hover { color: var(--fg); }
+    .toc-nav a.active { color: var(--primary); border-right-color: var(--primary); }
+
+    @media (min-width: 1280px) {
+      .toc-nav { display: flex; }
+    }
+
     .arch-card {
       background: var(--fg-10);
       border-radius: 12px;
@@ -678,6 +737,17 @@
 </head>
 <body>
 
+<nav class="toc-nav" id="toc-nav">
+  <a href="#overview">개요</a>
+  <a href="#contribution">기여</a>
+  <a href="#case-1">Case 1</a>
+  <a href="#case-2">Case 2</a>
+  <a href="#case-3">Case 3</a>
+  <a href="#case-4">Case 4</a>
+  <a href="#arch-detail">아키텍처</a>
+  <a href="#feature-detail">화면 보기</a>
+</nav>
+
 <!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
@@ -726,7 +796,7 @@
 <hr class="divider"/>
 
 <!-- OVERVIEW -->
-<section>
+<section id="overview">
   <div class="wrap wrap-wide">
     <div class="reveal">
       <p class="eyebrow">Overview</p>
@@ -754,7 +824,7 @@
         <p class="overview-val">2명</p>
       </div>
       <div class="overview-cell">
-        <p class="overview-label">내 역할</p>
+        <p class="overview-label">주요 기여</p>
         <p class="overview-val sm">아키텍처 전환 주도<br/>스캔 로직 공통화</p>
       </div>
     </div>
@@ -763,8 +833,48 @@
 
 <hr class="divider"/>
 
+<!-- CONTRIBUTION SUMMARY -->
+<section id="contribution">
+  <div class="wrap wrap-wide">
+    <div class="reveal">
+      <p class="eyebrow">My Contribution</p>
+      <h2 class="section-title">프로젝트 기여</h2>
+      <p class="section-desc">아키텍처 전환을 주도하며 직접 설계·구현한 네 가지 영역</p>
+    </div>
+
+    <div class="contribution-grid reveal">
+      <div class="contribution-card">
+        <p class="contribution-title">기존 XML 기반 legacy UI 시스템을 Jetpack Compose로 마이그레이션</p>
+        <p class="contribution-desc">의존성이 낮은 공통 컴포넌트부터 복잡한 비즈니스 로직 순으로 단계적 마이그레이션을 진행하여 기존 서비스 안정성을 유지하며 전환했습니다.</p>
+      </div>
+      <div class="contribution-card">
+        <p class="contribution-title">단일 모듈 MVVM 구조를 멀티모듈 + MVI 아키텍처로 전환, feature 모듈 분리 및 독립 빌드 구조 확립</p>
+        <p class="contribution-desc">2~3명 동시 작업 시 merge conflict를 줄이고, 기능 단위로 테스트 및 배포가 가능하도록 만들었습니다.</p>
+      </div>
+      <a href="#case-1" class="contribution-card">
+        <p class="contribution-title">병원별 메뉴 구성 시스템 구축을 통한 원소스화</p>
+        <p class="contribution-desc">코드 분기 없이 설정값만으로 병원마다 다른 메뉴 구성을 흡수하는 구조를 설계했습니다.</p>
+      </a>
+      <a href="#case-2" class="contribution-card">
+        <p class="contribution-title">PDA 스캔 추상화 · 서브모듈화</p>
+        <p class="contribution-desc">제조사가 다른 스캐너 SDK를 인터페이스 하나로 감추고, 재사용 가능한 독립 모듈로 분리했습니다.</p>
+      </a>
+      <a href="#case-3" class="contribution-card">
+        <p class="contribution-title">TopBar 슬롯 API 설계</p>
+        <p class="contribution-desc">커스텀 Compose Scope로 위치마다 허용되는 컴포저블을 컴파일 타임에 제한하는 디자인시스템 API를 만들었습니다.</p>
+      </a>
+      <a href="#case-4" class="contribution-card">
+        <p class="contribution-title">테스트 전략 & 커스텀 Lint 구축</p>
+        <p class="contribution-desc">Fake/Spy 기반 테스트와 자체 Lint 규칙 6종으로, 리뷰에만 기대지 않고 품질을 자동으로 지키는 체계를 마련했습니다.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
 <!-- CASE STUDY: WIDGET MENU -->
-<section>
+<section id="case-1">
   <div class="wrap wrap-wide">
     <div class="reveal">
       <p class="eyebrow">Case Study 01</p>
@@ -773,7 +883,7 @@
     </div>
 
     <div class="reveal">
-      <p class="case-label">Problem — 병원마다 열어줘야 할 메뉴가 다른 구조</p>
+      <p class="case-label problem">Problem — 병원마다 열어줘야 할 메뉴가 다른 구조</p>
       <p class="case-desc">
         병원마다 실제로 사용할 메뉴가 다르고, 어떤 메뉴를 열어줄지는 병원 현장의 관리자가 정합니다.
         기존 SI 방식에서는 병원별로 메뉴 구성이 다른 앱을 각각 별도로 빌드·배포했는데, 이 방식이 유지되는 한
@@ -861,7 +971,7 @@ Row(
 <hr class="divider"/>
 
 <!-- CASE STUDY: PDA ABSTRACTION -->
-<section>
+<section id="case-2">
   <div class="wrap wrap-wide">
     <div class="reveal">
       <p class="eyebrow">Case Study 02</p>
@@ -870,7 +980,7 @@ Row(
     </div>
 
     <div class="reveal">
-      <p class="case-label">Problem — 병원마다 다른 PDA 제조사, 그대로 두면 기기 수만큼 분기</p>
+      <p class="case-label problem">Problem — 병원마다 다른 PDA 제조사, 그대로 두면 기기 수만큼 분기</p>
       <p class="case-desc">
         병원마다 도입된 바코드 스캐너(PDA) 제조사가 M3Mobile · PointMobile · Bluebird 등으로 제각각입니다.
         제조사별 SDK는 초기화 방식, 리스너 등록 방식, 이벤트 전달 방식까지 전부 달라서, 그대로 화면 코드에
@@ -946,7 +1056,7 @@ Row(
 <hr class="divider"/>
 
 <!-- CASE STUDY: TOPBAR PRESET SCOPE -->
-<section>
+<section id="case-3">
   <div class="wrap wrap-wide">
     <div class="reveal">
       <p class="eyebrow">Case Study 03</p>
@@ -955,7 +1065,7 @@ Row(
     </div>
 
     <div class="reveal">
-      <p class="case-label">Problem — 슬롯을 열어두면, 위치와 무관하게 아무 컴포저블이나 들어간다</p>
+      <p class="case-label problem">Problem — 슬롯을 열어두면, 위치와 무관하게 아무 컴포저블이나 들어간다</p>
       <p class="case-desc">
         공통 TopBar를 만들 때 화면마다 필요한 버튼 조합(뒤로가기, 닫기, 카메라, 텍스트 버튼, 타이틀)이 다 다릅니다.
         left/center/right 슬롯을 단순히 <code>@Composable () -&gt; Unit</code> 파라미터로 열어두면 자유도는
@@ -1038,7 +1148,7 @@ Row(
 <hr class="divider"/>
 
 <!-- CASE STUDY: TESTING + LINT -->
-<section>
+<section id="case-4">
   <div class="wrap wrap-wide">
     <div class="reveal">
       <p class="eyebrow">Case Study 04</p>
@@ -1047,7 +1157,7 @@ Row(
     </div>
 
     <div class="reveal">
-      <p class="case-label">Problem — 기능이 늘수록 리뷰만으로는 못 잡는 것들</p>
+      <p class="case-label problem">Problem — 기능이 늘수록 리뷰만으로는 못 잡는 것들</p>
       <p class="case-desc">
         참여 인원과 기능이 늘면서 코드 품질을 리뷰어의 눈에만 의존하기 어려워졌습니다. Mockito 기반 테스트는
         mock 설정이 복잡해질수록 테스트 자체를 읽고 유지보수하기 어려워졌고, 네이밍·파일 구조·Preview 누락
@@ -1131,7 +1241,7 @@ Row(
 <hr class="divider"/>
 
 <!-- ARCH DETAIL -->
-<section>
+<section id="arch-detail">
   <div class="wrap">
     <div class="reveal">
       <p class="eyebrow">Architecture Detail</p>
@@ -1279,6 +1389,21 @@ Row(
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
   }, { threshold: 0.12 });
   els.forEach(el => io.observe(el));
+
+  const tocLinks = document.querySelectorAll('.toc-nav a');
+  const tocTargets = Array.from(tocLinks)
+    .map(a => document.querySelector(a.getAttribute('href')))
+    .filter(Boolean);
+
+  const tocIo = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = '#' + entry.target.id;
+      tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === id));
+    });
+  }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+
+  tocTargets.forEach(el => tocIo.observe(el));
 </script>
 
 </body>
