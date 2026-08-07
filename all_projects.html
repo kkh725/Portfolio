@@ -97,9 +97,123 @@
     @media (min-width: 1100px) {
       .toc-nav { display: flex; }
     }
+
+    /* ── Cover page ── */
+    .cover-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .cover-title {
+      font-size: clamp(2.2rem, 6vw, 3.8rem);
+      font-weight: 800;
+      color: #222;
+      letter-spacing: -0.02em;
+    }
+
+    .cover-sub {
+      margin-top: 0.9rem;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: rgba(34,34,34,0.5);
+      letter-spacing: 0.02em;
+    }
+
+    .scroll-cue {
+      position: absolute;
+      bottom: 2.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(34,34,34,0.35);
+      text-decoration: none;
+      animation: bob 1.8s ease-in-out infinite;
+    }
+
+    .scroll-cue:hover { color: #007AFF; }
+
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
+    /* ── TOC page (next page) ── */
+    .toc-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      border-top: 8px solid #f0f0f0;
+    }
+
+    .toc-page h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #222;
+      margin-bottom: 2.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .toc-list a {
+      display: flex;
+      align-items: baseline;
+      gap: 0.9rem;
+      padding: 1rem 1.3rem;
+      border: 1px solid rgba(34,34,34,0.1);
+      border-radius: 12px;
+      text-decoration: none;
+      color: #222;
+      font-weight: 700;
+      font-size: 1.05rem;
+      transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+    }
+
+    .toc-list a:hover {
+      border-color: #007AFF;
+      color: #007AFF;
+      background: rgba(0,122,255,0.04);
+    }
+
+    .toc-list .toc-num {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: rgba(34,34,34,0.35);
+    }
+
+    .toc-list a:hover .toc-num { color: #007AFF; }
   </style>
 </head>
 <body>
+
+<section class="cover-page" id="cover">
+  <h1 class="cover-title">김근형의 포트폴리오</h1>
+  <p class="cover-sub">Android Developer</p>
+  <a class="scroll-cue" href="#toc-page">↓ 목차 보기</a>
+</section>
+
+<section class="toc-page" id="toc-page">
+  <h2>목차</h2>
+  <ol class="toc-list">
+    <li><a href="#proj-smart-hospital"><span class="toc-num">01</span>스마트병원</a></li>
+    <li><a href="#proj-piece"><span class="toc-num">02</span>피스</a></li>
+    <li><a href="#proj-icn"><span class="toc-num">03</span>인천공항+</a></li>
+  </ol>
+</section>
 
 <nav class="toc-nav" id="toc-nav">
   <div class="toc-group" data-project="proj-smart-hospital" data-iframe="iframe-1">
